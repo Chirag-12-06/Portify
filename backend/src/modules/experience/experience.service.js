@@ -1,15 +1,15 @@
 import prisma from "../../lib/prisma.js";
 import { ApiError } from "../../utils/apiError.js";
 
-export async function createProject(data) {
-  const { images, skillIds, ...projectData } = data;
+export async function createExperience(data) {
+  const { points, skillIds, ...experienceData } = data;
 
-  return prisma.project.create({
+  return prisma.experience.create({
     data: {
-      ...projectData,
+      ...experienceData,
 
-      images: {
-        create: images,
+      points: {
+        create: points,
       },
 
       skills: {
@@ -24,11 +24,12 @@ export async function createProject(data) {
     },
 
     include: {
-      images: {
+      points: {
         orderBy: {
           displayOrder: "asc",
         },
       },
+
       skills: {
         include: {
           skill: true,
@@ -38,10 +39,10 @@ export async function createProject(data) {
   });
 }
 
-export async function getProjects() {
-  return prisma.project.findMany({
+export async function getExperiences() {
+  return prisma.experience.findMany({
     include: {
-      images: {
+      points: {
         orderBy: {
           displayOrder: "asc",
         },
@@ -55,19 +56,17 @@ export async function getProjects() {
     },
 
     orderBy: {
-      createdAt: "desc",
+      startDate: "desc",
     },
   });
 }
 
-export async function getProjectBySlug(slug) {
-  const project = await prisma.project.findUnique({
-    where: {
-      slug,
-    },
+export async function getExperienceById(id) {
+  const experience = await prisma.experience.findUnique({
+    where: { id },
 
     include: {
-      images: {
+      points: {
         orderBy: {
           displayOrder: "asc",
         },
@@ -81,36 +80,34 @@ export async function getProjectBySlug(slug) {
     },
   });
 
-  if (!project) {
-    throw new ApiError(404, "Project not found");
+  if (!experience) {
+    throw new ApiError(404, "Experience not found");
   }
 
-  return project;
+  return experience;
 }
 
-export async function updateProject(id, data) {
-  const project = await prisma.project.findUnique({
+export async function updateExperience(id, data) {
+  const experience = await prisma.experience.findUnique({
     where: { id },
   });
 
-  if (!project) {
-    throw new ApiError(404, "Project not found");
+  if (!experience) {
+    throw new ApiError(404, "Experience not found");
   }
 
-  const { images, skillIds, ...projectData } = data;
+  const { points, skillIds, ...experienceData } = data;
 
-  return prisma.project.update({
-    where: {
-      id,
-    },
+  return prisma.experience.update({
+    where: { id },
 
     data: {
-      ...projectData,
+      ...experienceData,
 
-      ...(images !== undefined && {
-        images: {
+      ...(points !== undefined && {
+        points: {
           deleteMany: {},
-          create: images,
+          create: points,
         },
       }),
 
@@ -129,7 +126,7 @@ export async function updateProject(id, data) {
     },
 
     include: {
-      images: {
+      points: {
         orderBy: {
           displayOrder: "asc",
         },
@@ -144,20 +141,16 @@ export async function updateProject(id, data) {
   });
 }
 
-export async function deleteProject(id) {
-  const project = await prisma.project.findUnique({
-    where: {
-      id,
-    },
+export async function deleteExperience(id) {
+  const experience = await prisma.experience.findUnique({
+    where: { id },
   });
 
-  if (!project) {
-    throw new ApiError(404, "Project not found");
+  if (!experience) {
+    throw new ApiError(404, "Experience not found");
   }
 
-  return prisma.project.delete({
-    where: {
-      id,
-    },
+  return prisma.experience.delete({
+    where: { id },
   });
 }

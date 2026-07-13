@@ -29,6 +29,19 @@ enum SkillCategory {
   CLOUD
 }
 
+enum SocialPlatform {
+  GITHUB
+  LINKEDIN
+  LEETCODE
+  CODEFORCES
+  CODECHEF
+  HACKERRANK
+  TWITTER
+  INSTAGRAM
+  EMAIL
+  OTHER
+}
+
 model User {
   id        String   @id @default(cuid())
   email     String   @unique
@@ -57,7 +70,9 @@ model Project {
   fullDescription  String
   githubUrl        String?
   liveUrl          String?
+  isVisible        Boolean       @default(true)
   featured         Boolean       @default(false)
+  displayOrder     Int           @default(0)
   status           ProjectStatus
 
   createdAt        DateTime      @default(now())
@@ -82,7 +97,9 @@ model Certificate {
   issuer          String
   credentialUrl   String
   badgeImageUrl   String?
+  isVisible       Boolean  @default(true)
   featured        Boolean  @default(false)
+  displayOrder    Int      @default(0)
   issueDate       DateTime
   expiryDate      DateTime?
 
@@ -96,7 +113,9 @@ model Experience {
   location          String?
   startDate         DateTime
   endDate           DateTime?
+  isVisible         Boolean  @default(true)
   currentlyWorking  Boolean  @default(false)
+  displayOrder      Int      @default(0)
   companyImageUrl   String?
 
   points            ExperiencePoint[]
@@ -140,4 +159,50 @@ model ExperienceSkill {
   skill       Skill      @relation(fields: [skillId], references: [id], onDelete: Cascade)
 
   @@id([experienceId, skillId])
+}
+
+model Profile {
+  id              String @id @default(cuid())
+  name            String
+  title           String
+  about           String
+  email           String
+  phone           String?
+  location        String?
+  resumeUrl       String?
+  profileImageUrl String?
+  heroImageUrl    String?
+  tagline         String?
+}
+
+model Education {
+  id                  String   @id @default(cuid())
+  institution         String
+  degree              String
+  fieldOfStudy        String
+  grade               String?
+  location            String?
+  startDate           DateTime
+  endDate             DateTime?
+  currentlyStudying   Boolean  @default(false)
+  institutionImageUrl String?
+}
+
+model SocialLink {
+  id           String         @id @default(cuid())
+  platform     SocialPlatform @unique
+  url          String
+  displayOrder Int
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  subject   String
+  message   String
+  isRead    Boolean  @default(false)
+  replied   Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

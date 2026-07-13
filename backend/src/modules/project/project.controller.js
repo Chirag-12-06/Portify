@@ -26,7 +26,11 @@ export const createProjectController = asyncHandler(async (req, res) => {
 });
 
 export const getProjectsController = asyncHandler(async (req, res) => {
-  const projects = await getProjects();
+  console.log("Controller started");
+
+const projects = await getProjects();
+
+console.log("Projects fetched");
 
   return res.status(200).json({
     success: true,
