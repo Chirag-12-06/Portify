@@ -9,6 +9,7 @@ import { adminRouter as educationRoutes } from "../modules/education/education.r
 import { adminRouter as profileRoutes } from "../modules/profile/profile.routes.js";
 import { adminRouter as socialLinkRoutes } from "../modules/socialLink/socialLink.routes.js";
 import { adminRouter as contactRoutes } from "../modules/contact/contact.routes.js";
+import { router as dashboardRoutes } from "../modules/dashboard/dashboard.routes.js";
 
 const router = Router();
 
@@ -21,5 +22,6 @@ router.use("/social-links", socialLinkRoutes);
 router.use("/profiles", profileRoutes);
 router.use("/educations", educationRoutes);
 router.use("/experiences", experienceRoutes);
+router.use("/dashboard", dashboardRoutes);
 
 export default router;

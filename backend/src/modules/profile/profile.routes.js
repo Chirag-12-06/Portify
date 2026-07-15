@@ -20,4 +20,7 @@ adminRouter.use(authenticate);
 
 adminRouter.put("/", updateProfileController);
 
+adminRouter.get("/", getProfileController);
+
+
 export { publicRouter, adminRouter };
