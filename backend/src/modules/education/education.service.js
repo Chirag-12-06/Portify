@@ -7,15 +7,10 @@ export async function createEducation(data) {
   });
 }
 
-export async function getEducations(category) {
+export async function getEducations() {
   return prisma.education.findMany({
-    where: category
-      ? {
-          category,
-        }
-      : undefined,
     orderBy: {
-      name: "asc",
+      startDate: "desc",
     },
   });
 }

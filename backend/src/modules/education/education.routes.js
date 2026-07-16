@@ -25,5 +25,7 @@ adminRouter.use(authenticate);
 adminRouter.post("/", createEducationController);
 adminRouter.put("/:id", updateEducationController);
 adminRouter.delete("/:id", deleteEducationController);
+adminRouter.get("/", getEducationsController);
+adminRouter.get("/:id", getEducationByIdController);
 
 export { publicRouter, adminRouter };

@@ -6,9 +6,9 @@ import Card from "../../../components/ui/Card";
 import Modal from "../../../components/ui/Modal";
 import PageHeader from "../../../components/ui/PageHeader";
 
+import DeleteSkillDialog from "../components/DeleteSkillDialog";
 import SkillForm from "../components/SkillForm";
 import SkillTable from "../components/SkillTable";
-import DeleteSkillDialog from "../components/DeleteSkillDialog";
 
 import { useSkills } from "../hooks/useSkill";
 

@@ -18,6 +18,9 @@ export default function Sidebar() {
       <nav className="flex flex-col gap-3">
         <NavLink to={Routes.SKILLS}>Skills</NavLink>
       </nav>
+      <nav className="flex flex-col gap-3">
+        <NavLink to={Routes.EDUCATIONS}>Education</NavLink>
+      </nav>
     </aside>
   );
 }

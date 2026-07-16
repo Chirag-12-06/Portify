@@ -20,13 +20,13 @@ export const createEducationController = asyncHandler(async (req, res) => {
 
   return res.status(201).json({
     success: true,
-    message: "education created successfully",
+    message: "Education created successfully",
     data: education,
   });
 });
 
 export const getEducationsController = asyncHandler(async (req, res) => {
-  const educations = await getEducations(req.query.category);
+  const educations = await getEducations();
 
   return res.status(200).json({
     success: true,
@@ -50,7 +50,7 @@ export const updateEducationController = asyncHandler(async (req, res) => {
 
   return res.status(200).json({
     success: true,
-    message: "education updated successfully",
+    message: "Education updated successfully",
     data: education,
   });
 });
@@ -60,6 +60,6 @@ export const deleteEducationController = asyncHandler(async (req, res) => {
 
   return res.status(200).json({
     success: true,
-    message: "education deleted successfully",
+    message: "Education deleted successfully",
   });
 });

@@ -4,4 +4,5 @@ export const Routes = {
   PROFILE: "/profile",
   SOCIAL_LINKS: "/social-links",
   SKILLS: "/skills",
+  EDUCATIONS: "/educations",
 };
