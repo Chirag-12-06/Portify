@@ -5,7 +5,7 @@ import { authenticate } from "../../middleware/auth.middleware.js";
 import {
   createContactMessageController,
   getContactMessagesController,
-  getContactByIdController,
+  getContactMessageByIdController,
   updateReadStatusController,
   updateRepliedStatusController,
   deleteContactMessageController,
@@ -16,16 +16,15 @@ const adminRouter = Router();
 
 /* ---------- Public Routes ---------- */
 
-publicRouter.get("/", getContactMessagesController);
-publicRouter.get("/:id", getContactByIdController);
+publicRouter.post("/", createContactMessageController);
 
 /* ---------- Admin Routes ---------- */
 
 adminRouter.use(authenticate);
-
-adminRouter.post("/", createContactMessageController);
-adminRouter.put("/:id", updateReadStatusController);
-adminRouter.put("/:id", updateRepliedStatusController);
+adminRouter.get("/", getContactMessagesController);
+adminRouter.get("/:id", getContactMessageByIdController);
+adminRouter.patch("/:id/read", updateReadStatusController);
+adminRouter.patch("/:id/replied", updateRepliedStatusController);
 adminRouter.delete("/:id", deleteContactMessageController);
 
 export { publicRouter, adminRouter };

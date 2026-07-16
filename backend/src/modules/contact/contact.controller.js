@@ -7,13 +7,12 @@ import {
 import {
   createContactMessage,
   getContactMessages,
-  getContactById,
-  updateReadStatus,
-  updateRepliedStatus,
+  getContactMessageById,
+  updateContactMessage,
   deleteContactMessage,
 } from "./contact.service.js";
 
-import {asyncHandler} from "../../utils/asyncHandler.js";
+import { asyncHandler } from "../../utils/asyncHandler.js";
 
 export const createContactMessageController = asyncHandler(async (req, res) => {
   const data = createContactMessageSchema.parse(req.body);
@@ -37,8 +36,8 @@ export const getContactMessagesController = asyncHandler(async (req, res) => {
   });
 });
 
-export const getContactByIdController = asyncHandler(async (req, res) => {
-  const message = await getContactById(req.params.id);
+export const getContactMessageByIdController = asyncHandler(async (req, res) => {
+  const message = await getContactMessageById(req.params.id);
 
   return res.status(200).json({
     success: true,
@@ -50,7 +49,9 @@ export const getContactByIdController = asyncHandler(async (req, res) => {
 export const updateReadStatusController = asyncHandler(async (req, res) => {
   const data = updateReadStatusSchema.parse(req.body);
 
-  const message = await updateReadStatus(req.params.id, data.isRead);
+  const message = await updateContactMessage(req.params.id, {
+    isRead: data.isRead,
+  });
 
   return res.status(200).json({
     success: true,
@@ -62,7 +63,9 @@ export const updateReadStatusController = asyncHandler(async (req, res) => {
 export const updateRepliedStatusController = asyncHandler(async (req, res) => {
   const data = updateRepliedStatusSchema.parse(req.body);
 
-  const message = await updateRepliedStatus(req.params.id, data.replied);
+  const message = await updateContactMessage(req.params.id, {
+    replied: data.replied,
+  });
 
   return res.status(200).json({
     success: true,

@@ -15,8 +15,8 @@ export async function getContactMessages() {
   });
 }
 
-export async function getContactById(id) {
-  const contact = await prisma.contact.findUnique({
+export async function getContactMessageById(id) {
+  const contact = await prisma.contactMessage.findUnique({
     where: {
       id,
     },
@@ -29,7 +29,7 @@ export async function getContactById(id) {
   return contact;
 }
 
-export async function updateReadStatus(id, isRead) {
+export async function updateContactMessage(id, data) {
   const message = await prisma.contactMessage.findUnique({
     where: { id },
   });
@@ -40,26 +40,7 @@ export async function updateReadStatus(id, isRead) {
 
   return prisma.contactMessage.update({
     where: { id },
-    data: {
-      isRead,
-    },
-  });
-}
-
-export async function updateRepliedStatus(id, replied) {
-  const message = await prisma.contactMessage.findUnique({
-    where: { id },
-  });
-
-  if (!message) {
-    throw new ApiError(404, "Message not found");
-  }
-
-  return prisma.contactMessage.update({
-    where: { id },
-    data: {
-      replied,
-    },
+    data,
   });
 }
 
