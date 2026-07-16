@@ -18,9 +18,10 @@ export const createSkillSchema = z.object({
     "CLOUD",
   ]),
 
-  imageUrl: z
-    .url("Invalid image URL")
-    .optional(),
+  imageUrl: z.preprocess(
+  (value) => value === "" ? undefined : value,
+  z.string().url().optional()
+),
 });
 
 export const updateSkillSchema = createSkillSchema.partial();

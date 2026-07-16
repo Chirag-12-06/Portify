@@ -21,6 +21,7 @@ adminRouter.use(authenticate);
 adminRouter.put("/", updateProfileController);
 
 adminRouter.get("/", getProfileController);
+adminRouter.get("/:id", getProfileController);
 
 
 export { publicRouter, adminRouter };

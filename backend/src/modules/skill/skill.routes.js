@@ -25,5 +25,7 @@ adminRouter.use(authenticate);
 adminRouter.post("/", createSkillController);
 adminRouter.put("/:id", updateSkillController);
 adminRouter.delete("/:id", deleteSkillController);
+adminRouter.get("/", getSkillsController);
+adminRouter.get("/:id", getSkillByIdController);
 
 export { publicRouter, adminRouter };

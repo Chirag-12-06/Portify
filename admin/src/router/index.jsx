@@ -6,6 +6,8 @@ import ProtectedRoute from "./ProtectedRoute";
 import LoginPage from "../features/auth/pages/LoginPage";
 import DashboardPage from "../features/dashboard/pages/DashboardPage";
 import ProfilePage from "../features/profile/pages/ProfilePage";
+import SocialLinksPage from "../features/social-links/pages/SocialLinkPage";
+import SkillsPage from "../features/skills/pages/SkillPage";
 
 import { Routes } from "../lib/routes";
 
@@ -35,6 +37,14 @@ const router = createBrowserRouter([
         {
           path: Routes.PROFILE,
           element: <ProfilePage />,
+        },
+        {
+          path: Routes.SOCIAL_LINKS,
+          element: <SocialLinksPage />,
+        },
+        {
+          path: Routes.SKILLS,
+          element: <SkillsPage />,
         },
       ],
     },

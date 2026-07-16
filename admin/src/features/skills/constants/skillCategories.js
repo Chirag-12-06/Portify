@@ -1,0 +1,11 @@
+export const SKILL_CATEGORIES = [
+  "LANGUAGE",
+  "CS_FUNDAMENTALS",
+  "FRONTEND",
+  "BACKEND",
+  "DATABASE",
+  "FRAMEWORK",
+  "ML_AI",
+  "TOOLS",
+  "CLOUD",
+];

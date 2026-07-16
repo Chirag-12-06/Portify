@@ -25,5 +25,6 @@ adminRouter.use(authenticate);
 adminRouter.post("/", createSocialLinkController);
 adminRouter.put("/:id", updateSocialLinkController);
 adminRouter.delete("/:id", deleteSocialLinkController);
+adminRouter.get("/", getSocialLinksController);
 
 export { publicRouter, adminRouter };

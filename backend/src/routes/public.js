@@ -7,7 +7,7 @@ import { publicRouter as experienceRoutes } from "../modules/experience/experien
 import { publicRouter as educationRoutes } from "../modules/education/education.routes.js";
 import { publicRouter as profileRoutes } from "../modules/profile/profile.routes.js";
 import { publicRouter as contactRoutes } from "../modules/contact/contact.routes.js";
-import { publicRouter as socialLinkRoutes } from "../modules/socialLink/socialLink.routes.js";
+import { publicRouter as socialLinkRoutes } from "../modules/social-links/socialLink.routes.js";
 
 const router = Router();
 

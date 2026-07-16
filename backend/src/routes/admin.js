@@ -7,7 +7,7 @@ import { adminRouter as certificateRoutes } from "../modules/certificate/certifi
 import { adminRouter as experienceRoutes } from "../modules/experience/experience.routes.js";
 import { adminRouter as educationRoutes } from "../modules/education/education.routes.js";
 import { adminRouter as profileRoutes } from "../modules/profile/profile.routes.js";
-import { adminRouter as socialLinkRoutes } from "../modules/socialLink/socialLink.routes.js";
+import { adminRouter as socialLinkRoutes } from "../modules/social-links/socialLink.routes.js";
 import { adminRouter as contactRoutes } from "../modules/contact/contact.routes.js";
 import { router as dashboardRoutes } from "../modules/dashboard/dashboard.routes.js";
 

@@ -8,4 +8,5 @@ export const queryKeys = {
   experience: ["experience"],
   education: ["education"],
   contacts: ["contacts"],
+  socialLinks: ["social-links"],
 };
