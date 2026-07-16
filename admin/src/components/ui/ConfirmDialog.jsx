@@ -1,5 +1,5 @@
 import Button from "./Button";
-import FormActions from "./FormActions";
+import FormActions from "./Form/FormActions";
 import Modal from "./Modal";
 
 export default function ConfirmDialog({
@@ -11,7 +11,7 @@ export default function ConfirmDialog({
   onConfirm,
 }) {
   return (
-    <Modal open={open} onClose={onClose} title={title}>
+    <Modal isOpen={open} onClose={onClose} title={title}>
       <p className="text-sm text-slate-600 dark:text-slate-400">
         {description}
       </p>

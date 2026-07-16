@@ -1,0 +1,12 @@
+export const PLATFORMS = [
+  "GITHUB",
+  "LINKEDIN",
+  "LEETCODE",
+  "CODEFORCES",
+  "CODECHEF",
+  "HACKERRANK",
+  "TWITTER",
+  "INSTAGRAM",
+  "EMAIL",
+  "OTHER",
+];

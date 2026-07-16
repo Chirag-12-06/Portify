@@ -1,45 +1,67 @@
-import Button from "../../../components/ui/Button";
+import {
+  Table,
+  TableHeader,
+  TableBody,
+  TableRow,
+  TableHead,
+  TableCell,
+  TableActions,
+  EmptyState,
+} from "../../../components/ui/Table";
 
 export default function SocialLinkTable({ socialLinks, onEdit, onDelete }) {
+  if (!socialLinks.length) {
+    return (
+      <EmptyState
+        title="No social links found"
+        description="You can add a new social link by clicking the 'Add Social Link' button."
+      />
+    );
+  }
+
   return (
-    <table className="w-full">
-      <thead>
-        <tr className="border-b">
-          <th className="p-3 text-left">Platform</th>
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead className="w-40">Platform</TableHead>
 
-          <th className="p-3 text-left">URL</th>
+          <TableHead className="w-40">URL</TableHead>
 
-          <th className="p-3 text-left">Order</th>
+          <TableHead className="w-20">Order</TableHead>
 
-          <th className="p-3 text-right">Actions</th>
-        </tr>
-      </thead>
+          <TableHead className="w-28" align="center">
+            Actions
+          </TableHead>
+        </TableRow>
+      </TableHeader>
 
-      <tbody>
+      <TableBody>
         {socialLinks.map((link) => (
-          <tr key={link.id} className="border-b">
-            <td className="p-3">{link.platform}</td>
+          <TableRow key={link.id} className="border-b">
+            <TableCell>{link.platform}</TableCell>
 
-            <td className="p-3">{link.url}</td>
-
-            <td className="p-3">{link.displayOrder}</td>
-
-            <td className="p-3 text-right space-x-3">
-              <Button variant="ghost" onClick={() => onEdit(link)}>
-                Edit
-              </Button>
-
-              <Button
-                variant="ghost"
-                className="text-red-600"
-                onClick={() => onDelete(link.id)}
+            <TableCell>
+              <a
+                href={link.url}
+                target="_blank"
+                rel="noreferrer"
+                className="truncate text-blue-600 hover:underline"
               >
-                Delete
-              </Button>
-            </td>
-          </tr>
+                {new URL(link.url).hostname}
+              </a>
+            </TableCell>
+
+            <TableCell>{link.displayOrder}</TableCell>
+
+            <TableCell className="w-28" align="right">
+              <TableActions
+                onEdit={() => onEdit(link)}
+                onDelete={() => onDelete(link)}
+              />
+            </TableCell>
+          </TableRow>
         ))}
-      </tbody>
-    </table>
+      </TableBody>
+    </Table>
   );
 }

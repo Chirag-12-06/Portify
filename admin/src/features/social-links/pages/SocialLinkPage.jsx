@@ -1,27 +1,25 @@
+import { useState } from "react";
+
 import LoadingScreen from "../../../components/common/LoadingScreen";
-import Card from "../../../components/ui/Card";
 import Button from "../../../components/ui/Button";
-import PageHeader from "../../../components/ui/PageHeader";
+import Card from "../../../components/ui/Card";
 import Modal from "../../../components/ui/Modal";
+import PageHeader from "../../../components/ui/PageHeader";
 
 import SocialLinkTable from "../components/SocialLinkTable";
 import SocialLinkForm from "../components/SocialLinkForm";
+import DeleteSocialLinkDialog from "../components/DeleteSocialLinkDialog";
 
 import { useSocialLink } from "../hooks/useSocialLink";
-import { useCreateSocialLink } from "../hooks/useCreateSocialLink";
-import { useUpdateSocialLink } from "../hooks/useUpdateSocialLink";
-import { useDeleteSocialLink } from "../hooks/useDeleteSocialLink";
-import { useState } from "react";
 
 export default function SocialLinksPage() {
-  const { data, isLoading, isError, error } = useSocialLink();
+  const { data, isLoading, isError } = useSocialLink();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingSocialLink, setEditingSocialLink] = useState(null);
 
-  const createSocialLink = useCreateSocialLink();
-  const updateSocialLink = useUpdateSocialLink();
-  const deleteSocialLink = useDeleteSocialLink();
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const [deletingSocialLink, setDeletingSocialLink] = useState(null);
 
   if (isLoading) {
     return <LoadingScreen />;
@@ -31,18 +29,9 @@ export default function SocialLinksPage() {
     return <p>Failed to load social links.</p>;
   }
 
-  const handleSubmit = async (values) => {
-    if (editingSocialLink) {
-      await updateSocialLink.mutateAsync({
-        id: editingSocialLink.id,
-        values,
-      });
-    } else {
-      await createSocialLink.mutateAsync(values);
-    }
-
+  const handleAdd = () => {
     setEditingSocialLink(null);
-    setIsModalOpen(false);
+    setIsModalOpen(true);
   };
 
   const handleEdit = (socialLink) => {
@@ -50,18 +39,19 @@ export default function SocialLinksPage() {
     setIsModalOpen(true);
   };
 
-  const handleDelete = async (id) => {
-    const confirmed = window.confirm(
-      "Are you sure you want to delete this social link?",
-    );
+  const handleClose = () => {
+    setEditingSocialLink(null);
+    setIsModalOpen(false);
+  };
 
-    if (!confirmed) return;
+  const handleDelete = (socialLink) => {
+    setDeletingSocialLink(socialLink);
+    setIsDeleteOpen(true);
+  };
 
-    try {
-      await deleteSocialLink.mutateAsync(id);
-    } catch {
-      // Error toast is already handled in the mutation hook.
-    }
+  const handleDeleteClose = () => {
+    setDeletingSocialLink(null);
+    setIsDeleteOpen(false);
   };
 
   return (
@@ -70,12 +60,7 @@ export default function SocialLinksPage() {
         title="Social Links"
         description="Manage your social links."
         actions={
-          <Button
-            onClick={() => {
-              setEditingSocialLink(null);
-              setIsModalOpen(true);
-            }}
-          >
+          <Button onClick={handleAdd}>
             Add Social Link
           </Button>
         }
@@ -91,21 +76,24 @@ export default function SocialLinksPage() {
 
       <Modal
         isOpen={isModalOpen}
-        title={editingSocialLink ? "Edit Social Link" : "Add Social Link"}
-        onClose={() => setIsModalOpen(false)}
+        title={
+          editingSocialLink
+            ? "Edit Social Link"
+            : "Add Social Link"
+        }
+        onClose={handleClose}
       >
         <SocialLinkForm
           socialLink={editingSocialLink}
-          onSubmit={handleSubmit}
-          onCancel={() => {
-            setEditingSocialLink(null);
-            setIsModalOpen(false);
-          }}
-          isSubmitting={
-            createSocialLink.isPending || updateSocialLink.isPending
-          }
+          onClose={handleClose}
         />
       </Modal>
+
+      <DeleteSocialLinkDialog
+        open={isDeleteOpen}
+        link={deletingSocialLink}
+        onClose={handleDeleteClose}
+      />
     </>
   );
 }

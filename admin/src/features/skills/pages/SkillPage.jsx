@@ -8,6 +8,7 @@ import PageHeader from "../../../components/ui/PageHeader";
 
 import SkillForm from "../components/SkillForm";
 import SkillTable from "../components/SkillTable";
+import DeleteSkillDialog from "../components/DeleteSkillDialog";
 
 import { useSkills } from "../hooks/useSkill";
 
@@ -16,6 +17,8 @@ export default function SkillsPage() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingSkill, setEditingSkill] = useState(null);
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const [deletingSkill, setDeletingSkill] = useState(null);
 
   if (isLoading) {
     return <LoadingScreen />;
@@ -40,22 +43,29 @@ export default function SkillsPage() {
     setIsModalOpen(false);
   };
 
+  const handleDeleteClose = () => {
+    setDeletingSkill(null);
+    setIsDeleteOpen(false);
+  };
+
+  const handleDelete = (skill) => {
+    setDeletingSkill(skill);
+    setIsDeleteOpen(true);
+  };
+
   return (
     <>
       <PageHeader
         title="Skills"
         description="Manage your technical skills."
-        actions={
-          <Button onClick={handleAdd}>
-            Add Skill
-          </Button>
-        }
+        actions={<Button onClick={handleAdd}>Add Skill</Button>}
       />
 
       <Card>
         <SkillTable
           skills={skills}
           onEdit={handleEdit}
+          onDelete={handleDelete}
         />
       </Card>
 
@@ -64,11 +74,14 @@ export default function SkillsPage() {
         title={editingSkill ? "Edit Skill" : "Add Skill"}
         onClose={handleClose}
       >
-        <SkillForm
-          skill={editingSkill}
-          onClose={handleClose}
-        />
+        <SkillForm skill={editingSkill} onClose={handleClose} />
       </Modal>
+
+      <DeleteSkillDialog
+        open={isDeleteOpen}
+        skill={deletingSkill}
+        onClose={handleDeleteClose}
+      />
     </>
   );
 }

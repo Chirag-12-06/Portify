@@ -5,29 +5,19 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Input from "../../../components/ui/Input";
 import Select from "../../../components/ui/Select";
 import Button from "../../../components/ui/Button";
-import FormActions from "../../../components/ui/FormActions";
+import FormActions from "../../../components/ui/Form/FormActions";
 
-import { socialLinkSchema } from "../schemas/socialLink.schema";
+import { PLATFORMS } from "../constants/Platforms";
 
-const platforms = [
-  "GITHUB",
-  "LINKEDIN",
-  "LEETCODE",
-  "CODEFORCES",
-  "CODECHEF",
-  "HACKERRANK",
-  "TWITTER",
-  "INSTAGRAM",
-  "EMAIL",
-  "OTHER",
-];
+import { socialLinkSchema, defaultValues } from "../schemas/socialLink.schema";
 
-export default function SocialLinkForm({
-  socialLink,
-  onSubmit,
-  onCancel,
-  isSubmitting,
-}) {
+import { useCreateSocialLink } from "../hooks/useCreateSocialLink";
+import { useUpdateSocialLink } from "../hooks/useUpdateSocialLink";
+
+export default function SocialLinkForm({ socialLink, onClose }) {
+  const createSocialLink = useCreateSocialLink();
+  const updateSocialLink = useUpdateSocialLink();
+
   const {
     register,
     handleSubmit,
@@ -35,22 +25,32 @@ export default function SocialLinkForm({
     formState: { errors, isDirty },
   } = useForm({
     resolver: zodResolver(socialLinkSchema),
-    defaultValues: {
-      platform: "GITHUB",
-      url: "",
-      displayOrder: 1,
-    },
+    defaultValues,
   });
 
   useEffect(() => {
-    reset(
-      socialLink ?? {
-        platform: "GITHUB",
-        url: "",
-        displayOrder: 1,
-      },
-    );
+    reset(socialLink ?? defaultValues);
   }, [socialLink, reset]);
+
+  const onSubmit = async (values) => {
+    try {
+      if (socialLink) {
+        await updateSocialLink.mutateAsync({
+          id: socialLink.id,
+          values,
+        });
+      } else {
+        await createSocialLink.mutateAsync(values);
+      }
+
+      reset(defaultValues);
+      onClose();
+    } catch {
+      // Toast handled in mutation hooks
+    }
+  };
+
+  const isSubmitting = createSocialLink.isPending || updateSocialLink.isPending;
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
@@ -59,7 +59,7 @@ export default function SocialLinkForm({
         error={errors.platform?.message}
         {...register("platform")}
       >
-        {platforms.map((platform) => (
+        {PLATFORMS.map((platform) => (
           <option key={platform} value={platform}>
             {platform}
           </option>
@@ -84,12 +84,23 @@ export default function SocialLinkForm({
       />
 
       <FormActions>
-        <Button type="button" variant="secondary" onClick={onCancel}>
+        <Button
+          type="button"
+          variant="secondary"
+          onClick={() => {
+            reset(socialLink ?? defaultValues);
+            onClose();
+          }}
+        >
           Cancel
         </Button>
 
         <Button type="submit" disabled={!isDirty || isSubmitting}>
-          {isSubmitting ? "Saving..." : "Save"}
+          {isSubmitting
+            ? "Saving..."
+            : socialLink
+              ? "Update Social Link"
+              : "Create Social Link"}
         </Button>
       </FormActions>
     </form>

@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { SKILL_CATEGORIES } from "../constants/skillCategories";
+
 export const skillSchema = z.object({
   name: z
     .string()

@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Input from "../../../components/ui/Input";
 import Select from "../../../components/ui/Select";
 import Button from "../../../components/ui/Button";
-import FormActions from "../../../components/ui/FormActions";
+import FormActions from "../../../components/ui/Form/FormActions";
 
 import { SKILL_CATEGORIES } from "../constants/skillCategories";
 
@@ -51,14 +51,10 @@ export default function SkillForm({ skill, onClose }) {
     }
   };
 
-  const isSubmitting =
-    createSkill.isPending || updateSkill.isPending;
+  const isSubmitting = createSkill.isPending || updateSkill.isPending;
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="space-y-5"
-    >
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
       <Input
         label="Skill Name"
         placeholder="React"
@@ -72,10 +68,7 @@ export default function SkillForm({ skill, onClose }) {
         {...register("category")}
       >
         {categories.map((category) => (
-          <option
-            key={category}
-            value={category}
-          >
+          <option key={category} value={category}>
             {category.replace(/_/g, " ")}
           </option>
         ))}
@@ -100,15 +93,8 @@ export default function SkillForm({ skill, onClose }) {
           Cancel
         </Button>
 
-        <Button
-          type="submit"
-          disabled={!isDirty || isSubmitting}
-        >
-          {isSubmitting
-            ? "Saving..."
-            : skill
-              ? "Update Skill"
-              : "Create Skill"}
+        <Button type="submit" disabled={!isDirty || isSubmitting}>
+          {isSubmitting ? "Saving..." : skill ? "Update Skill" : "Create Skill"}
         </Button>
       </FormActions>
     </form>

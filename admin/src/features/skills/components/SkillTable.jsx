@@ -1,5 +1,14 @@
-import Button from "../../../components/ui/Button";
 import Badge from "../../../components/ui/Badge";
+import {
+  Table,
+  TableHeader,
+  TableBody,
+  TableRow,
+  TableHead,
+  TableCell,
+  TableActions,
+  EmptyState,
+} from "../../../components/ui/Table";
 
 function getCategoryLabel(category) {
   return category
@@ -8,50 +17,39 @@ function getCategoryLabel(category) {
     .replace(/\b\w/g, (char) => char.toUpperCase());
 }
 
-export default function SkillTable({
-  skills,
-  onEdit,
-  onDelete,
-}) {
+export default function SkillTable({ skills, onEdit, onDelete }) {
   if (!skills.length) {
     return (
-      <div className="py-12 text-center text-slate-500">
-        No skills found.
-      </div>
+      <EmptyState
+        title="No skills found"
+        description="You can add a new skill by clicking the 'Add Skill' button."
+      />
     );
   }
 
   return (
-    <table className="w-full">
-      <thead>
-        <tr className="border-b">
-          <th className="p-3 text-left">Skill</th>
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead className="w-32">Skill</TableHead>
+          <TableHead className="w-48">Category</TableHead>
+          <TableHead className="w-24">Image</TableHead>
+          <TableHead className="w-28" align="center">
+            Actions
+          </TableHead>
+        </TableRow>
+      </TableHeader>
 
-          <th className="p-3 text-left">Category</th>
-
-          <th className="p-3 text-left">Image</th>
-
-          <th className="p-3 text-right">Actions</th>
-        </tr>
-      </thead>
-
-      <tbody>
+      <TableBody>
         {skills.map((skill) => (
-          <tr
-            key={skill.id}
-            className="border-b last:border-b-0"
-          >
-            <td className="p-3 font-medium">
-              {skill.name}
-            </td>
+          <TableRow key={skill.id}>
+            <TableCell className="font-medium">{skill.name}</TableCell>
 
-            <td className="p-3">
-              <Badge>
-                {getCategoryLabel(skill.category)}
-              </Badge>
-            </td>
+            <TableCell>
+              <Badge>{getCategoryLabel(skill.category)}</Badge>
+            </TableCell>
 
-            <td className="p-3">
+            <TableCell>
               {skill.imageUrl ? (
                 <img
                   src={skill.imageUrl}
@@ -59,31 +57,19 @@ export default function SkillTable({
                   className="h-8 w-8 rounded object-cover"
                 />
               ) : (
-                <span className="text-slate-400">
-                  —
-                </span>
+                <span className="text-slate-400">—</span>
               )}
-            </td>
+            </TableCell>
 
-            <td className="space-x-2 p-3 text-right">
-              <Button
-                variant="ghost"
-                onClick={() => onEdit(skill)}
-              >
-                Edit
-              </Button>
-
-              <Button
-                variant="ghost"
-                className="text-red-600"
-                onClick={() => onDelete(skill)}
-              >
-                Delete
-              </Button>
-            </td>
-          </tr>
+            <TableCell align="right" className="w-28">
+              <TableActions
+                onEdit={() => onEdit(skill)}
+                onDelete={() => onDelete(skill)}
+              />
+            </TableCell>
+          </TableRow>
         ))}
-      </tbody>
-    </table>
+      </TableBody>
+    </Table>
   );
 }
