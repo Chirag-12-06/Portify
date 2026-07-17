@@ -25,5 +25,7 @@ adminRouter.use(authenticate);
 adminRouter.post("/", createExperienceController);
 adminRouter.put("/:id", updateExperienceController);
 adminRouter.delete("/:id", deleteExperienceController);
+adminRouter.get("/", getExperiencesController);
+adminRouter.get("/:id", getExperienceByIdController);
 
 export { publicRouter, adminRouter };

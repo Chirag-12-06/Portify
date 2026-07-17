@@ -8,4 +8,5 @@ export const Routes = {
   CONTACT_MESSAGES: "/contacts",
   PROJECTS: "/projects",
   CERTIFICATES: "/certificates",
+  EXPERIENCES: "/experiences",
 };

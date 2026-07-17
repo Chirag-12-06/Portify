@@ -55,9 +55,14 @@ export async function getExperiences() {
       },
     },
 
-    orderBy: {
-      startDate: "desc",
+    orderBy: [
+    {
+        displayOrder: "asc",
     },
+    {
+        startDate: "desc",
+    },
+]
   });
 }
 
