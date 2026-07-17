@@ -10,6 +10,7 @@ import SocialLinksPage from "../features/social-links/pages/SocialLinkPage";
 import SkillsPage from "../features/skills/pages/SkillPage";
 import EducationPage from "../features/education/pages/EducationPage";
 import ContactMessagesPage from "../features/contacts/pages/ContactMessagesPage";
+import ProjectsPage from "../features/projects/pages/ProjectPage";
 
 import { Routes } from "../lib/routes";
 
@@ -55,6 +56,10 @@ const router = createBrowserRouter([
         {
           path: Routes.CONTACT_MESSAGES,
           element: <ContactMessagesPage />,
+        },
+        {
+          path: Routes.PROJECTS,
+          element: <ProjectsPage />,
         }
       ],
     },

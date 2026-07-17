@@ -38,23 +38,29 @@ export default function Modal({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
-      onClick={onClose}
-    >
-      <div
-        onClick={(e) => e.stopPropagation()}
-        className={`w-full rounded-xl bg-white shadow-xl ${sizes[size]}`}
+  className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+  onClick={onClose}
+>
+  <div
+    onClick={(e) => e.stopPropagation()}
+    className={`flex max-h-[90vh] w-full flex-col overflow-hidden rounded-xl bg-white shadow-xl ${sizes[size]}`}
+  >
+    <div className="flex items-center justify-between border-b px-6 py-4">
+      <h2 className="text-lg font-semibold">{title}</h2>
+
+      <Button
+        variant="ghost"
+        onClick={onClose}
+        className="rounded p-1 hover:bg-slate-100"
       >
-        <div className="flex items-center justify-between border-b px-6 py-4">
-          <h2 className="text-lg font-semibold">{title}</h2>
-
-          <Button variant="ghost" onClick={onClose} className="rounded p-1 hover:bg-slate-100">
-            <X size={20} />
-          </Button>
-        </div>
-
-        <div className="p-6">{children}</div>
-      </div>
+        <X size={20} />
+      </Button>
     </div>
+
+    <div className="flex-1 overflow-y-auto p-6">
+      {children}
+    </div>
+  </div>
+</div>
   );
 }

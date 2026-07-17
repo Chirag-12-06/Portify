@@ -8,6 +8,7 @@ import {
   getProjectBySlugController,
   updateProjectController,
   deleteProjectController,
+  getProjectByIdController,
 } from "./project.controller.js";
 
 const publicRouter = Router();
@@ -25,5 +26,8 @@ adminRouter.use(authenticate);
 adminRouter.post("/", createProjectController);
 adminRouter.put("/:id", updateProjectController);
 adminRouter.delete("/:id", deleteProjectController);
+adminRouter.get("/", getProjectsController);
+adminRouter.get("/:slug", getProjectBySlugController);
+adminRouter.get("/:id", getProjectByIdController);
 
 export { publicRouter, adminRouter };

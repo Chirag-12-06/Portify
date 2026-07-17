@@ -161,3 +161,31 @@ export async function deleteProject(id) {
     },
   });
 }
+
+export async function getProjectById(id) {
+  const project = await prisma.project.findUnique({
+    where: {
+      id,
+    },
+
+    include: {
+      images: {
+        orderBy: {
+          displayOrder: "asc",
+        },
+      },
+
+      skills: {
+        include: {
+          skill: true,
+        },
+      },
+    },
+  });
+
+  if (!project) {
+    throw new ApiError(404, "Project not found");
+  }
+
+  return project;
+}

@@ -67,3 +67,13 @@ export const deleteProjectController = asyncHandler(async (req, res) => {
     message: "Project deleted successfully",
   });
 });
+
+export const getProjectByIdController = asyncHandler(async (req, res) => {
+  const project = await getProjectById(req.params.id);
+
+  return res.status(200).json({
+    success: true,
+    data: project,
+  });
+});
+

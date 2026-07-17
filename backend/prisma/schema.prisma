@@ -12,11 +12,6 @@ datasource db {
   url=env("DATABASE_URL")
 }
 
-enum ProjectStatus {
-  COMPLETED
-  ONGOING
-}
-
 enum SkillCategory {
   LANGUAGE
   CS_FUNDAMENTALS
@@ -62,6 +57,11 @@ model Skill {
   experiences   ExperienceSkill[]
 }
 
+enum ProjectStatus {
+  COMPLETED
+  ONGOING
+}
+
 model Project {
   id               String        @id @default(cuid())
   slug             String        @unique
@@ -72,7 +72,7 @@ model Project {
   liveUrl          String?
   isVisible        Boolean       @default(true)
   featured         Boolean       @default(false)
-  displayOrder     Int           @default(0)
+  displayOrder     Int           @default(1)
   status           ProjectStatus
 
   createdAt        DateTime      @default(now())
@@ -91,6 +91,16 @@ model ProjectImage {
   project      Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
 }
 
+model ProjectSkill {
+  projectId String
+  skillId   String
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  skill   Skill   @relation(fields: [skillId], references: [id], onDelete: Cascade)
+
+  @@id([projectId, skillId])
+}
+
 model Certificate {
   id              String   @id @default(cuid())
   title           String
@@ -99,7 +109,7 @@ model Certificate {
   badgeImageUrl   String?
   isVisible       Boolean  @default(true)
   featured        Boolean  @default(false)
-  displayOrder    Int      @default(0)
+  displayOrder    Int      @default(1)
   issueDate       DateTime
   expiryDate      DateTime?
 
@@ -115,7 +125,7 @@ model Experience {
   endDate           DateTime?
   isVisible         Boolean  @default(true)
   currentlyWorking  Boolean  @default(false)
-  displayOrder      Int      @default(0)
+  displayOrder      Int      @default(1)
   companyImageUrl   String?
 
   points            ExperiencePoint[]
@@ -129,16 +139,6 @@ model ExperiencePoint {
 
   experienceId String
   experience   Experience  @relation(fields: [experienceId], references: [id], onDelete: Cascade)
-}
-
-model ProjectSkill {
-  projectId String
-  skillId   String
-
-  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  skill   Skill   @relation(fields: [skillId], references: [id], onDelete: Cascade)
-
-  @@id([projectId, skillId])
 }
 
 model CertificateSkill {
