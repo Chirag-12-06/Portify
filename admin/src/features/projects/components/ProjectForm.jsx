@@ -36,14 +36,10 @@ export default function ProjectForm({ project, onClose }) {
     defaultValues,
   });
 
-  const {
-  fields,
-  append,
-  remove,
-} = useFieldArray({
-  control,
-  name: "images",
-});
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "images",
+  });
 
   const { data: skills = [] } = useSkills();
 
@@ -61,7 +57,7 @@ export default function ProjectForm({ project, onClose }) {
       liveUrl: project.liveUrl ?? "",
       images: project.images ?? [],
       skillIds: project.skills?.map(({ skill }) => skill.id) ?? [],
-       images: project.images ?? [],
+      images: project.images ?? [],
     });
   }, [project, reset]);
 
@@ -196,63 +192,58 @@ export default function ProjectForm({ project, onClose }) {
         </div>
 
         <div>
-  <div className="mb-4 flex items-center justify-between">
-    <h3 className="text-lg font-semibold">
-      Project Images
-    </h3>
+          <div className="mb-4 flex items-center justify-between">
+            <h3 className="text-lg font-semibold">Project Images</h3>
 
-    <Button
-      type="button"
-      variant="secondary"
-      onClick={() =>
-        append({
-          imageUrl: "",
-          displayOrder: fields.length + 1,
-        })
-      }
-    >
-      Add Image
-    </Button>
-  </div>
-
-  <div className="space-y-4">
-    {fields.map((field, index) => (
-      <div
-        key={field.id}
-        className="rounded-lg border p-4"
-      >
-        <div className="grid gap-4 md:grid-cols-[1fr_120px_auto]">
-          <Input
-            label="Image URL"
-            placeholder="https://..."
-            error={errors.images?.[index]?.imageUrl?.message}
-            {...register(`images.${index}.imageUrl`)}
-          />
-
-          <Input
-            type="number"
-            min={1}
-            label="Order"
-            error={errors.images?.[index]?.displayOrder?.message}
-            {...register(`images.${index}.displayOrder`, {
-              valueAsNumber: true,
-            })}
-          />
-
-          <div className="flex items-end">
             <Button
               type="button"
-              variant="danger"
-              onClick={() => remove(index)}
+              variant="secondary"
+              onClick={() =>
+                append({
+                  imageUrl: "",
+                  displayOrder: fields.length + 1,
+                })
+              }
             >
-              Remove
+              Add Image
             </Button>
           </div>
+
+          <div className="space-y-4">
+            {fields.map((field, index) => (
+              <div key={field.id} className="rounded-lg border p-4">
+                <div className="grid gap-4 md:grid-cols-[1fr_120px_auto]">
+                  <Input
+                    label="Image URL"
+                    placeholder="https://..."
+                    error={errors.images?.[index]?.imageUrl?.message}
+                    {...register(`images.${index}.imageUrl`)}
+                  />
+
+                  <Input
+                    type="number"
+                    min={1}
+                    label="Order"
+                    error={errors.images?.[index]?.displayOrder?.message}
+                    {...register(`images.${index}.displayOrder`, {
+                      valueAsNumber: true,
+                    })}
+                  />
+
+                  <div className="flex items-end">
+                    <Button
+                      type="button"
+                      variant="danger"
+                      onClick={() => remove(index)}
+                    >
+                      Remove
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
-    ))}
-  </div>
-</div>
       </div>
 
       <div>

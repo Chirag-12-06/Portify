@@ -25,5 +25,7 @@ adminRouter.use(authenticate);
 adminRouter.post("/", createCertificateController);
 adminRouter.put("/:id", updateCertificateController);
 adminRouter.delete("/:id", deleteCertificateController);
+adminRouter.get("/", getCertificatesController);
+adminRouter.get("/:id", getCertificateByIdController);
 
 export { publicRouter, adminRouter };

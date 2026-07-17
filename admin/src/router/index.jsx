@@ -11,6 +11,7 @@ import SkillsPage from "../features/skills/pages/SkillPage";
 import EducationPage from "../features/education/pages/EducationPage";
 import ContactMessagesPage from "../features/contacts/pages/ContactMessagesPage";
 import ProjectsPage from "../features/projects/pages/ProjectPage";
+import CertificatesPage from "../features/certificates/pages/CertificatePage";
 
 import { Routes } from "../lib/routes";
 
@@ -60,6 +61,10 @@ const router = createBrowserRouter([
         {
           path: Routes.PROJECTS,
           element: <ProjectsPage />,
+        },
+        {
+          path: Routes.CERTIFICATES,
+          element: <CertificatesPage />,
         }
       ],
     },
