@@ -1,16 +1,8 @@
 import Handle from "./Handle";
+import Navigation from "./Navigation";
+import NavItem from "./NavItem";
 
-const menuItems = [
-  "About",
-  "Skills",
-  "Projects",
-  "Experience",
-  "Education",
-  "Certificates",
-  "Socials",
-];
-
-export default function Drawer({ open, onMouseEnter, onMouseLeave }) {
+export default function Drawer({ open, onMouseEnter, onMouseLeave, activeSection, setActiveSection }) {
   return (
     <div
       onMouseEnter={onMouseEnter}
@@ -25,43 +17,30 @@ export default function Drawer({ open, onMouseEnter, onMouseLeave }) {
     transition-transform
     duration-500
     ease-in-out
+    
   "
-  style={{
-    transform: open
-      ? "translateX(0)"
-      : "translateX(-15rem)",
-  }}
+      style={{
+        transform: open ? "translateX(0)" : "translateX(-15rem)",
+      }}
     >
       <aside
-       className="
+        className="
        flex
-      h-[45vh]
+      h-[50vh]
       w-60
       rounded-r-3xl
       bg-slate-700
       px-8
       text-white
       shadow-xl
+      items-center
+  justify-center
     "
       >
-        <nav className="flex flex-col gap-4">
-          {menuItems.map((item) => (
-            <button
-              key={item}
-              className="
-                text-left
-                text-xl
-                text-slate-300
-
-                transition-colors
-
-                hover:text-white
-              "
-            >
-              {item}
-            </button>
-          ))}
-          </nav>
+        <Navigation 
+        activeSection={activeSection}
+        setActiveSection={setActiveSection}
+        />
       </aside>
 
       <Handle open={open} />
