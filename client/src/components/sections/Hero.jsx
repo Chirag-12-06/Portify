@@ -4,7 +4,9 @@ import Section from "../../components/common/Section";
 export default function Hero() {
   return (
     <Section
-      id="hero"
+      id="home"
+      title="Home"
+      className="bg-red-500"
     >
       {/* Hero Content */}
       <div>

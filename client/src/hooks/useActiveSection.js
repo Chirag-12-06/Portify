@@ -13,26 +13,37 @@ export default function useActiveSection(setActiveSection) {
   ];
 
   useEffect(() => {
-  const headings = ids
-    .map(id => document.querySelector(`#${id} h1`))
-    .filter(Boolean);
+    const navbarHeight = 64;
 
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          setActiveSection(entry.target.parentElement.id);
+    const updateActiveSection = () => {
+      let current = ids[0];
+
+      for (const id of ids) {
+        const section = document.getElementById(id);
+        if (!section) continue;
+
+        const heading = section.querySelector("[data-section-heading]");
+        if (!heading) continue;
+
+        const top = heading.getBoundingClientRect().top;
+
+        if (top <= navbarHeight) {
+          current = id;
+        } else {
+          break;
         }
-      });
-    },
-    {
-      rootMargin: "-80px 0px -80% 0px",
-      threshold: 0,
-    }
-  );
+      }
 
-  headings.forEach(h => observer.observe(h));
+      setActiveSection(current);
+    };
 
-  return () => observer.disconnect();
-}, []);
+    updateActiveSection();
+
+    window.addEventListener("scroll", updateActiveSection, {
+      passive: true,
+    });
+
+    return () =>
+      window.removeEventListener("scroll", updateActiveSection);
+  }, [setActiveSection]);
 }

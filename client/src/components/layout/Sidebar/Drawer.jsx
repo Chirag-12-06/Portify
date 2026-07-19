@@ -39,7 +39,6 @@ export default function Drawer({ open, onMouseEnter, onMouseLeave, activeSection
       >
         <Navigation 
         activeSection={activeSection}
-        setActiveSection={setActiveSection}
         />
       </aside>
 

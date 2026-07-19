@@ -5,6 +5,7 @@ export default function About() {
     <Section
       id="about"
       title="About"
+      className="bg-green-500"
     >
       {/* About Content */}
     </Section>

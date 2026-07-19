@@ -1,7 +1,7 @@
 import { menuItems } from "../../../constants/navigation";
 import NavItem from "./NavItem";
 
-export default function Navigation({ activeSection, setActiveSection }) {
+export default function Navigation({ activeSection }) {
   return (
     <nav className="flex flex-col gap-5">
       {menuItems.map((item) => (
