@@ -22,6 +22,8 @@ enum SkillCategory {
   ML_AI
   TOOLS
   CLOUD
+  DATA_ANALYSIS
+  DATA_VISUALIZATION
 }
 
 enum SocialPlatform {

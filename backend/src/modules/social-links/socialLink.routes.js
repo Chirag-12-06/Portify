@@ -10,12 +10,15 @@ import {
   deleteSocialLinkController,
 } from "./socialLink.controller.js";
 
+import { getLeetCodeStatsController } from "./leetcode/leetcode.controller.js";
+
 const publicRouter = Router();
 const adminRouter = Router();
 
 /* ---------- Public Routes ---------- */
 
 publicRouter.get("/", getSocialLinksController);
+publicRouter.get("/leetcode", getLeetCodeStatsController);
 publicRouter.get("/:id", getSocialLinkByIdController);
 
 /* ---------- Admin Routes ---------- */

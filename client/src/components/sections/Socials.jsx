@@ -1,4 +1,6 @@
 import Section from "../../components/common/Section";
+import LeetCodeCard from "./Socials/LeetCodeCard"
+
 
 export default function Socials() {
   return (
@@ -6,7 +8,7 @@ export default function Socials() {
       id="socials"
       title="Socials"
     >
-      {/* Socials Content */}
+      <LeetCodeCard />
     </Section>
   );
 }

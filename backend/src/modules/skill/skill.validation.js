@@ -16,6 +16,8 @@ export const createSkillSchema = z.object({
     "ML_AI",
     "TOOLS",
     "CLOUD",
+    "DATA_ANALYSIS",
+    "DATA_VISUALIZATION",
   ]),
 
   imageUrl: z.preprocess(

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { scrollToSection } from "../../../utils/scrollToSection";
+import { menuItems } from "../../../constants/navigation";
 
 export default function NavItem({ item, activeSection }) {
   const [hover, setHover] = useState(false);
@@ -7,6 +8,7 @@ export default function NavItem({ item, activeSection }) {
   const isActive = activeSection === item.id;
   const showDot = isActive && !hover;
   const showPointer = hover;
+  const Icon = hover || isActive ? item.hoverIcon : item.icon;
 
   return (
     <div className="flex items-center gap-3">
@@ -47,7 +49,10 @@ export default function NavItem({ item, activeSection }) {
         hover:text-white
       `}
       >
-        <span>{item.name}</span>
+        <>
+          <Icon className="h-6 w-6 transition-all duration-300" />
+          <span>{item.name}</span>
+        </>
       </button>
     </div>
   );

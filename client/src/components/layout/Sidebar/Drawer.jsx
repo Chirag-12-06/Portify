@@ -20,17 +20,16 @@ export default function Drawer({ open, onMouseEnter, onMouseLeave, activeSection
     
   "
       style={{
-        transform: open ? "translateX(0)" : "translateX(-15rem)",
+        transform: open ? "translateX(0)" : "translateX(-18rem)",
       }}
     >
       <aside
         className="
        flex
       h-[50vh]
-      w-60
+      w-72
       rounded-r-3xl
       bg-slate-700
-      px-8
       text-white
       shadow-xl
       items-center

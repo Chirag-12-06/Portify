@@ -8,4 +8,6 @@ export const SKILL_CATEGORIES = [
   "ML_AI",
   "TOOLS",
   "CLOUD",
+  "DATA_ANALYSIS",
+  "DATA_VISUALIZATION",
 ];
