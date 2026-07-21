@@ -8,24 +8,22 @@ import About from "../components/sections/About";
 import Skills from "../components/sections/Skills";
 import Experience from "../components/sections/Experience";
 import Projects from "../components/sections/Projects";
-import Certificates from "../components/sections/Certificates";
+import Certificates from "../components/sections/certificates/Certificates";
 import Education from "../components/sections/Education";
-import Socials from "../components/sections/Socials";
+import Socials from "../components/sections/Socials/Socials";
 import Footer from "../components/sections/Footer";
-import ContactBar from "../components/layout/ContactBar";
+import ContactButton from "../components/layout/ContactButton";
 import useActiveSection from "../hooks/useActiveSection";
 
 export default function MainLayout() {
   const [open, setOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
-  
+
   useActiveSection(setActiveSection);
 
   return (
     <>
-      <Navbar 
-      activeSection={activeSection}
-        />
+      <Navbar activeSection={activeSection} />
 
       <Drawer
         open={open}
@@ -35,7 +33,7 @@ export default function MainLayout() {
         setActiveSection={setActiveSection}
       />
 
-      <main>
+      <main className="pb-10">
         <Hero />
         <About />
         <Skills />
@@ -47,7 +45,7 @@ export default function MainLayout() {
         <Footer />
       </main>
 
-      <ContactBar />
+      <ContactButton />
 
       <Outlet />
     </>

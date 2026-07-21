@@ -1,6 +1,6 @@
 import { FaGithub } from "react-icons/fa";
 import { useGithub } from "../../../hooks/useSocials";
-import Heatmap from "../../common/Heatmap";
+import Heatmap from "./Heatmap";
 
 export default function GithubCard() {
   const { data: github } = useGithub();

@@ -1,6 +1,6 @@
 import { SiLeetcode } from "react-icons/si";
 import { useLeetCode } from "../../../hooks/useSocials";
-import Heatmap from "../../common/Heatmap";
+import Heatmap from "./Heatmap";
 import QuestionDistribution from "./QuestionDistribution";
 
 export default function LeetCodeCard() {

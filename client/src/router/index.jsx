@@ -1,13 +1,18 @@
 import { createBrowserRouter } from "react-router-dom";
 
-import MainLayout from "../layouts/MainLayout";
+import MainPage from "../pages/MainPage";
+import CertificatePage from "../pages/CertificatePage";
 
 import NotFoundPage from "../pages/NotFoundPage";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <MainLayout />,
+    element: <MainPage />,
+  },
+  {
+    path: "/certificates",
+    element: <CertificatePage />,
   },
   {
     path: "*",
