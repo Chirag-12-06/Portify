@@ -9,35 +9,39 @@ export default function Sidebar() {
       <nav className="flex flex-col gap-3">
         <NavLink to={Routes.DASHBOARD}>Dashboard</NavLink>
       </nav>
-      
+
       <nav className="flex flex-col gap-3">
         <NavLink to={Routes.PROFILE}>Profile</NavLink>
       </nav>
-      
+
       <nav className="flex flex-col gap-3">
         <NavLink to={Routes.SKILLS}>Skills</NavLink>
       </nav>
-      
+
       <nav className="flex flex-col gap-3">
         <NavLink to={Routes.PROJECTS}>Projects</NavLink>
       </nav>
-      
+
+      <nav className="flex flex-col gap-3">
+        <NavLink to={Routes.ISSUERS}> Certificate Issuers</NavLink>
+      </nav>
+
       <nav className="flex flex-col gap-3">
         <NavLink to={Routes.CERTIFICATES}>Certificates</NavLink>
       </nav>
-      
+
       <nav className="flex flex-col gap-3">
         <NavLink to={Routes.EXPERIENCES}>Experiences</NavLink>
       </nav>
-      
+
       <nav className="flex flex-col gap-3">
         <NavLink to={Routes.EDUCATIONS}>Education</NavLink>
       </nav>
-      
+
       <nav className="flex flex-col gap-3">
         <NavLink to={Routes.SOCIAL_LINKS}>Social Links</NavLink>
       </nav>
-      
+
       <nav className="flex flex-col gap-3">
         <NavLink to={Routes.CONTACT_MESSAGES}>Contact Messages</NavLink>
       </nav>

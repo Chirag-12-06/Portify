@@ -16,6 +16,7 @@ import { useCreateCertificate } from "../hooks/useCreateCertificate";
 import { useUpdateCertificate } from "../hooks/useUpdateCertificate";
 
 import { useSkills } from "../../skills/hooks/useSkill";
+import { useIssuers } from "../../issuer/hooks/useIssuer";
 
 export default function CertificateForm({ certificate, onClose }) {
   const createCertificate = useCreateCertificate();
@@ -33,6 +34,7 @@ export default function CertificateForm({ certificate, onClose }) {
   });
 
   const { data: skills = [] } = useSkills();
+  const { data: issuers = [] } = useIssuers();
 
   const selectedSkills = watch("skillIds");
 
@@ -49,6 +51,7 @@ export default function CertificateForm({ certificate, onClose }) {
       issueDate: certificate.issueDate?.split("T")[0] ?? "",
       expiryDate: certificate.expiryDate?.split("T")[0] ?? "",
       skillIds: certificate.skills?.map(({ skill }) => skill.id) ?? [],
+      issuerId: certificate.issuerId ?? "",
     });
   }, [certificate, reset]);
 
@@ -86,11 +89,26 @@ export default function CertificateForm({ certificate, onClose }) {
             {...register("title")}
           />
 
-          <Input
-            label="Issuer"
-            error={errors.issuer?.message}
-            {...register("issuer")}
-          />
+          <div className="space-y-2">
+            <label className="text-sm font-medium">Issuer</label>
+
+            <select
+              {...register("issuerId")}
+              className="w-full rounded-lg border border-input bg-background px-3 py-2"
+            >
+              <option value="">Select Issuer</option>
+
+              {issuers.map((issuer) => (
+                <option key={issuer.id} value={issuer.id}>
+                  {issuer.name}
+                </option>
+              ))}
+            </select>
+
+            {errors.issuerId && (
+              <p className="text-sm text-red-500">{errors.issuerId.message}</p>
+            )}
+          </div>
         </div>
 
         <div className="grid gap-5 md:grid-cols-2">

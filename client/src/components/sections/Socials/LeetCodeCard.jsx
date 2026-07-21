@@ -7,7 +7,7 @@ export default function LeetCodeCard() {
   const { data: leetcode, isLoading } = useLeetCode();
 
   return (
-    <section className="flex h-[350px] w-full overflow-hidden rounded-3xl border border-slate-700 bg-slate-900">
+    <section className="flex h-87.5 w-full overflow-hidden rounded-3xl border border-slate-700 bg-slate-900">
       {/* LEFT */}
       <div className="flex w-[40%] flex-col border-r border-slate-700">
         {/* Header */}

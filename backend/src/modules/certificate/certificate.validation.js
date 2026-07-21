@@ -3,7 +3,7 @@ import { z } from "zod";
 export const createCertificateSchema = z.object({
   title: z.string().trim().min(1, "Title is required"),
 
-  issuer: z.string().trim().min(1, "Issuer is required"),
+  issuerId: z.string().min(1, "Issuer is required"),
 
   credentialUrl: z
     .string()

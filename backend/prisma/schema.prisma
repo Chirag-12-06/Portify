@@ -103,10 +103,19 @@ model ProjectSkill {
   @@id([projectId, skillId])
 }
 
+model Issuer {
+  id   String @id @default(cuid())
+  name String @unique
+  logo String?
+
+  certificates Certificate[]
+}
+
 model Certificate {
   id              String   @id @default(cuid())
   title           String
-  issuer          String
+  issuerId        String
+  issuer          Issuer   @relation(fields: [issuerId], references: [id])
   credentialUrl   String
   badgeImageUrl   String?
   isVisible       Boolean  @default(true)

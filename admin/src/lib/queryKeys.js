@@ -9,4 +9,5 @@ export const queryKeys = {
   education: ["education"],
   contacts: ["contacts"],
   socialLinks: ["social-links"],
+  issuer: ["issuer"],
 };

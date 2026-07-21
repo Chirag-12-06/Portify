@@ -61,7 +61,7 @@ export default function CertificateTable({ certificates, onEdit, onDelete }) {
               </div>
             </TableCell>
 
-            <TableCell>{certificate.issuer}</TableCell>
+            <TableCell>{certificate.issuer?.name}</TableCell>
 
             <TableCell align="center">
               {certificate.featured ? (

@@ -13,6 +13,7 @@ import ContactMessagesPage from "../features/contacts/pages/ContactMessagesPage"
 import ProjectsPage from "../features/projects/pages/ProjectPage";
 import CertificatesPage from "../features/certificates/pages/CertificatePage";
 import ExperiencePage from "../features/experience/pages/ExperiencePage";
+import IssuersPage from "../features/issuer/pages/IssuerPage";
 
 import { Routes } from "../lib/routes";
 
@@ -70,6 +71,10 @@ const router = createBrowserRouter([
         {
           path: Routes.EXPERIENCES,
           element: <ExperiencePage />,
+        },
+        {
+          path: Routes.ISSUERS,
+          element: <IssuersPage />,
         }
       ],
     },

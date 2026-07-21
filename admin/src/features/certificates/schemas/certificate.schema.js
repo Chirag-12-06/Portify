@@ -3,7 +3,7 @@ import { z } from "zod";
 export const certificateSchema = z.object({
   title: z.string().trim().min(1),
 
-  issuer: z.string().trim().min(1),
+  issuerId: z.string().trim().min(1),
 
   credentialUrl: z
     .string()
@@ -35,7 +35,7 @@ export const certificateSchema = z.object({
 
 export const defaultValues = {
   title: "",
-  issuer: "",
+  issuerId: "",
   credentialUrl: "",
   badgeImageUrl: "",
 

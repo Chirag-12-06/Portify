@@ -32,6 +32,8 @@ export async function createCertificate(data) {
 export async function getCertificates() {
   return prisma.certificate.findMany({
     include: {
+      issuer: true,
+
       skills: {
         include: {
           skill: true,
@@ -50,6 +52,8 @@ export async function getCertificateById(id) {
     where: { id },
 
     include: {
+      issuer: true,
+
       skills: {
         include: {
           skill: true,
@@ -97,6 +101,8 @@ export async function updateCertificate(id, data) {
     },
 
     include: {
+      issuer: true,
+      
       skills: {
         include: {
           skill: true,

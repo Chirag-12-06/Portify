@@ -37,7 +37,7 @@ export default function GithubCard() {
       </header>
 
       <div className="flex flex-1 items-center justify-center p-6">
-        <div className="w-[850px] max-w-full">
+        <div className="w-212.5 max-w-full">
           <Heatmap heatmap={github?.heatmap ?? []} />
         </div>
       </div>
