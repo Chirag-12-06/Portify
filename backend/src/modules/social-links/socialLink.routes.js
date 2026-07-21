@@ -11,6 +11,7 @@ import {
 } from "./socialLink.controller.js";
 
 import { getLeetCodeStatsController } from "./leetcode/leetcode.controller.js";
+import { getGithubStatsController } from "./github/github.controller.js";
 
 const publicRouter = Router();
 const adminRouter = Router();
@@ -19,6 +20,7 @@ const adminRouter = Router();
 
 publicRouter.get("/", getSocialLinksController);
 publicRouter.get("/leetcode", getLeetCodeStatsController);
+publicRouter.get("/github", getGithubStatsController);
 publicRouter.get("/:id", getSocialLinkByIdController);
 
 /* ---------- Admin Routes ---------- */

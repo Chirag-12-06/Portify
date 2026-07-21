@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getSocials,getLeetCodeStats } from "../api/socials.api";
+import { getSocials,getLeetCodeStats,getGithubStats } from "../api/socials.api";
 
 export function useSocials() {
   return useQuery({
@@ -12,5 +12,12 @@ export function useLeetCode() {
   return useQuery({
     queryKey: ["leetcode"],
     queryFn: getLeetCodeStats,
+  });
+}
+
+export function useGithub() {
+  return useQuery({
+    queryKey: ["github"],
+    queryFn: getGithubStats,
   });
 }

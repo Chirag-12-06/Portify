@@ -137,14 +137,9 @@ export async function getLeetCodeStats() {
 
       heatmap: buildHeatmap(calendar),
     };
-  // } catch (error) {
-  //   if (error instanceof ApiError) throw error;
+  } catch (error) {
+    if (error instanceof ApiError) throw error;
 
-  //   throw new ApiError(500, "Failed to fetch LeetCode data");
-  // }
-  }catch (error) {
-  console.dir(error.response?.data, { depth: null });
-
-  throw error;
-}
+    throw new ApiError(500, "Failed to fetch LeetCode data");
+  }
 }
