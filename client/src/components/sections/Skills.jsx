@@ -29,7 +29,7 @@ export default function Skills() {
   }, [categories, activeCategory]);
 
   return (
-    <Section id="skills" title="Skills">
+    <Section id="skills" title="Tech Stack">
       <div className=" flex flex-col gap-8">
         {/* Categories */}
         <div className="bg-pink-600 flex gap-3 overflow-x-auto text-2xl">

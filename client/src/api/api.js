@@ -12,7 +12,7 @@ api.interceptors.response.use(
   (error) => {
     console.error(error.response?.data?.message || error.message);
     return Promise.reject(error);
-  }
+  },
 );
 
 export default api;

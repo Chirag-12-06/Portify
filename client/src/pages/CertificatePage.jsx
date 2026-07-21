@@ -1,7 +1,10 @@
+import { ArrowLeft } from "lucide-react";
 import { useState } from "react";
-import { useCertificates } from "../hooks/useCertificates";
-import { useSkills } from "../hooks/useSkills";
+import { Link } from "react-router-dom";
 import CertificateCard from "../components/sections/certificates/CertificateCard";
+import Footer from "../components/sections/Footer";
+import { useCertificates, useIssuers } from "../hooks/useCertificates";
+import { useSkills } from "../hooks/useSkills";
 
 export default function CertificatesPage() {
   const [search, setSearch] = useState("");
@@ -9,13 +12,14 @@ export default function CertificatesPage() {
   const [skill, setSkill] = useState("");
   const { data: certificates } = useCertificates();
   const { data: skills } = useSkills();
+  const { data: issuers } = useIssuers();
 
   const filteredCertificates = certificates?.filter((certificate) => {
     const matchesSearch = certificate.title
       .toLowerCase()
       .includes(search.toLowerCase());
 
-    const matchesIssuer = certificate.issuer
+    const matchesIssuer = certificate.issuer.name
       .toLowerCase()
       .includes(issuer.toLowerCase());
 
@@ -33,11 +37,21 @@ export default function CertificatesPage() {
       {/* Fixed Header */}
       <div className="sticky top-0 z-20 border-b border-border bg-background/95 backdrop-blur">
         <div className="mx-auto max-w-7xl px-6 py-6">
-          <div className="mb-6">
-            <h1 className="text-4xl font-bold">Certificates</h1>
-            <p className="mt-2 text-muted-foreground">
-              Browse all certificates.
-            </p>
+          <div className="mb-6 flex items-start justify-between">
+            <div>
+              <h1 className="text-4xl font-bold">Certificates</h1>
+              <p className="mt-2 text-muted-foreground">
+                Browse all certificates.
+              </p>
+            </div>
+
+            <Link
+              to="/"
+              className="inline-flex items-center gap-2 rounded-lg border border-border bg-background px-4 py-2 text-sm font-medium transition hover:bg-accent hover:text-accent-foreground"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Home
+            </Link>
           </div>
 
           {/* Filters */}
@@ -50,20 +64,34 @@ export default function CertificatesPage() {
               className="h-11 rounded-lg border border-border bg-background px-4 outline-none transition focus:ring-2 focus:ring-primary"
             />
 
-            <input
-              type="text"
-              placeholder="Issuer..."
+            <select
               value={issuer}
               onChange={(e) => setIssuer(e.target.value)}
               className="h-11 rounded-lg border border-border bg-background px-4 outline-none transition focus:ring-2 focus:ring-primary"
-            />
+            >
+              <option value="" className="text-black">
+                All Issuers
+              </option>
+
+              {issuers?.map((issuer) => (
+                <option
+                  className="text-black"
+                  key={issuer.id}
+                  value={issuer.name}
+                >
+                  {issuer.name}
+                </option>
+              ))}
+            </select>
 
             <select
               value={skill}
               onChange={(e) => setSkill(e.target.value)}
               className="h-11 rounded-lg border border-border bg-background px-4 outline-none transition focus:ring-2 focus:ring-primary"
             >
-              <option value="">All Skills</option>
+              <option value="" className="text-black">
+                All Skills
+              </option>
 
               {skills?.map((skill) => (
                 <option
@@ -87,6 +115,7 @@ export default function CertificatesPage() {
               <CertificateCard key={certificate.id} certificate={certificate} />
             ))}
           </div>
+          <Footer />
         </div>
       </div>
     </main>
