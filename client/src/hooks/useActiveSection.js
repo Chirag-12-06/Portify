@@ -5,6 +5,7 @@ export default function useActiveSection(setActiveSection) {
     "home",
     "about",
     "skills",
+    "technologies",
     "projects",
     "experience",
     "education",

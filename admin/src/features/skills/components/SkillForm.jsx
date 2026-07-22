@@ -57,7 +57,7 @@ export default function SkillForm({ skill, onClose }) {
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
       <Input
         label="Skill Name"
-        placeholder="React"
+        placeholder="Frontend Development"
         error={errors.name?.message}
         {...register("name")}
       />
@@ -73,13 +73,6 @@ export default function SkillForm({ skill, onClose }) {
           </option>
         ))}
       </Select>
-
-      <Input
-        label="Image URL"
-        placeholder="https://..."
-        error={errors.imageUrl?.message}
-        {...register("imageUrl")}
-      />
 
       <FormActions>
         <Button

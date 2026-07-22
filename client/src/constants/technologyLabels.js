@@ -1,4 +1,4 @@
-export const categoryLabels = {
+export const technologyLabels = {
   LANGUAGE: "Languages",
   CS_FUNDAMENTALS: "CS Fundamentals",
   FRONTEND: "Frontend",

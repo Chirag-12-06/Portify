@@ -17,6 +17,7 @@ import { useCreateProject } from "../hooks/useCreateProject";
 import { useUpdateProject } from "../hooks/useUpdateProject";
 
 import { useSkills } from "../../skills/hooks/useSkill";
+import { useTechnologies } from "../../technologies/hooks/useTechnology";
 
 const statusOptions = STATUS;
 
@@ -42,8 +43,10 @@ export default function ProjectForm({ project, onClose }) {
   });
 
   const { data: skills = [] } = useSkills();
+  const { data: technologies = [] } = useTechnologies();
 
   const selectedSkills = watch("skillIds");
+  const selectedTechnologies = watch("techIds");
 
   useEffect(() => {
     if (!project) {
@@ -57,6 +60,8 @@ export default function ProjectForm({ project, onClose }) {
       liveUrl: project.liveUrl ?? "",
       images: project.images ?? [],
       skillIds: project.skills?.map(({ skill }) => skill.id) ?? [],
+      techIds:
+        project.technologies?.map(({ technology }) => technology.id) ?? [],
       images: project.images ?? [],
     });
   }, [project, reset]);
@@ -187,6 +192,33 @@ export default function ProjectForm({ project, onClose }) {
           {errors.skillIds && (
             <p className="mt-2 text-sm text-red-500">
               {errors.skillIds.message}
+            </p>
+          )}
+        </div>
+
+        <div>
+          <h3 className="mb-4 text-lg font-semibold">Technologies</h3>
+
+          <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
+            {technologies.map((technology) => (
+              <label
+                key={technology.id}
+                className="flex items-center gap-2 rounded-lg border p-3"
+              >
+                <input
+                  type="checkbox"
+                  value={technology.id}
+                  {...register("techIds")}
+                />
+
+                <span>{technology.name}</span>
+              </label>
+            ))}
+          </div>
+
+          {errors.techIds && (
+            <p className="mt-2 text-sm text-red-500">
+              {errors.techIds.message}
             </p>
           )}
         </div>

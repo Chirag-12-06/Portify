@@ -47,6 +47,8 @@ export const projectSchema = z.object({
     })
   ),
 
+  techIds: z.array(z.string()),
+
   skillIds: z.array(z.string()),
 });
 
@@ -67,6 +69,8 @@ export const defaultValues = {
   status: "ONGOING",
 
   images: [],
+
+  techIds: [],
 
   skillIds: [],
 };

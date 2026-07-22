@@ -1,7 +1,7 @@
 import Section from "../common/Section";
 import { useTechnologies } from "../../hooks/useTechnologies";
 import { useState, useEffect, useMemo } from "react";
-import { categoryLabels } from "../../constants/categoryLabels";
+import { technologyLabels } from "../../constants/technologyLabels";
 
 export default function Technologies() {
   const [activeCategory, setActiveCategory] = useState("");
@@ -29,13 +29,13 @@ export default function Technologies() {
   }, [categories, activeCategory]);
 
   return (
-    <Section id="technologies" title="Tech Stack">
+    <Section id="technologies" title="Technologies">
       <div className=" flex flex-col gap-8">
         {/* Categories */}
         <div className="bg-pink-600 flex gap-3 overflow-x-auto text-2xl">
           {categories.map((category) => (
             <button key={category} onClick={() => setActiveCategory(category)}>
-              {categoryLabels[category]}
+              {technologyLabels[category]}
             </button>
           ))}
         </div>

@@ -26,7 +26,7 @@ export default function Drawer({ open, onMouseEnter, onMouseLeave, activeSection
       <aside
         className="
        flex
-      h-[50vh]
+      h-[55vh]
       w-72
       rounded-r-3xl
       bg-slate-700

@@ -7,23 +7,18 @@ export const createSkillSchema = z.object({
     .min(1, "Skill name is required"),
 
   category: z.enum([
-    "LANGUAGE",
-    "CS_FUNDAMENTALS",
-    "FRONTEND",
-    "BACKEND",
-    "DATABASE",
-    "FRAMEWORK",
-    "ML_AI",
-    "TOOLS",
+    "SOFTWARE_DEVELOPMENT",
+    "DATA_SCIENCE",
+    "MACHINE_LEARNING",
+    "ARTIFICIAL_INTELLIGENCE",
+    "DATABASES",
+    "DEVOPS",
     "CLOUD",
-    "DATA_ANALYSIS",
-    "DATA_VISUALIZATION",
+    "VERSION_CONTROL",
+    "TESTING",
+    "UI_UX",
+    "SOFT_SKILLS"
   ]),
-
-  imageUrl: z.preprocess(
-  (value) => value === "" ? undefined : value,
-  z.string().url().optional()
-),
 });
 
 export const updateSkillSchema = createSkillSchema.partial();

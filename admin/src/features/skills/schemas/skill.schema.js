@@ -9,16 +9,9 @@ export const skillSchema = z.object({
 
   category: z.enum(SKILL_CATEGORIES),
 
-  imageUrl: z
-    .string()
-    .trim()
-    .url("Invalid image URL")
-    .or(z.literal(""))
-    .optional(),
 });
 
 export const defaultValues = {
   name: "",
-  category: "FRONTEND",
-  imageUrl: "",
+  category: "SOFTWARE_DEVELOPMENT",
 };
