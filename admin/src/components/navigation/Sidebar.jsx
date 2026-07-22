@@ -19,6 +19,10 @@ export default function Sidebar() {
       </nav>
 
       <nav className="flex flex-col gap-3">
+        <NavLink to={Routes.TECHNOLOGIES}>Technologies</NavLink>
+      </nav>
+
+      <nav className="flex flex-col gap-3">
         <NavLink to={Routes.PROJECTS}>Projects</NavLink>
       </nav>
 

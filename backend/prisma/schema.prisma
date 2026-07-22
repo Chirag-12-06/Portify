@@ -12,33 +12,6 @@ datasource db {
   url=env("DATABASE_URL")
 }
 
-enum SkillCategory {
-  LANGUAGE
-  CS_FUNDAMENTALS
-  FRONTEND
-  BACKEND
-  DATABASE
-  FRAMEWORK
-  ML_AI
-  TOOLS
-  CLOUD
-  DATA_ANALYSIS
-  DATA_VISUALIZATION
-}
-
-enum SocialPlatform {
-  GITHUB
-  LINKEDIN
-  LEETCODE
-  CODEFORCES
-  CODECHEF
-  HACKERRANK
-  TWITTER
-  INSTAGRAM
-  EMAIL
-  OTHER
-}
-
 model User {
   id        String   @id @default(cuid())
   email     String   @unique
@@ -48,15 +21,51 @@ model User {
   updatedAt DateTime @updatedAt
 }
 
-model Skill {
-  id        String        @id @default(cuid())
-  name      String        @unique
-  category  SkillCategory
+enum TechCategory {
+  FRONTEND
+  BACKEND
+  DATABASE
+  LANGUAGE
+  FRAMEWORK
+  DEVOPS
+  CLOUD
+  TOOLS
+  ML_AI
+  DATA_ANALYSIS
+  DATA_VISUALIZATION
+}
+
+model Tech {
+  id        String       @id @default(cuid())
+  name      String       @unique
+  category  TechCategory
   imageUrl  String?
 
-  projects      ProjectSkill[]
-  certificates  CertificateSkill[]
-  experiences   ExperienceSkill[]
+  projects ProjectTech[]
+}
+
+enum SkillCategory {
+  SOFTWARE_DEVELOPMENT
+  DATA_SCIENCE
+  MACHINE_LEARNING
+  ARTIFICIAL_INTELLIGENCE
+  DATABASES
+  DEVOPS
+  CLOUD
+  VERSION_CONTROL
+  TESTING
+  UI_UX
+  SOFT_SKILLS
+}
+
+model Skill {
+  id       String        @id @default(cuid())
+  name     String        @unique
+  category SkillCategory
+
+  projects     ProjectSkill[]
+  experiences  ExperienceSkill[]
+  certificates CertificateSkill[]
 }
 
 enum ProjectStatus {
@@ -82,6 +91,7 @@ model Project {
 
   images           ProjectImage[]
   skills           ProjectSkill[]
+  techs            ProjectTech[]
 }
 
 model ProjectImage {
@@ -101,6 +111,16 @@ model ProjectSkill {
   skill   Skill   @relation(fields: [skillId], references: [id], onDelete: Cascade)
 
   @@id([projectId, skillId])
+}
+
+model ProjectTech {
+  projectId String
+  techId    String
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  tech    Tech    @relation(fields: [techId], references: [id], onDelete: Cascade)
+
+  @@id([projectId, techId])
 }
 
 model Issuer {
@@ -197,6 +217,19 @@ model Education {
   endDate             DateTime?
   currentlyStudying   Boolean  @default(false)
   institutionImageUrl String?
+}
+
+enum SocialPlatform {
+  GITHUB
+  LINKEDIN
+  LEETCODE
+  CODEFORCES
+  CODECHEF
+  HACKERRANK
+  TWITTER
+  INSTAGRAM
+  EMAIL
+  OTHER
 }
 
 model SocialLink {

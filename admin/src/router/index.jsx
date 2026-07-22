@@ -8,6 +8,7 @@ import DashboardPage from "../features/dashboard/pages/DashboardPage";
 import ProfilePage from "../features/profile/pages/ProfilePage";
 import SocialLinksPage from "../features/social-links/pages/SocialLinkPage";
 import SkillsPage from "../features/skills/pages/SkillPage";
+import TechnologiesPage from "../features/technologies/pages/TechnologyPage";
 import EducationPage from "../features/education/pages/EducationPage";
 import ContactMessagesPage from "../features/contacts/pages/ContactMessagesPage";
 import ProjectsPage from "../features/projects/pages/ProjectPage";
@@ -47,6 +48,10 @@ const router = createBrowserRouter([
         {
           path: Routes.SOCIAL_LINKS,
           element: <SocialLinksPage />,
+        },
+        {
+          path: Routes.TECHNOLOGIES,
+          element: <TechnologiesPage />,
         },
         {
           path: Routes.SKILLS,

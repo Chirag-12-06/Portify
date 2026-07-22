@@ -8,6 +8,7 @@ import { publicRouter as educationRoutes } from "../modules/education/education.
 import { publicRouter as profileRoutes } from "../modules/profile/profile.routes.js";
 import { publicRouter as contactRoutes } from "../modules/contact/contact.routes.js";
 import { publicRouter as issuerRoutes } from "../modules/issuer/issuer.routes.js";
+import { publicRouter as technologyRoutes } from "../modules/technology/technology.routes.js";
 import { publicRouter as socialLinkRoutes } from "../modules/social-links/socialLink.routes.js";
 
 const router = Router();
@@ -17,6 +18,7 @@ router.use("/skills", skillRoutes);
 router.use("/certificates", certificateRoutes);
 router.use("/experiences", experienceRoutes);
 router.use("/social-links", socialLinkRoutes);
+router.use("/technologies", technologyRoutes);
 router.use("/issuers", issuerRoutes);
 router.use("/contacts", contactRoutes);
 router.use("/profiles", profileRoutes);

@@ -10,4 +10,5 @@ export const queryKeys = {
   contacts: ["contacts"],
   socialLinks: ["social-links"],
   issuer: ["issuer"],
+  technologies: ["technologies"],
 };

@@ -4,14 +4,14 @@ import { Link } from "react-router-dom";
 import CertificateCard from "../components/sections/certificates/CertificateCard";
 import Footer from "../components/sections/Footer";
 import { useCertificates, useIssuers } from "../hooks/useCertificates";
-import { useSkills } from "../hooks/useSkills";
+import { useTechnologies } from "../hooks/useTechnologies";
 
 export default function CertificatesPage() {
   const [search, setSearch] = useState("");
   const [issuer, setIssuer] = useState("");
-  const [skill, setSkill] = useState("");
+  const [technology, setTechnology] = useState("");
   const { data: certificates } = useCertificates();
-  const { data: skills } = useSkills();
+  const { data: technologies } = useTechnologies();
   const { data: issuers } = useIssuers();
 
   const filteredCertificates = certificates?.filter((certificate) => {
@@ -23,13 +23,11 @@ export default function CertificatesPage() {
       .toLowerCase()
       .includes(issuer.toLowerCase());
 
-    const matchesSkill =
-      skill === "" ||
-      certificate.skills?.some((s) =>
-        s.skill.name.toLowerCase().includes(skill.toLowerCase()),
-      );
+    const matchesTechnology =
+      technologies?.some((t) => t.id === certificate.technologyId) ||
+      certificate.technologyId === "";
 
-    return matchesSearch && matchesIssuer && matchesSkill;
+    return matchesSearch && matchesIssuer && matchesTechnology;
   });
 
   return (
@@ -85,21 +83,21 @@ export default function CertificatesPage() {
             </select>
 
             <select
-              value={skill}
-              onChange={(e) => setSkill(e.target.value)}
+              value={technology}
+              onChange={(e) => setTechnology(e.target.value)}
               className="h-11 rounded-lg border border-border bg-background px-4 outline-none transition focus:ring-2 focus:ring-primary"
             >
               <option value="" className="text-black">
-                All Skills
+                All Technologies
               </option>
 
-              {skills?.map((skill) => (
+              {technologies?.map((tech) => (
                 <option
                   className="text-black"
-                  key={skill.id}
-                  value={skill.name}
+                  key={tech.id}
+                  value={tech.name}
                 >
-                  {skill.name}
+                  {tech.name}
                 </option>
               ))}
             </select>

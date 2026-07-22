@@ -1,0 +1,12 @@
+export const TECHNOLOGY_CATEGORIES = [
+  "LANGUAGE",
+  "FRONTEND",
+  "BACKEND",
+  "DATABASE",
+  "FRAMEWORK",
+  "ML_AI",
+  "TOOLS",
+  "CLOUD",
+  "DATA_ANALYSIS",
+  "DATA_VISUALIZATION",
+];

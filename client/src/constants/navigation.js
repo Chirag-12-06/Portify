@@ -21,8 +21,8 @@ export const menuItems = [
     hoverIcon: UserRoundCheck,
   },
   {
-    id: "skills",
-    name: "Skills",
+    id: "technologies",
+    name: "Technologies",
     icon: Code2,
     hoverIcon: Code2,
   },

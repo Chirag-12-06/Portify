@@ -1,26 +1,26 @@
-import Section from "../../components/common/Section";
-import { useSkills } from "../../hooks/useSkills";
+import Section from "../common/Section";
+import { useTechnologies } from "../../hooks/useTechnologies";
 import { useState, useEffect, useMemo } from "react";
-import {categoryLabels} from "../../constants/categoryLabels";
+import { categoryLabels } from "../../constants/categoryLabels";
 
-export default function Skills() {
+export default function Technologies() {
   const [activeCategory, setActiveCategory] = useState("");
 
-  const { data: skills = [], isLoading } = useSkills();
+  const { data: technologies = [], isLoading } = useTechnologies();
 
-  const groupedSkills = useMemo(() => {
-    return skills.reduce((acc, skill) => {
-      if (!acc[skill.category]) {
-        acc[skill.category] = [];
+  const groupedTechnologies = useMemo(() => {
+    return technologies.reduce((acc, technology) => {
+      if (!acc[technology.category]) {
+        acc[technology.category] = [];
       }
 
-      acc[skill.category].push(skill);
+      acc[technology.category].push(technology);
 
       return acc;
     }, {});
-  }, [skills]);
+  }, [technologies]);
 
-  const categories = Object.keys(groupedSkills);
+  const categories = Object.keys(groupedTechnologies);
 
   useEffect(() => {
     if (categories.length > 0 && !activeCategory) {
@@ -29,7 +29,7 @@ export default function Skills() {
   }, [categories, activeCategory]);
 
   return (
-    <Section id="skills" title="Tech Stack">
+    <Section id="technologies" title="Tech Stack">
       <div className=" flex flex-col gap-8">
         {/* Categories */}
         <div className="bg-pink-600 flex gap-3 overflow-x-auto text-2xl">
@@ -41,19 +41,22 @@ export default function Skills() {
         </div>
 
         <div className="flex flex-wrap justify-center gap-15">
-          {groupedSkills[activeCategory]?.map((skill) => (
-            <div key={skill.id} className="group flex flex-col items-center">
+          {groupedTechnologies[activeCategory]?.map((technology) => (
+            <div
+              key={technology.id}
+              className="group flex flex-col items-center"
+            >
               <div className="relative flex h-56 w-56 items-center justify-center">
                 <div className="absolute h-32 w-32 rounded-full bg-cyan-400/25 blur-3xl transition-all duration-300 group-hover:h-40 group-hover:w-40 group-hover:bg-cyan-400/50" />
                 <img
-                  src={skill.imageUrl}
-                  alt={skill.name}
+                  src={technology.imageUrl}
+                  alt={technology.name}
                   className="relative h-40 w-40 transition-all duration-300 group-hover:scale-110"
                 />
               </div>
 
               <p className="mt-3 text-center text-3xl font-medium transition-all duration-300 group-hover:text-cyan-300">
-                {skill.name}
+                {technology.name}
               </p>
             </div>
           ))}

@@ -5,7 +5,7 @@ import Navbar from "../components/layout/Navbar";
 import Drawer from "../components/layout/Sidebar/Drawer";
 import Hero from "../components/sections/Hero";
 import About from "../components/sections/About";
-import Skills from "../components/sections/Skills";
+import Technologies from "../components/sections/Technologies";
 import Experience from "../components/sections/Experience";
 import Projects from "../components/sections/Projects";
 import Certificates from "../components/sections/certificates/Certificates";
@@ -36,7 +36,7 @@ export default function MainLayout() {
       <main className="pb-10">
         <Hero />
         <About />
-        <Skills />
+        <Technologies />
         <Projects />
         <Experience />
         <Education />
