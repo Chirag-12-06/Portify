@@ -1,4 +1,3 @@
-import Section from "../../components/common/Section";
 import { ArrowUp } from "lucide-react";
 
 export default function Footer() {

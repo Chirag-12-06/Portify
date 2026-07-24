@@ -7,7 +7,11 @@ export const updateProfileSchema = z.object({
 
   tagline: z.string().trim().optional(),
 
+  availability: z.string().trim().min(1, "Availability is required"),
+  
   about: z.string().trim().min(1, "About is required"),
+
+  heroDescription: z.string().trim().min(1, "Hero description is required"),
 
   email: z.string().email("Invalid email"),
 

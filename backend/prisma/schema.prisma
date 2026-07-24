@@ -204,6 +204,8 @@ model Profile {
   profileImageUrl String?
   heroImageUrl    String?
   tagline         String?
+  heroDescription String?
+  availability    String?
 }
 
 model Education {

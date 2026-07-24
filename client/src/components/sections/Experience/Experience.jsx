@@ -1,15 +1,19 @@
-import Section from "../../components/common/Section";
+import Section from "../../common/Section";
 import ExperienceCard from "./ExperienceCard";
-import { useExperience } from "../../../hooks/useExperiences";
+import { useExperiences } from "../../../hooks/useExperiences";
 
-export default function Experience() {
-  const
+export default function Experiences() {
+  const { data: experiences } = useExperiences();
+
   return (
-    <Section
-      id="experience"
-      title="Experience"
-    >
-      {/* Experience Content */}
+    <Section id="experience" title="Experience">
+      <div>
+        <div className="space-y-5">
+          {experiences?.map((experience) => (
+            <ExperienceCard key={experience.id} experience={experience} />
+          ))}
+        </div>
+      </div>
     </Section>
   );
 }

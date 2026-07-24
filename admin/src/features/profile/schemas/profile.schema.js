@@ -9,6 +9,10 @@ export const profileSchema = z.object({
 
   about: z.string().trim().min(1, "About is required"),
 
+  heroDescription: z.string().trim().min(1, "Hero description is required"),
+  
+  availability: z.string().trim().min(1, "Availability is required"),
+
   email: z.string().email("Invalid email"),
 
   phone: z.string().trim().optional(),

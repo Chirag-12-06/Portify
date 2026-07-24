@@ -20,6 +20,7 @@ export default function ProfileForm({ profile, onSubmit, isSubmitting }) {
       name: "",
       title: "",
       tagline: "",
+      availability: "",
       about: "",
       email: "",
       phone: "",
@@ -27,6 +28,7 @@ export default function ProfileForm({ profile, onSubmit, isSubmitting }) {
       resumeUrl: "",
       profileImageUrl: "",
       heroImageUrl: "",
+      heroDescription: "",
     },
   });
 
@@ -50,6 +52,12 @@ export default function ProfileForm({ profile, onSubmit, isSubmitting }) {
         label="Tagline"
         error={errors.tagline?.message}
         {...register("tagline")}
+      />
+
+      <Input
+        label="Availability"
+        error={errors.availability?.message}
+        {...register("availability")}
       />
 
       <Input
@@ -94,6 +102,13 @@ export default function ProfileForm({ profile, onSubmit, isSubmitting }) {
         rows={6}
         error={errors.about?.message}
         {...register("about")}
+      />
+
+      <Textarea
+        label="Hero Description"
+        rows={6}
+        error={errors.heroDescription?.message}
+        {...register("heroDescription")}
       />
 
       <div className="flex justify-end gap-3">

@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import { getExperience } from "../api/experience.api";
+import { getExperiences } from "../api/experiences.api";
 
-export function useExperience() {
+export function useExperiences() {
   return useQuery({
-    queryKey: ["experience"],
-    queryFn: getExperience,
+    queryKey: ["experiences"],
+    queryFn: getExperiences,
   });
 }
 

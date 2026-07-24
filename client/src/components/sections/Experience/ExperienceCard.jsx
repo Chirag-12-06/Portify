@@ -17,7 +17,7 @@ export default function ExperienceCard({ experience }) {
         {/* Company Logo */}
         <div className="flex h-24 w-24 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-primary/10">
           <img
-            src={experience.image}
+            src={experience.companyImageUrl}
             alt={experience.company}
             className="h-full w-full object-contain p-3"
           />
@@ -31,9 +31,7 @@ export default function ExperienceCard({ experience }) {
                 {experience.company}
               </h3>
 
-              <p className="mt-1 text-xl text-primary">
-                {experience.role}
-              </p>
+              <p className="mt-1 text-xl text-primary">{experience.role}</p>
             </div>
 
             <div className="flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2 text-sm text-foreground">
@@ -59,14 +57,8 @@ export default function ExperienceCard({ experience }) {
 
       {/* Achievements */}
       <ul className="space-y-3">
-        {experience.points.map((point, index) => (
-          <li
-            key={index}
-            className="flex items-start gap-3 text-muted-foreground"
-          >
-            <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-primary" />
-            <span>{point}</span>
-          </li>
+        {experience.points.map((point) => (
+          <li key={point.id}>{point.content}</li>
         ))}
       </ul>
 

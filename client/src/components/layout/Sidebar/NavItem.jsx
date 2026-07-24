@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { scrollToSection } from "../../../utils/scrollToSection";
-import { menuItems } from "../../../constants/navigation";
 
 export default function NavItem({ item, activeSection }) {
   const [hover, setHover] = useState(false);
