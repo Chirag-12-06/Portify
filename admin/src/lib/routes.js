@@ -12,4 +12,5 @@ export const Routes = {
   ISSUERS: "/issuers",
   TECHNOLOGIES: "/technologies",
   HERO: "/heroes",
+  ABOUT: "/about",
 };

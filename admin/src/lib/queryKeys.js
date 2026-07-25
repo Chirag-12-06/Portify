@@ -12,4 +12,5 @@ export const queryKeys = {
   issuer: ["issuer"],
   technologies: ["technologies"],
   heroes: ["heroes"],
+  about: ["about"],
 };

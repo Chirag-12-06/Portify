@@ -12,6 +12,7 @@ import { adminRouter as contactRoutes } from "../modules/contact/contact.routes.
 import { adminRouter as issuerRoutes } from "../modules/issuer/issuer.routes.js";
 import { adminRouter as technologyRoutes } from "../modules/technology/technology.routes.js";
 import { adminRouter as heroRoutes } from "../modules/hero/hero.routes.js";
+import { adminRouter as aboutRoutes } from "../modules/about/about.routes.js";
 import { router as dashboardRoutes } from "../modules/dashboard/dashboard.routes.js";
 
 const router = Router();
@@ -29,5 +30,6 @@ router.use("/profiles", profileRoutes);
 router.use("/educations", educationRoutes);
 router.use("/experiences", experienceRoutes);
 router.use("/dashboard", dashboardRoutes);
+router.use("/about", aboutRoutes);
 
 export default router;
