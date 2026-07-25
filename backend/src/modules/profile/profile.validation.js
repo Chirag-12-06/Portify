@@ -3,16 +3,6 @@ import { z } from "zod";
 export const updateProfileSchema = z.object({
   name: z.string().trim().min(1, "Name is required"),
 
-  title: z.string().trim().min(1, "Title is required"),
-
-  tagline: z.string().trim().optional(),
-
-  availability: z.string().trim().min(1, "Availability is required"),
-  
-  about: z.string().trim().min(1, "About is required"),
-
-  heroDescription: z.string().trim().min(1, "Hero description is required"),
-
   email: z.string().email("Invalid email"),
 
   phone: z.string().trim().optional(),
@@ -27,10 +17,5 @@ export const updateProfileSchema = z.object({
   profileImageUrl: z
     .string()
     .url("Invalid profile image URL")
-    .optional(),
-
-  heroImageUrl: z
-    .string()
-    .url("Invalid hero image URL")
     .optional(),
 });

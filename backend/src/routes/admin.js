@@ -11,6 +11,7 @@ import { adminRouter as socialLinkRoutes } from "../modules/social-links/socialL
 import { adminRouter as contactRoutes } from "../modules/contact/contact.routes.js";
 import { adminRouter as issuerRoutes } from "../modules/issuer/issuer.routes.js";
 import { adminRouter as technologyRoutes } from "../modules/technology/technology.routes.js";
+import { adminRouter as heroRoutes } from "../modules/hero/hero.routes.js";
 import { router as dashboardRoutes } from "../modules/dashboard/dashboard.routes.js";
 
 const router = Router();
@@ -20,6 +21,7 @@ router.use("/projects", projectRoutes);
 router.use("/skills", skillRoutes);
 router.use("/certificates", certificateRoutes);
 router.use("/issuers", issuerRoutes);
+router.use("/heroes", heroRoutes);
 router.use("/technologies", technologyRoutes);
 router.use("/contacts", contactRoutes);
 router.use("/social-links", socialLinkRoutes);

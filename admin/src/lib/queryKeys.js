@@ -11,4 +11,5 @@ export const queryKeys = {
   socialLinks: ["social-links"],
   issuer: ["issuer"],
   technologies: ["technologies"],
+  heroes: ["heroes"],
 };

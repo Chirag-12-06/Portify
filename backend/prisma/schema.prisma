@@ -195,17 +195,51 @@ model ExperienceSkill {
 model Profile {
   id              String @id @default(cuid())
   name            String
-  title           String
-  about           String
   email           String
   phone           String?
   location        String?
   resumeUrl       String?
   profileImageUrl String?
+
+  hero            Hero?
+  about           About?
+}
+
+model Hero {
+  id            String @id @default(cuid())
+
+  heroTitle      String?
+  tagline       String?
+  description   String?
+  availability  String?
   heroImageUrl    String?
-  tagline         String?
-  heroDescription String?
-  availability    String?
+
+  profileId     String @unique
+  profile       Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+}
+
+model About {
+  id          String @id @default(cuid())
+
+  heading     String?
+  content     String?
+
+  profileId   String @unique
+  profile     Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  highlights  Highlight[]
+}
+
+model Highlight {
+  id        String @id @default(cuid())
+
+  stat      String
+  label     String
+
+  order     Int @default(1)
+
+  aboutId   String
+  about     About @relation(fields: [aboutId], references: [id], onDelete: Cascade)
 }
 
 model Education {

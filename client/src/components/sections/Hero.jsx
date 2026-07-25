@@ -2,28 +2,30 @@ import { ArrowDown, MapPin } from "lucide-react";
 
 import { scrollToSection } from "../../utils/scrollToSection";
 import {useProfile} from "../../hooks/useProfile";
+import {useHeroes} from "../../hooks/useHeroes";
 
 import Section from "../../components/common/Section";
 
 export default function Hero() {
   const { data: profile } = useProfile();
+  const { data: hero } = useHeroes();
   return (
     <Section id="home" className="min-h-screen flex items-center">
       <div className="grid items-center gap-16 lg:grid-cols-2">
         {/* Left Content */}
         <div>
-          <p className="text-lg font-medium text-primary">{profile?.greeting}</p>
+          {/* <p className="text-lg font-medium text-primary">{profile?.greeting}</p> */}
 
           <h1 className="mt-3 text-5xl font-extrabold leading-tight lg:text-7xl">
             {profile?.name}
           </h1>
 
           <h2 className="mt-4 text-2xl font-semibold text-gray-300 lg:text-3xl">
-            {profile?.title}
+            {hero?.heroTitle}
           </h2>
 
           <p className="mt-6 max-w-2xl text-lg leading-8 text-gray-400">
-            {profile?.tagline}
+            {hero?.tagline}
           </p>
 
           <p className="mt-4 max-w-2xl text-gray-500">{profile?.heroDescription}</p>
@@ -41,7 +43,7 @@ export default function Hero() {
 
           <div className="mt-8 inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-4 py-2 text-sm text-emerald-400">
             <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
-            {profile?.availability}
+            {hero?.availability}
           </div>
 
           <button className="mt-12 flex items-center gap-2 text-gray-400 transition hover:text-white">
@@ -59,7 +61,7 @@ export default function Hero() {
             {/* Profile */}
             <div className="relative h-80 w-80 overflow-hidden rounded-full border-4 border-white/10 bg-neutral-800 shadow-2xl lg:h-96 lg:w-96">
               <img
-                src={profile?.profileImageUrl}
+                src={hero?.heroImageUrl}
                 alt={profile?.name}
                 className="h-full w-full object-cover"
               />

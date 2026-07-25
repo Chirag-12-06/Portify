@@ -15,6 +15,7 @@ import ProjectsPage from "../features/projects/pages/ProjectPage";
 import CertificatesPage from "../features/certificates/pages/CertificatePage";
 import ExperiencePage from "../features/experience/pages/ExperiencePage";
 import IssuersPage from "../features/issuer/pages/IssuerPage";
+import HeroPage from "../features/hero/pages/HeroPage";
 
 import { Routes } from "../lib/routes";
 
@@ -44,6 +45,10 @@ const router = createBrowserRouter([
         {
           path: Routes.PROFILE,
           element: <ProfilePage />,
+        },
+        {
+          path: Routes.HERO,
+          element: <HeroPage />,
         },
         {
           path: Routes.SOCIAL_LINKS,

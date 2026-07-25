@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import { useProfile } from "../../hooks/useProfile";
 
 export default function Navbar({ activeSection }) {

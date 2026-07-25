@@ -4,6 +4,14 @@ import { ApiError } from "../../utils/apiError.js";
 export async function getProfile() {
   const profile = await prisma.profile.findFirst();
 
+  // await prisma.about.create({
+  //   data: {
+  //     heading: "About Me",
+  //     content: "Computer Engineering student...",
+  //     profileId: profile.id,
+  //   },
+  // });
+
   if (!profile) {
     throw new ApiError(404, "Profile not found");
   }
