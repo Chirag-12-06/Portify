@@ -1,15 +1,47 @@
 import prisma from "../../lib/prisma.js";
 import { ApiError } from "../../utils/apiError.js";
 
+const projectInclude = {
+  gallery: {
+    orderBy: {
+      displayOrder: "asc",
+    },
+  },
+
+  skills: {
+    include: {
+      skill: true,
+    },
+  },
+
+  techs: {
+    include: {
+      tech: true,
+    },
+  },
+};
+
+async function ensureProjectExists(id) {
+  const project = await prisma.project.findUnique({
+    where: { id },
+  });
+
+  if (!project) {
+    throw new ApiError(404, "Project not found");
+  }
+
+  return project;
+}
+
 export async function createProject(data) {
-  const { images, skillIds, ...projectData } = data;
+  const { gallery, skillIds, techIds, ...projectData } = data;
 
   return prisma.project.create({
     data: {
       ...projectData,
 
-      images: {
-        create: images,
+      gallery: {
+        create: gallery,
       },
 
       skills: {
@@ -21,43 +53,51 @@ export async function createProject(data) {
           },
         })),
       },
+
+      techs: {
+        create: techIds.map((techId) => ({
+          tech: {
+            connect: {
+              id: techId,
+            },
+          },
+        })),
+      },
     },
 
-    include: {
-      images: {
-        orderBy: {
-          displayOrder: "asc",
-        },
-      },
-      skills: {
-        include: {
-          skill: true,
-        },
-      },
-    },
+    include: projectInclude,
   });
 }
 
 export async function getProjects() {
   return prisma.project.findMany({
-    include: {
-      images: {
-        orderBy: {
-          displayOrder: "asc",
-        },
-      },
+    include: projectInclude,
 
-      skills: {
-        include: {
-          skill: true,
-        },
+    orderBy: [
+      {
+        featured: "desc",
       },
-    },
-
-    orderBy: {
-      createdAt: "desc",
-    },
+      {
+        displayOrder: "asc",
+      },
+    ],
   });
+}
+
+export async function getProjectById(id) {
+  const project = await prisma.project.findUnique({
+    where: {
+      id,
+    },
+
+    include: projectInclude,
+  });
+
+  if (!project) {
+    throw new ApiError(404, "Project not found");
+  }
+
+  return project;
 }
 
 export async function getProjectBySlug(slug) {
@@ -66,19 +106,7 @@ export async function getProjectBySlug(slug) {
       slug,
     },
 
-    include: {
-      images: {
-        orderBy: {
-          displayOrder: "asc",
-        },
-      },
-
-      skills: {
-        include: {
-          skill: true,
-        },
-      },
-    },
+    include: projectInclude,
   });
 
   if (!project) {
@@ -89,15 +117,9 @@ export async function getProjectBySlug(slug) {
 }
 
 export async function updateProject(id, data) {
-  const project = await prisma.project.findUnique({
-    where: { id },
-  });
+  await ensureProjectExists(id);
 
-  if (!project) {
-    throw new ApiError(404, "Project not found");
-  }
-
-  const { images, skillIds, ...projectData } = data;
+  const { gallery, skillIds, techIds, ...projectData } = data;
 
   return prisma.project.update({
     where: {
@@ -107,10 +129,10 @@ export async function updateProject(id, data) {
     data: {
       ...projectData,
 
-      ...(images !== undefined && {
-        images: {
+      ...(gallery !== undefined && {
+        gallery: {
           deleteMany: {},
-          create: images,
+          create: gallery,
         },
       }),
 
@@ -126,66 +148,31 @@ export async function updateProject(id, data) {
           })),
         },
       }),
+
+      ...(techIds !== undefined && {
+        techs: {
+          deleteMany: {},
+          create: techIds.map((techId) => ({
+            tech: {
+              connect: {
+                id: techId,
+              },
+            },
+          })),
+        },
+      }),
     },
 
-    include: {
-      images: {
-        orderBy: {
-          displayOrder: "asc",
-        },
-      },
-
-      skills: {
-        include: {
-          skill: true,
-        },
-      },
-    },
+    include: projectInclude,
   });
 }
 
 export async function deleteProject(id) {
-  const project = await prisma.project.findUnique({
-    where: {
-      id,
-    },
-  });
-
-  if (!project) {
-    throw new ApiError(404, "Project not found");
-  }
+  await ensureProjectExists(id);
 
   return prisma.project.delete({
     where: {
       id,
     },
   });
-}
-
-export async function getProjectById(id) {
-  const project = await prisma.project.findUnique({
-    where: {
-      id,
-    },
-
-    include: {
-      images: {
-        orderBy: {
-          displayOrder: "asc",
-        },
-      },
-
-      skills: {
-        include: {
-          skill: true,
-        },
-      },
-    },
-  });
-
-  if (!project) {
-    throw new ApiError(404, "Project not found");
-  }
-
-  return project;
 }

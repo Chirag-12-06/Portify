@@ -8,7 +8,7 @@ import About from "../components/sections/About";
 import Technologies from "../components/sections/Technologies";
 import Skills from "../components/sections/Skills";
 import Experience from "../components/sections/Experience/Experience";
-import Projects from "../components/sections/Projects";
+import Projects from "../components/sections/Projects/Projects";
 import Certificates from "../components/sections/certificates/Certificates";
 import Education from "../components/sections/Education/Education";
 import Socials from "../components/sections/Socials/Socials";

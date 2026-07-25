@@ -1,11 +1,21 @@
 import { z } from "zod";
 
-import {STATUS} from "../constants/status";
+import { STATUS } from "../constants/status";
 
 export const projectSchema = z.object({
-  slug: z.string().trim().min(1, "Slug is required"),
+  slug: z
+    .string()
+    .trim()
+    .min(1, "Slug is required")
+    .regex(
+      /^[a-z0-9]+(?:-[a-z0-9]+)*$/,
+      "Slug can only contain lowercase letters, numbers and hyphens"
+    ),
 
-  title: z.string().trim().min(1, "Title is required"),
+  title: z
+    .string()
+    .trim()
+    .min(1, "Title is required"),
 
   shortDescription: z
     .string()
@@ -17,33 +27,56 @@ export const projectSchema = z.object({
     .trim()
     .min(1, "Full description is required"),
 
+  thumbnailUrl: z
+    .string()
+    .trim()
+    .url("Invalid thumbnail URL"),
+
   githubUrl: z
     .string()
     .trim()
     .transform((value) => (value === "" ? undefined : value))
-    .pipe(z.url("Invalid GitHub URL").optional()),
+    .pipe(z.string().url("Invalid GitHub URL").optional()),
 
   liveUrl: z
     .string()
     .trim()
     .transform((value) => (value === "" ? undefined : value))
-    .pipe(z.url("Invalid Live URL").optional()),
+    .pipe(z.string().url("Invalid Live URL").optional()),
 
   featured: z.boolean(),
 
   isVisible: z.boolean(),
 
   displayOrder: z.coerce
-  .number()
-  .int()
-  .min(1, "Display order must be at least 1"),
+    .number()
+    .int()
+    .min(1, "Display order must be at least 1"),
+
+  projectYear: z.coerce
+    .number()
+    .int()
+    .min(2000)
+    .max(new Date().getFullYear() + 1),
 
   status: z.enum(STATUS),
 
-  images: z.array(
+  gallery: z.array(
     z.object({
-      imageUrl: z.url("Invalid image URL"),
-      displayOrder: z.coerce.number().int().min(1),
+      imageUrl: z
+        .string()
+        .trim()
+        .url("Invalid image URL"),
+
+      displayOrder: z.coerce
+        .number()
+        .int()
+        .min(1),
+
+      caption: z
+        .string()
+        .trim()
+        .optional(),
     })
   ),
 
@@ -58,6 +91,8 @@ export const defaultValues = {
   shortDescription: "",
   fullDescription: "",
 
+  thumbnailUrl: "",
+
   githubUrl: "",
   liveUrl: "",
 
@@ -66,9 +101,11 @@ export const defaultValues = {
 
   displayOrder: 1,
 
-  status: "ONGOING",
+  projectYear: new Date().getFullYear(),
 
-  images: [],
+  status: "IN_PROGRESS",
+
+  gallery: [],
 
   techIds: [],
 

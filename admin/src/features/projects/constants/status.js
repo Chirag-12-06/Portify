@@ -1,1 +1,1 @@
-export const STATUS = ["COMPLETED", "ONGOING"];
+export const STATUS = ["COMPLETED", "IN_PROGRESS"];

@@ -16,7 +16,7 @@ function getStatusVariant(status) {
     case "COMPLETED":
       return "success";
 
-    case "ONGOING":
+    case "IN_PROGRESS":
       return "warning";
 
     default:
@@ -45,7 +45,7 @@ export default function ProjectTable({ projects, onEdit, onDelete }) {
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead className="w-36">Project</TableHead>
+          <TableHead className="w-72">Project</TableHead>
 
           <TableHead className="w-24">Status</TableHead>
 
@@ -62,10 +62,14 @@ export default function ProjectTable({ projects, onEdit, onDelete }) {
           </TableHead>
 
           <TableHead className="w-24" align="center">
-            Images
+            Tech
           </TableHead>
 
           <TableHead className="w-24" align="center">
+            Gallery
+          </TableHead>
+
+          <TableHead className="w-20" align="center">
             Order
           </TableHead>
 
@@ -79,10 +83,20 @@ export default function ProjectTable({ projects, onEdit, onDelete }) {
         {projects.map((project) => (
           <TableRow key={project.id}>
             <TableCell>
-              <div>
-                <p className="font-medium">{project.title}</p>
+              <div className="flex items-center gap-3">
+                <img
+                  src={project.thumbnailUrl}
+                  alt={project.title}
+                  className="h-14 w-20 rounded-md border object-cover"
+                />
 
-                <p className="text-sm text-slate-500">{project.slug}</p>
+                <div>
+                  <p className="font-medium">{project.title}</p>
+
+                  <p className="text-sm text-slate-500">
+                    {project.projectYear} • {project.slug}
+                  </p>
+                </div>
               </div>
             </TableCell>
 
@@ -92,17 +106,29 @@ export default function ProjectTable({ projects, onEdit, onDelete }) {
               </Badge>
             </TableCell>
 
-            <TableCell align="center">{project.featured ? "✓" : "—"}</TableCell>
+            <TableCell align="center">
+              {project.featured ? "✓" : "—"}
+            </TableCell>
 
             <TableCell align="center">
               {project.isVisible ? "✓" : "—"}
             </TableCell>
 
-            <TableCell align="center">{project.skills.length}</TableCell>
+            <TableCell align="center">
+              {project.skills.length}
+            </TableCell>
 
-            <TableCell align="center">{project.images.length}</TableCell>
+            <TableCell align="center">
+              {project.techs.length}
+            </TableCell>
 
-            <TableCell align="center">{project.displayOrder}</TableCell>
+            <TableCell align="center">
+              {project.gallery.length}
+            </TableCell>
+
+            <TableCell align="center">
+              {project.displayOrder}
+            </TableCell>
 
             <TableCell align="right">
               <TableActions

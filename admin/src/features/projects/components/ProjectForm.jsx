@@ -30,7 +30,6 @@ export default function ProjectForm({ project, onClose }) {
     control,
     handleSubmit,
     reset,
-    watch,
     formState: { errors, isDirty },
   } = useForm({
     resolver: zodResolver(projectSchema),
@@ -39,14 +38,11 @@ export default function ProjectForm({ project, onClose }) {
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "images",
+    name: "gallery",
   });
 
   const { data: skills = [] } = useSkills();
   const { data: technologies = [] } = useTechnologies();
-
-  const selectedSkills = watch("skillIds");
-  const selectedTechnologies = watch("techIds");
 
   useEffect(() => {
     if (!project) {
@@ -55,14 +51,28 @@ export default function ProjectForm({ project, onClose }) {
     }
 
     reset({
-      ...project,
+      slug: project.slug,
+      title: project.title,
+      shortDescription: project.shortDescription,
+      fullDescription: project.fullDescription,
+
+      thumbnailUrl: project.thumbnailUrl,
+
       githubUrl: project.githubUrl ?? "",
       liveUrl: project.liveUrl ?? "",
-      images: project.images ?? [],
+
+      featured: project.featured,
+      isVisible: project.isVisible,
+
+      displayOrder: project.displayOrder,
+      projectYear: project.projectYear,
+      status: project.status,
+
+      gallery: project.gallery ?? [],
+
       skillIds: project.skills?.map(({ skill }) => skill.id) ?? [],
-      techIds:
-        project.technologies?.map(({ technology }) => technology.id) ?? [],
-      images: project.images ?? [],
+
+      techIds: project.techs?.map(({ tech }) => tech.id) ?? [],
     });
   }, [project, reset]);
 
@@ -120,6 +130,17 @@ export default function ProjectForm({ project, onClose }) {
 
           <Input
             type="number"
+            label="Project Year"
+            min={2000}
+            max={new Date().getFullYear() + 1}
+            error={errors.projectYear?.message}
+            {...register("projectYear", {
+              valueAsNumber: true,
+            })}
+          />
+
+          <Input
+            type="number"
             min={1}
             label="Display Order"
             error={errors.displayOrder?.message}
@@ -154,6 +175,13 @@ export default function ProjectForm({ project, onClose }) {
         <h3 className="mb-4 text-lg font-semibold">Links</h3>
 
         <div className="grid gap-4 md:grid-cols-2">
+          <Input
+            label="Thumbnail URL"
+            placeholder="https://..."
+            error={errors.thumbnailUrl?.message}
+            {...register("thumbnailUrl")}
+          />
+
           <Input
             label="GitHub URL"
             placeholder="https://github.com/..."
@@ -225,7 +253,7 @@ export default function ProjectForm({ project, onClose }) {
 
         <div>
           <div className="mb-4 flex items-center justify-between">
-            <h3 className="text-lg font-semibold">Project Images</h3>
+            <h3 className="text-lg font-semibold">Project Gallery</h3>
 
             <Button
               type="button"
@@ -233,6 +261,7 @@ export default function ProjectForm({ project, onClose }) {
               onClick={() =>
                 append({
                   imageUrl: "",
+                  caption: "",
                   displayOrder: fields.length + 1,
                 })
               }
@@ -244,20 +273,27 @@ export default function ProjectForm({ project, onClose }) {
           <div className="space-y-4">
             {fields.map((field, index) => (
               <div key={field.id} className="rounded-lg border p-4">
-                <div className="grid gap-4 md:grid-cols-[1fr_120px_auto]">
+                <div className="grid gap-4 md:grid-cols-[2fr_1fr_100px_auto]">
                   <Input
                     label="Image URL"
                     placeholder="https://..."
-                    error={errors.images?.[index]?.imageUrl?.message}
-                    {...register(`images.${index}.imageUrl`)}
+                    error={errors.gallery?.[index]?.imageUrl?.message}
+                    {...register(`gallery.${index}.imageUrl`)}
+                  />
+
+                  <Input
+                    label="Caption"
+                    placeholder="Dashboard"
+                    error={errors.gallery?.[index]?.caption?.message}
+                    {...register(`gallery.${index}.caption`)}
                   />
 
                   <Input
                     type="number"
                     min={1}
                     label="Order"
-                    error={errors.images?.[index]?.displayOrder?.message}
-                    {...register(`images.${index}.displayOrder`, {
+                    error={errors.gallery?.[index]?.displayOrder?.message}
+                    {...register(`gallery.${index}.displayOrder`, {
                       valueAsNumber: true,
                     })}
                   />
@@ -293,7 +329,7 @@ export default function ProjectForm({ project, onClose }) {
           type="button"
           variant="secondary"
           onClick={() => {
-            reset(project ?? defaultValues);
+            reset(defaultValues);
             onClose();
           }}
         >

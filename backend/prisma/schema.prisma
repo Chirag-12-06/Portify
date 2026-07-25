@@ -70,7 +70,7 @@ model Skill {
 
 enum ProjectStatus {
   COMPLETED
-  ONGOING
+  IN_PROGRESS
 }
 
 model Project {
@@ -85,11 +85,12 @@ model Project {
   featured         Boolean       @default(false)
   displayOrder     Int           @default(1)
   status           ProjectStatus
-
+  projectYear      Int
+  thumbnailUrl     String
   createdAt        DateTime      @default(now())
   updatedAt        DateTime      @updatedAt
 
-  images           ProjectImage[]
+  gallery          ProjectImage[]
   skills           ProjectSkill[]
   techs            ProjectTech[]
 }
@@ -98,6 +99,7 @@ model ProjectImage {
   id           String   @id @default(cuid())
   imageUrl     String
   displayOrder Int
+  caption      String?
 
   projectId    String
   project      Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
