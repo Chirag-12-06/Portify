@@ -3,8 +3,8 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { RouterProvider } from "react-router-dom";
 import "./index.css";
-import { queryClient } from "./lib/queryClient";
-import router from "./router";
+import { queryClient } from "./shared/lib/queryClient";
+import router from "./shared/router";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
