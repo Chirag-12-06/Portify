@@ -39,7 +39,7 @@ export default function LeetCodeCard() {
         <div className="flex items-center justify-between px-6 pt-6">
           <div>
             <p className="text-3xl font-bold text-white">
-              {leetcode?.heatmap?.reduce((sum, day) => sum + day.count, 0) ?? 0}
+              {leetcode?.heatmap?.reduce((sum, count) => sum + count, 0) ?? 0}
               <span className="ml-2 text-base font-normal text-slate-400">
                 submissions this year
               </span>
@@ -65,9 +65,11 @@ export default function LeetCodeCard() {
 
         {/* Stats */}
         <div className="mt-auto flex h-20 items-center justify-between border-t border-slate-700 px-6">
-          <span>⭐ Rating : {leetcode?.starRating}</span>
+          <span>⭐ Top Percentage : {leetcode?.topPercentage}%</span>
 
           <span>🏆 Ranking : {leetcode?.ranking}</span>
+
+          <span>⭐ Contest Rating : {leetcode?.contestRating}</span>
 
           <a
             href={leetcode?.profileUrl}

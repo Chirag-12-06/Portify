@@ -8,25 +8,15 @@ function extractUsername(url) {
 }
 
 function buildHeatmap(calendar) {
-  const oneDay = 86400;
-  const today = new Date();
-  const end = Math.floor(today.getTime() / 1000);
+  const SECONDS_PER_DAY = 86400;
+  const end = Math.floor(Date.now() / 1000);
 
-  const cells = [];
+  return Array.from({ length: 365 }, (_, index) => {
+    const ts = end - (364 - index) * SECONDS_PER_DAY;
+    const midnight = ts - (ts % SECONDS_PER_DAY);
 
-  for (let i = 364; i >= 0; i--) {
-    const ts = end - i * oneDay;
-
-    // Normalize to midnight UTC
-    const midnight = ts - (ts % oneDay);
-
-    cells.push({
-      date: new Date(midnight * 1000),
-      count: calendar[midnight] ?? 0,
-    });
-  }
-
-  return cells;
+    return calendar[midnight] ?? 0;
+  });
 }
 
 export async function getLeetCodeStats() {
@@ -62,21 +52,12 @@ export async function getLeetCodeStats() {
 
     profile {
       ranking
-      reputation
-      starRating
     }
 
-    badges {
-      id
-      displayName
-      icon
-    }
   }
 
   userContestRanking(username: $username) {
     rating
-    attendedContestsCount
-    globalRanking
     topPercentage
   }
 }
@@ -89,11 +70,6 @@ export async function getLeetCodeStats() {
         query,
         variables: {
           username,
-        },
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
         },
       },
     );
@@ -127,12 +103,8 @@ export async function getLeetCodeStats() {
       activeDays: user.userCalendar.totalActiveDays,
 
       ranking: user.profile?.ranking,
-      starRating: user.profile?.starRating,
-      badges: user.badges,
 
       contestRating: contest?.rating,
-      attendedContestsCount: contest?.attendedContestsCount,
-      globalRanking: contest?.globalRanking,
       topPercentage: contest?.topPercentage,
 
       heatmap: buildHeatmap(calendar),

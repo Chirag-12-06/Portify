@@ -18,14 +18,22 @@ export default function Heatmap({heatmap}) {
     <div className="overflow-x-auto">
       {/* Grid */}
       <div >
-        <div className="grid grid-flow-col grid-rows-7 gap-1 w-max">
+        {/* <div className="grid grid-flow-col grid-rows-7 gap-1 w-max">
           {heatmap.map((day) => (
             <div
               key={day.id}
               className={`h-3 w-3 rounded-xs ${getColor(day.count)}`}
             />
           ))}
-        </div>
+        </div> */}
+        <div className="grid grid-flow-col grid-rows-7 gap-1 w-max">
+  {heatmap.map((count, index) => (
+    <div
+      key={index}
+      className={`h-3 w-3 rounded-xs ${getColor(count)}`}
+    />
+  ))}
+</div>
 
         {/* Months */}
         <div className="mt-4 flex justify-between text-xs text-slate-400 px-1">
