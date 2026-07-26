@@ -4,7 +4,7 @@ import { scrollToSection } from "../../shared/utils/scrollToSection";
 import { useProfile } from "../profile/hooks/useProfile";
 import { useHeroes } from "./hooks/useHeroes";
 
-import Section from "../../shared/components/common/Section";
+import Section from "../../shared/components/ui/Section";
 
 export default function Hero() {
   const { data: profile } = useProfile();

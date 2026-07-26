@@ -3,10 +3,15 @@ import { ApiError } from "../../utils/apiError.js";
 
 export async function getAbout() {
   const about = await prisma.about.findFirst({
-    include: {
+    select: {
+      id: true,
+      heading: true,
+      content: true,
       highlights: {
-        orderBy: {
-          order: "asc",
+        select: {
+          id: true,
+          stat: true,
+          label: true,
         },
       },
     },

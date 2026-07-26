@@ -9,6 +9,8 @@ import {
   updateProjectController,
   deleteProjectController,
   getProjectByIdController,
+  getProjectCardsController,
+  getFeaturedProjectCardsController,
 } from "./project.controller.js";
 
 const publicRouter = Router();
@@ -17,6 +19,8 @@ const adminRouter = Router();
 /* Public Routes */
 
 publicRouter.get("/", getProjectsController);
+publicRouter.get("/cards", getProjectCardsController);
+publicRouter.get("/featured", getFeaturedProjectCardsController);
 publicRouter.get("/:slug", getProjectBySlugController);
 
 /* Admin Routes */

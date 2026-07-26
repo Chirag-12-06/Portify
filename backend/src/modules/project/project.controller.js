@@ -4,6 +4,8 @@ import {
   getProjectBySlug,
   updateProject,
   deleteProject,
+  getProjectCards,
+  getFeaturedProjectCards,
 } from "./project.service.js";
 
 import {
@@ -42,6 +44,26 @@ export const getProjectBySlugController = asyncHandler(async (req, res) => {
     data: project,
   });
 });
+
+export const getProjectCardsController = asyncHandler(async (req, res) => {
+  const projects = await getProjectCards();
+
+  return res.status(200).json({
+    success: true,
+    data: projects,
+  });
+});
+
+export const getFeaturedProjectCardsController = asyncHandler(
+  async (req, res) => {
+    const projects = await getFeaturedProjectCards();
+
+    return res.status(200).json({
+      success: true,
+      data: projects,
+    });
+  }
+);
 
 export const updateProjectController = asyncHandler(async (req, res) => {
   const data = updateProjectSchema.parse(req.body);

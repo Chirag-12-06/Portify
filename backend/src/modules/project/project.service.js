@@ -21,6 +21,98 @@ const projectInclude = {
   },
 };
 
+const projectSelect = {
+  // id: true,
+  title: true,
+  shortDescription: true,
+  fullDescription: true,
+  status: true,
+  projectYear: true,
+  thumbnailUrl: true,
+  githubUrl: true,
+  liveUrl: true,
+
+  gallery: {
+    select: {
+      // id: true,
+      imageUrl: true,
+      caption: true,
+    },
+    orderBy: {
+      displayOrder: "asc",
+    },
+  },
+
+  techs: {
+    select: {
+      tech: {
+        select: {
+          // id: true,
+          name: true,
+          imageUrl: true,
+          category: true,
+        },
+      },
+    },
+  },
+
+  skills: {
+    select: {
+      skill: {
+        select: {
+          // id: true,
+          name: true,
+        },
+      },
+    },
+  },
+};
+
+const projectCardSelect = {
+  id: true,
+  slug: true,
+  title: true,
+  shortDescription: true,
+  status: true,
+  projectYear: true,
+  thumbnailUrl: true,
+  githubUrl: true,
+  liveUrl: true,
+  techs: {
+    select: {
+      tech: {
+        select: {
+          id: true,
+          name: true,
+          imageUrl: true,
+        },
+      },
+    },
+  },
+};
+
+const featuredProjectCardSelect = {
+  id: true,
+  slug: true,
+  title: true,
+  shortDescription: true,
+  status: true,
+  projectYear: true,
+  thumbnailUrl: true,
+  githubUrl: true,
+  liveUrl: true,
+  techs: {
+    select: {
+      tech: {
+        select: {
+          id: true,
+          imageUrl: true,
+        },
+      },
+    },
+  },
+};
+
 async function ensureProjectExists(id) {
   const project = await prisma.project.findUnique({
     where: { id },
@@ -102,18 +194,65 @@ export async function getProjectById(id) {
 
 export async function getProjectBySlug(slug) {
   const project = await prisma.project.findUnique({
-    where: {
-      slug,
-    },
-
-    include: projectInclude,
+    where: { slug },
+    select: projectSelect,
   });
 
   if (!project) {
     throw new ApiError(404, "Project not found");
   }
 
-  return project;
+  return {
+    ...project,
+
+    techs: project.techs.map(({ tech }) => tech),
+
+    skills: project.skills.map(({ skill }) => skill),
+  };
+}
+
+export async function getProjectCards() {
+  const projects = await prisma.project.findMany({
+    where: {
+      isVisible: true,
+    },
+
+    select: projectCardSelect,
+
+    orderBy: [
+      {
+        featured: "desc",
+      },
+      {
+        displayOrder: "asc",
+      },
+    ],
+  });
+
+  return projects.map((project) => ({
+    ...project,
+    techs: project.techs.map(({ tech }) => tech),
+  }));
+}
+
+export async function getFeaturedProjectCards() {
+  const projects = await prisma.project.findMany({
+    where: {
+      isVisible: true,
+      featured: true,
+    },
+
+    select: featuredProjectCardSelect,
+
+    orderBy: {
+      displayOrder: "asc",
+    },
+  });
+
+  return projects.map((project) => ({
+    ...project,
+    techs: project.techs.map(({ tech }) => tech),
+  }));
 }
 
 export async function updateProject(id, data) {

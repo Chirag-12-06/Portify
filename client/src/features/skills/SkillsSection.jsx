@@ -1,5 +1,5 @@
 
-import Section from "../../shared/components/common/Section";
+import Section from "../../shared/components/ui/Section";
 import { useSkills } from "./hooks/useSkills";
 import { useState, useMemo } from "react";
 import { skillLabels } from "./constants/skillLabels";

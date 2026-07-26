@@ -1,22 +1,22 @@
 import { useNavigate } from "react-router-dom";
 
-import Section from "../../shared/components/common/Section";
+import Section from "../../shared/components/ui/Section";
 
 import ProjectCard from "./components/ProjectCard";
 
-import { useProjects } from "./hooks/useProjects";
+import { useFeaturedProjectCards } from "./hooks/useFeaturedProjectCards";
 
 export default function Projects() {
   const navigate = useNavigate();
 
-  const { data: projects = [] } = useProjects();
+  const { data: featuredProjects = [] } = useFeaturedProjectCards();
 
   return (
     <Section id="projects" title="Projects">
       <div>
         <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
-          {projects.map((project) => (
-            <ProjectCard key={project.id} project={project} />
+          {featuredProjects.map((featuredProject) => (
+            <ProjectCard key={featuredProject.id} project={featuredProject} />
           ))}
         </div>
 

@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import Footer from "../../footer/FooterSection";
 import ProjectCard from "../components/ProjectCard";
 
-import { useProjects } from "../hooks/useProjects";
+import { useProjectCards } from "../hooks/useProjectCards";
 import { useTechnologies } from "../../technologies/hooks/useTechnologies";
 
 export default function ProjectsPage() {
@@ -13,10 +13,10 @@ export default function ProjectsPage() {
   const [status, setStatus] = useState("");
   const [technology, setTechnology] = useState("");
 
-  const { data: projects = [] } = useProjects();
+  const { data: projectCards = [] } = useProjectCards();
   const { data: technologies = [] } = useTechnologies();
 
-  const filteredProjects = projects.filter((project) => {
+  const filteredProjects = projectCards.filter((project) => {
     const matchesSearch =
       project.title.toLowerCase().includes(search.toLowerCase()) ||
       project.shortDescription.toLowerCase().includes(search.toLowerCase());

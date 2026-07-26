@@ -1,4 +1,4 @@
-import Section from "../../shared/components/common/Section";
+import Section from "../../shared/components/ui/Section";
 import { useTechnologies } from "./hooks/useTechnologies";
 import { useState, useMemo } from "react";
 import { technologyLabels } from "./constants/technologyLabels";

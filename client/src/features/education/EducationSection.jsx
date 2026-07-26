@@ -1,4 +1,4 @@
-import Section from "../../shared/components/common/Section";
+import Section from "../../shared/components/ui/Section";
 
 import EducationCard from "./components/EducationCard";
 import { useEducations } from "./hooks/useEducations";

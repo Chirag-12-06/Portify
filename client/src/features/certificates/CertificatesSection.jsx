@@ -1,4 +1,4 @@
-import Section from "../../shared/components/common/Section";
+import Section from "../../shared/components/ui/Section";
 import { useCertificates } from "./hooks/useCertificates";
 import CertificateCard from "./components/CertificateCard";
 import { useNavigate } from "react-router-dom";

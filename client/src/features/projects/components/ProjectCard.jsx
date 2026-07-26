@@ -1,11 +1,17 @@
 import { ArrowUpRight } from "lucide-react";
 import { FaGithub } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
-import Badge from "../../../shared/components/common/Badge";
+import Badge from "../../../shared/components/ui/Badge";
 
 export default function ProjectCard({ project }) {
+  const navigate = useNavigate();
+
   return (
-    <article className="group overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-200 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl dark:bg-slate-900 dark:ring-slate-800">
+    <article
+      onClick={() => navigate(`/projects/${project.slug}`)}
+      className="group overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-200 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl dark:bg-slate-900 dark:ring-slate-800"
+    >
       {/* Screenshot */}
       <div className="relative aspect-16/10 overflow-hidden">
         <img
@@ -36,15 +42,15 @@ export default function ProjectCard({ project }) {
         </h3>
 
         {/* Description */}
-        <p className="mt-3 h-[72px] overflow-hidden text-sm leading-6 text-slate-600 dark:text-slate-400">
+        <p className="mt-3 h-18 overflow-hidden text-sm leading-6 text-slate-600 dark:text-slate-400">
           {project.shortDescription}
         </p>
 
         {/* Tech */}
         <div className="mt-5 flex items-center">
-          {project.techs.slice(0, 5).map(({ tech }, index) => (
+          {project.techs.slice(0, 5).map((tech, index) => (
             <div
-              key={tech.id}
+              key={tech.name}
               className={`relative flex h-10 w-10 items-center justify-center rounded-full bg-slate-800 ring-2 ring-slate-900 ${
                 index !== 0 ? "-ml-2" : ""
               }`}
@@ -72,6 +78,7 @@ export default function ProjectCard({ project }) {
               href={project.githubUrl}
               target="_blank"
               rel="noreferrer"
+              onClick={(e) => e.stopPropagation()}
               className="flex items-center gap-2 text-sm font-medium text-slate-700 transition hover:text-primary"
             >
               <FaGithub size={18} />
@@ -84,6 +91,7 @@ export default function ProjectCard({ project }) {
               href={project.liveUrl}
               target="_blank"
               rel="noreferrer"
+              onClick={(e) => e.stopPropagation()}
               className="flex items-center gap-2 text-sm font-medium text-slate-700 transition hover:text-primary"
             >
               <ArrowUpRight size={18} />

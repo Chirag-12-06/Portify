@@ -1,4 +1,4 @@
-import Section from "../../shared/components/common/Section";
+import Section from "../../shared/components/ui/Section";
 
 import { useAbout } from "./hooks/useAbout";
 
