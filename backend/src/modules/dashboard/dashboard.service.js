@@ -4,6 +4,7 @@ export async function getDashboardStats() {
   const [
     projects,
     skills,
+    techs,
     certificates,
     experiences,
     education,
@@ -11,6 +12,7 @@ export async function getDashboardStats() {
   ] = await Promise.all([
     prisma.project.count(),
     prisma.skill.count(),
+    prisma.tech.count(),
     prisma.certificate.count(),
     prisma.experience.count(),
     prisma.education.count(),
@@ -24,6 +26,7 @@ export async function getDashboardStats() {
   return {
     projects,
     skills,
+    techs,
     certificates,
     experiences,
     education,

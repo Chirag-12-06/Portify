@@ -7,7 +7,6 @@ import {
   Mail,
 } from "lucide-react";
 
-import PageHeader from "../../../components/ui/PageHeader";
 import Spinner from "../../../components/ui/Spinner";
 
 import StatsCard from "../components/StatsCard";
@@ -37,6 +36,12 @@ export default function DashboardPage() {
   <StatsCard
     title="Skills"
     value={stats.skills}
+    icon={Wrench}
+  />
+
+  <StatsCard
+    title="Technologies"
+    value={stats.techs}
     icon={Wrench}
   />
 

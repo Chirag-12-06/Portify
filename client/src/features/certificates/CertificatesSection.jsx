@@ -1,11 +1,11 @@
 import Section from "../../shared/components/ui/Section";
-import { useCertificates } from "./hooks/useCertificates";
+import { useFeaturedCertificates } from "./hooks/useCertificates";
 import CertificateCard from "./components/CertificateCard";
 import { useNavigate } from "react-router-dom";
 
 export default function Certificates() {
   const navigate = useNavigate();
-  const { data: certificates } = useCertificates();
+  const { data: certificates } = useFeaturedCertificates();
 
   return (
     <Section id="certificates" title="Certificates">

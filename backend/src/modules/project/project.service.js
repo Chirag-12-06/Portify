@@ -22,7 +22,6 @@ const projectInclude = {
 };
 
 const projectSelect = {
-  // id: true,
   title: true,
   shortDescription: true,
   fullDescription: true,
@@ -34,7 +33,6 @@ const projectSelect = {
 
   gallery: {
     select: {
-      // id: true,
       imageUrl: true,
       caption: true,
     },
@@ -47,7 +45,6 @@ const projectSelect = {
     select: {
       tech: {
         select: {
-          // id: true,
           name: true,
           imageUrl: true,
           category: true,
@@ -83,6 +80,7 @@ const projectCardSelect = {
       tech: {
         select: {
           id: true,
+          category: true,
           name: true,
           imageUrl: true,
         },
@@ -105,7 +103,6 @@ const featuredProjectCardSelect = {
     select: {
       tech: {
         select: {
-          id: true,
           imageUrl: true,
         },
       },

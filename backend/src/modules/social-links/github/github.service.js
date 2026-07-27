@@ -8,22 +8,16 @@ function extractUsername(url) {
 }
 
 function buildHeatmap(contributionMap) {
-  const cells = [];
   const today = new Date();
 
-  for (let i = 364; i >= 0; i--) {
+  return Array.from({ length: 365 }, (_, index) => {
     const date = new Date(today);
-    date.setDate(today.getDate() - i);
+    date.setDate(today.getDate() - (364 - index));
 
     const key = date.toISOString().split("T")[0];
 
-    cells.push({
-      date: key,
-      count: contributionMap[key]?.count ?? 0,
-    });
-  }
-
-  return cells;
+    return contributionMap[key]?.count ?? 0;
+  });
 }
 
 export async function getGithubStats() {

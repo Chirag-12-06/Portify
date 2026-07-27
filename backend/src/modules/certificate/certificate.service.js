@@ -1,6 +1,60 @@
 import prisma from "../../lib/prisma.js";
 import { ApiError } from "../../utils/apiError.js";
 
+const certificateCardSelect = {
+  id: true,
+  title: true,
+  credentialUrl: true,
+  badgeImageUrl: true,
+  issueDate: true,
+  expiryDate: true,
+
+  issuer: {
+    select: {
+      id: true,
+      name: true,
+      logo: true,
+    },
+  },
+
+  skills: {
+    select: {
+      skill: {
+        select: {
+          name: true,
+          category: true,
+        },
+      },
+    },
+  },
+};
+
+const featuredCertificateCardSelect = {
+  id: true,
+  title: true,
+  credentialUrl: true,
+  badgeImageUrl: true,
+  issueDate: true,
+  expiryDate: true,
+
+  issuer: {
+    select: {
+      name: true,
+      logo: true,
+    },
+  },
+
+  skills: {
+    select: {
+      skill: {
+        select: {
+          name: true,
+        },
+      },
+    },
+  },
+};
+
 export async function createCertificate(data) {
   const { skillIds, ...certificateData } = data;
 
@@ -67,6 +121,28 @@ export async function getCertificateById(id) {
   }
 
   return certificate;
+}
+
+export async function getCertificateCards(){
+  return prisma.certificate.findMany({
+    where: {
+      isVisible: true,
+    },
+    select: certificateCardSelect,
+  });
+}
+
+export async function getFeaturedCertificates() {
+  return prisma.certificate.findMany({
+    where: {
+      featured: true,
+      isVisible: true,
+    },
+    select: featuredCertificateCardSelect,
+    orderBy: {
+      displayOrder: "asc",
+    },
+  });
 }
 
 export async function updateCertificate(id, data) {

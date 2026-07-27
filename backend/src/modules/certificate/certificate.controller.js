@@ -6,6 +6,8 @@ import {
   getCertificateById,
   updateCertificate,
   deleteCertificate,
+  getFeaturedCertificates,
+  getCertificateCards,
 } from "./certificate.service.js";
 
 import {
@@ -27,6 +29,24 @@ export const createCertificateController = asyncHandler(async (req, res) => {
 
 export const getCertificatesController = asyncHandler(async (req, res) => {
   const certificates = await getCertificates();
+
+  return res.status(200).json({
+    success: true,
+    data: certificates,
+  });
+});
+
+export const getCertificateCardsController = asyncHandler(async (req, res) => {
+  const certificates = await getCertificateCards();
+
+  return res.status(200).json({
+    success: true,
+    data: certificates,
+  });
+});
+
+export const getFeaturedCertificatesController = asyncHandler(async (req, res) => {
+  const certificates = await getFeaturedCertificates();
 
   return res.status(200).json({
     success: true,

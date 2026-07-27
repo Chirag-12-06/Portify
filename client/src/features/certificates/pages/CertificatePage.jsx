@@ -1,36 +1,53 @@
 import { ArrowLeft } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import CertificateCard from "../components/CertificateCard";
 import Footer from "../../footer/FooterSection";
-import {
-  useCertificates,
-  useIssuers,
-} from "../hooks/useCertificates";
+import { skillLabels } from "../../skills/constants/skillLabels";
 import { useSkills } from "../../skills/hooks/useSkills";
+import CertificateCard from "../components/CertificateCard";
+import { useCertificateCards, useIssuers } from "../hooks/useCertificates";
 
 export default function CertificatesPage() {
   const [search, setSearch] = useState("");
   const [issuer, setIssuer] = useState("");
+  const [skillCategory, setSkillCategory] = useState("");
   const [skill, setSkill] = useState("");
-  const { data: certificates } = useCertificates();
-  const { data: skills } = useSkills();
-  const { data: issuers } = useIssuers();
 
-  const filteredCertificates = certificates?.filter((certificate) => {
+  const { data: certificates = [] } = useCertificateCards();
+  const { data: skills = [] } = useSkills();
+  const { data: issuers = [] } = useIssuers();
+
+  // Unique skill categories
+  const categories = [...new Set(skills.map((skill) => skill.category))];
+
+  // Skills shown in dropdown
+  const filteredSkills =
+    skillCategory === ""
+      ? skills
+      : skills.filter((skill) => skill.category === skillCategory);
+
+  // Filter certificates
+  const filteredCertificates = certificates.filter((certificate) => {
     const matchesSearch = certificate.title
       .toLowerCase()
       .includes(search.toLowerCase());
 
-    const matchesIssuer = certificate.issuer.name
-      .toLowerCase()
-      .includes(issuer.toLowerCase());
+    const matchesIssuer =
+      issuer === "" ||
+      certificate.issuer.name.toLowerCase() === issuer.toLowerCase();
+
+    const matchesCategory =
+      skillCategory === "" ||
+      certificate.skills.some(({ skill }) => skill.category === skillCategory);
 
     const matchesSkill =
-      skills?.some((s) => s.id === certificate.skillId) ||
-      certificate.skillId === "";
+      skill === "" ||
+      certificate.skills.some(
+        ({ skill: certSkill }) =>
+          certSkill.name.toLowerCase() === skill.toLowerCase(),
+      );
 
-    return matchesSearch && matchesIssuer && matchesSkill;
+    return matchesSearch && matchesIssuer && matchesCategory && matchesSkill;
   });
 
   return (
@@ -56,50 +73,84 @@ export default function CertificatesPage() {
           </div>
 
           {/* Filters */}
-          <div className="grid gap-4 md:grid-cols-3">
+          <div className="space-y-4">
+            {/* Search */}
             <input
               type="text"
               placeholder="Search certificates..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="h-11 rounded-lg border border-border bg-background px-4 outline-none transition focus:ring-2 focus:ring-primary"
+              className="h-11 w-full rounded-lg border border-border bg-background px-4 outline-none transition focus:ring-2 focus:ring-primary"
             />
 
-            <select
-              value={issuer}
-              onChange={(e) => setIssuer(e.target.value)}
-              className="h-11 rounded-lg border border-border bg-background px-4 outline-none transition focus:ring-2 focus:ring-primary"
-            >
-              <option value="" className="text-black">
-                All Issuers
-              </option>
-
-              {issuers?.map((issuer) => (
-                <option
-                  className="text-black"
-                  key={issuer.id}
-                  value={issuer.name}
-                >
-                  {issuer.name}
+            {/* Filters */}
+            <div className="grid gap-4 md:grid-cols-3">
+              {/* Issuer */}
+              <select
+                value={issuer}
+                onChange={(e) => setIssuer(e.target.value)}
+                className="h-11 rounded-lg border border-border bg-background px-4 outline-none transition focus:ring-2 focus:ring-primary"
+              >
+                <option value="" className="text-black">
+                  All Issuers
                 </option>
-              ))}
-            </select>
 
-            <select
-              value={skill}
-              onChange={(e) => setSkill(e.target.value)}
-              className="h-11 rounded-lg border border-border bg-background px-4 outline-none transition focus:ring-2 focus:ring-primary"
-            >
-              <option value="" className="text-black">
-                All Skills
-              </option>
+                {issuers.map((issuer) => (
+                  <option
+                    key={issuer.id}
+                    value={issuer.name}
+                    className="text-black"
+                  >
+                    {issuer.name}
+                  </option>
+                ))}
+              </select>
 
-              {skills?.map((skill) => (
-                <option className="text-black" key={skill.id} value={skill.name}>
-                  {skill.name}
+              {/* Skill Category */}
+              <select
+                value={skillCategory}
+                onChange={(e) => {
+                  setSkillCategory(e.target.value);
+                  setSkill("");
+                }}
+                className="h-11 rounded-lg border border-border bg-background px-4 outline-none transition focus:ring-2 focus:ring-primary"
+              >
+                <option value="" className="text-black">
+                  All Categories
                 </option>
-              ))}
-            </select>
+
+                {categories.map((category) => (
+                  <option
+                    key={category}
+                    value={category}
+                    className="text-black"
+                  >
+                    {skillLabels[category]}
+                  </option>
+                ))}
+              </select>
+
+              {/* Skill */}
+              <select
+                value={skill}
+                onChange={(e) => setSkill(e.target.value)}
+                className="h-11 rounded-lg border border-border bg-background px-4 outline-none transition focus:ring-2 focus:ring-primary"
+              >
+                <option value="" className="text-black">
+                  All Skills
+                </option>
+
+                {filteredSkills.map((skill) => (
+                  <option
+                    key={skill.id}
+                    value={skill.name}
+                    className="text-black"
+                  >
+                    {skill.name}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
         </div>
       </div>

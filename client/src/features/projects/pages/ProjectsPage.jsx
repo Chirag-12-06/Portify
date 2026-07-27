@@ -8,13 +8,23 @@ import ProjectCard from "../components/ProjectCard";
 import { useProjectCards } from "../hooks/useProjectCards";
 import { useTechnologies } from "../../technologies/hooks/useTechnologies";
 
+import {technologyLabels} from "../../technologies/constants/technologyLabels";
+
 export default function ProjectsPage() {
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("");
+  const [technologyCategory, setTechnologyCategory] = useState("");
   const [technology, setTechnology] = useState("");
 
   const { data: projectCards = [] } = useProjectCards();
   const { data: technologies = [] } = useTechnologies();
+
+  const categories = [...new Set(technologies.map((tech) => tech.category))];
+
+  const filteredTechnologies =
+    technologyCategory === ""
+      ? technologies
+      : technologies.filter((tech) => tech.category === technologyCategory);
 
   const filteredProjects = projectCards.filter((project) => {
     const matchesSearch =
@@ -23,13 +33,19 @@ export default function ProjectsPage() {
 
     const matchesStatus = status === "" || project.status === status;
 
+    const matchesCategory =
+      technologyCategory === "" ||
+      project.techs.some((tech) => tech.category === technologyCategory);
+
     const matchesTechnology =
       technology === "" ||
       project.techs.some(
-        ({ tech }) => tech.name.toLowerCase() === technology.toLowerCase(),
+        (tech) => tech.name.toLowerCase() === technology.toLowerCase(),
       );
 
-    return matchesSearch && matchesStatus && matchesTechnology;
+    return (
+      matchesSearch && matchesStatus && matchesTechnology && matchesCategory
+    );
   });
 
   return (
@@ -55,49 +71,81 @@ export default function ProjectsPage() {
             </Link>
           </div>
 
-          {/* Filters */}
-          <div className="grid gap-4 md:grid-cols-3">
+          <div className="space-y-4">
+            {/* Search */}
             <input
               type="text"
               placeholder="Search projects..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="h-11 rounded-lg border border-border bg-background px-4 outline-none transition focus:ring-2 focus:ring-primary"
+              className="h-11 w-full rounded-lg border border-border bg-background px-4 outline-none transition focus:ring-2 focus:ring-primary"
             />
-
-            <select
-              value={status}
-              onChange={(e) => setStatus(e.target.value)}
-              className="h-11 rounded-lg border border-border bg-background px-4 outline-none transition focus:ring-2 focus:ring-primary"
-            >
-              <option value="" className="text-black">
-                All Status
-              </option>
-
-              <option value="COMPLETED" className="text-black">
-                Completed
-              </option>
-
-              <option value="IN_PROGRESS" className="text-black">
-                In Progress
-              </option>
-            </select>
-
-            <select
-              value={technology}
-              onChange={(e) => setTechnology(e.target.value)}
-              className="h-11 rounded-lg border border-border bg-background px-4 outline-none transition focus:ring-2 focus:ring-primary"
-            >
-              <option value="" className="text-black">
-                All Technologies
-              </option>
-
-              {technologies.map((tech) => (
-                <option key={tech.id} value={tech.name} className="text-black">
-                  {tech.name}
+            {/* Filters */}
+            <div className="grid gap-4 md:grid-cols-3">
+              {/* Status */}
+              <select
+                value={status}
+                onChange={(e) => setStatus(e.target.value)}
+                className="h-11 rounded-lg border border-border bg-background px-4 outline-none transition focus:ring-2 focus:ring-primary"
+              >
+                <option value="" className="text-black">
+                  All Status
                 </option>
-              ))}
-            </select>
+
+                <option value="COMPLETED" className="text-black">
+                  Completed
+                </option>
+
+                <option value="IN_PROGRESS" className="text-black">
+                  In Progress
+                </option>
+              </select>
+
+              {/* Category */}
+              <select
+                value={technologyCategory}
+                onChange={(e) => {
+                  setTechnologyCategory(e.target.value);
+                  setTechnology(""); // Reset selected technology
+                }}
+                className="h-11 rounded-lg border border-border bg-background px-4 outline-none transition focus:ring-2 focus:ring-primary"
+              >
+                <option value="" className="text-black">
+                  Technology Categories
+                </option>
+
+                {categories.map((category) => (
+                  <option
+                    key={category}
+                    value={category}
+                    className="text-black"
+                  >
+                    {technologyLabels[category]}
+                  </option>
+                ))}
+              </select>
+
+              {/* Technology */}
+              <select
+                value={technology}
+                onChange={(e) => setTechnology(e.target.value)}
+                className="h-11 rounded-lg border border-border bg-background px-4 outline-none transition focus:ring-2 focus:ring-primary"
+              >
+                <option value="" className="text-black">
+                  All Technologies
+                </option>
+
+                {filteredTechnologies.map((tech) => (
+                  <option
+                    key={tech.id}
+                    value={tech.name}
+                    className="text-black"
+                  >
+                    {tech.name}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
         </div>
       </div>

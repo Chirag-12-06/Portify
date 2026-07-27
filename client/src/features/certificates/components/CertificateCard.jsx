@@ -6,24 +6,22 @@ export default function CertificateCard({ certificate }) {
       {/* Header */}
       <div className="flex items-start justify-between gap-6">
         <div className="flex flex-col gap-2">
-  <div className="flex items-center gap-2">
-    <div className="flex h-14 w-14 items-center justify-center overflow-hidden rounded-xl bg-white">
-      <img
-        src={certificate.issuer.logo}
-        alt={certificate.issuer.name}
-        className="h-full w-full object-contain p-2"
-      />
-    </div>
+          <div className="flex items-center gap-3">
+            <div className="flex h-14 w-14 items-center justify-center overflow-hidden rounded-xl bg-white">
+              <img
+                src={certificate.issuer.logo}
+                alt={certificate.issuer.name}
+                className="h-full w-full object-contain p-2"
+              />
+            </div>
 
-    <p className="text-xl">
-      {certificate.issuer.name}
-    </p>
-  </div>
+            <p className="text-xl">{certificate.issuer.name}</p>
+          </div>
 
-  <h3 className="text-2xl font-bold text-white">
-    {certificate.title}
-  </h3>
-</div>
+          <h3 className="text-2xl font-bold text-white">
+            {certificate.title}
+          </h3>
+        </div>
 
         <a
           href={certificate.credentialUrl}
@@ -38,17 +36,15 @@ export default function CertificateCard({ certificate }) {
 
       {/* Skills */}
       <div className="mt-6 flex flex-wrap gap-2">
-        {certificate.skills.slice(0, 5).map(({ skill }) => (
-          <div
-            key={skill.id}
-            className="flex items-center gap-2 rounded-full border border-slate-700 bg-slate-800 px-3 py-1"
-          >
-            <span className="text-xs font-medium text-slate-300">
-              {skill.name}
-            </span>
-          </div>
-        ))}
-      </div>
+  {certificate.skills.slice(0, 5).map(({ skill }) => (
+    <span
+      key={skill.name}
+      className="rounded-full border border-slate-700 bg-slate-800 px-3 py-1 text-xs font-medium text-slate-300"
+    >
+      {skill.name}
+    </span>
+  ))}
+</div>
     </div>
   );
 }

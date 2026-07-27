@@ -5,6 +5,8 @@ import Footer from "../../footer/FooterSection";
 
 import { useProjectBySlug } from "../hooks/useProjectBySlug";
 
+import { technologyLabels } from "../../technologies/constants/technologyLabels";
+
 export default function ProjectSlugPage() {
   const { slug } = useParams();
   const navigate = useNavigate();
@@ -66,7 +68,6 @@ export default function ProjectSlugPage() {
           </div>
         </div>
       </div>
-
       {/* Hero */}
       <section className="mx-auto grid max-w-7xl gap-12 px-6 py-16 lg:grid-cols-2">
         <div>
@@ -92,19 +93,6 @@ export default function ProjectSlugPage() {
               {project?.projectYear}
             </div>
           </div>
-
-          {/* <div className="mt-10 flex flex-wrap gap-3">
-            {project?.techs.map((tech) => (
-              <div
-                key={tech.id}
-                className="flex items-center gap-2 rounded-full border border-border px-4 py-2"
-              >
-                <img src={tech.imageUrl} alt={tech.name} className="h-5 w-5" />
-
-                <span>{tech.name}</span>
-              </div>
-            ))}
-          </div> */}
         </div>
 
         <div>
@@ -115,7 +103,6 @@ export default function ProjectSlugPage() {
           />
         </div>
       </section>
-
       {/* Overview */}
       <section className="mx-auto max-w-5xl px-6 py-10">
         <h2 className="mb-6 text-3xl font-bold">Overview</h2>
@@ -124,7 +111,6 @@ export default function ProjectSlugPage() {
           {project?.fullDescription}
         </p>
       </section>
-
       {/* Gallery */}
       {project?.gallery.length > 0 && (
         <section className="mx-auto max-w-7xl px-6 py-10">
@@ -142,7 +128,6 @@ export default function ProjectSlugPage() {
           </div>
         </section>
       )}
-
       {/* Technology Stack */}
       <section className="mx-auto max-w-7xl px-6 py-10">
         <h2 className="mb-8 text-3xl font-bold">Technology Stack</h2>
@@ -159,7 +144,7 @@ export default function ProjectSlugPage() {
         ).map(([category, techs]) => (
           <div key={category} className="mb-8">
             <h3 className="mb-4 text-lg font-semibold text-muted-foreground">
-              {category.replace("_", " ")}
+              {technologyLabels[category]}
             </h3>
 
             <div className="flex flex-wrap gap-4">
@@ -181,7 +166,6 @@ export default function ProjectSlugPage() {
           </div>
         ))}
       </section>
-
       {/* Skills Demonstrated */}
       <section className="mx-auto max-w-7xl px-6 py-10">
         <h2 className="mb-8 text-3xl font-bold">Skills Demonstrated</h2>
@@ -196,8 +180,8 @@ export default function ProjectSlugPage() {
             </span>
           ))}
         </div>
-      </section>x
-
+      </section>
+      x
       <Footer />
     </main>
   );

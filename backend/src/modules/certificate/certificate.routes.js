@@ -8,6 +8,8 @@ import {
   getCertificateByIdController,
   updateCertificateController,
   deleteCertificateController,
+  getFeaturedCertificatesController,
+  getCertificateCardsController,
 } from "./certificate.controller.js";
 
 const publicRouter = Router();
@@ -16,6 +18,8 @@ const adminRouter = Router();
 /* ---------- Public Routes ---------- */
 
 publicRouter.get("/", getCertificatesController);
+publicRouter.get("/featured", getFeaturedCertificatesController);
+publicRouter.get("/cards", getCertificateCardsController);
 publicRouter.get("/:id", getCertificateByIdController);
 
 /* ---------- Admin Routes ---------- */
