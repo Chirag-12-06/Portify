@@ -8,7 +8,7 @@ import ProjectCard from "../components/ProjectCard";
 import { useProjectCards } from "../hooks/useProjectCards";
 import { useTechnologies } from "../../technologies/hooks/useTechnologies";
 
-import {technologyLabels} from "../../technologies/constants/technologyLabels";
+import { technologyLabels } from "../../technologies/constants/technologyLabels";
 
 export default function ProjectsPage() {
   const [search, setSearch] = useState("");
