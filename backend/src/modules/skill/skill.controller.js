@@ -2,6 +2,7 @@ import { asyncHandler } from "../../utils/asyncHandler.js";
 
 import {
   createSkill,
+  resolveSkill,
   getSkills,
   getSkillById,
   updateSkill,
@@ -21,6 +22,18 @@ export const createSkillController = asyncHandler(async (req, res) => {
   return res.status(201).json({
     success: true,
     message: "Skill created successfully",
+    data: skill,
+  });
+});
+
+export const resolveSkillController = asyncHandler(async (req, res) => {
+  const data = createSkillSchema.parse(req.body);
+
+  const skill = await resolveSkill(data);
+
+  return res.status(200).json({
+    success: true,
+    message: "Skill resolved successfully",
     data: skill,
   });
 });

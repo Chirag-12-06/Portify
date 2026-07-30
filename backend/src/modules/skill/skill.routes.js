@@ -4,6 +4,7 @@ import { authenticate } from "../../middleware/auth.middleware.js";
 
 import {
   createSkillController,
+  resolveSkillController,
   getSkillsController,
   getSkillByIdController,
   updateSkillController,
@@ -23,6 +24,7 @@ publicRouter.get("/:id", getSkillByIdController);
 adminRouter.use(authenticate);
 
 adminRouter.post("/", createSkillController);
+adminRouter.post("/resolve", resolveSkillController);
 adminRouter.put("/:id", updateSkillController);
 adminRouter.delete("/:id", deleteSkillController);
 adminRouter.get("/", getSkillsController);

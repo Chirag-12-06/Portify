@@ -4,6 +4,7 @@ import { authenticate } from "../../middleware/auth.middleware.js";
 
 import {
   createIssuerController,
+  resolveIssuerController,
   getIssuersController,
   getIssuerByIdController,
   updateIssuerController,
@@ -23,6 +24,7 @@ publicRouter.get("/:id", getIssuerByIdController);
 adminRouter.use(authenticate);
 
 adminRouter.post("/", createIssuerController);
+adminRouter.post("/resolve", resolveIssuerController);
 adminRouter.put("/:id", updateIssuerController);
 adminRouter.delete("/:id", deleteIssuerController);
 adminRouter.get("/", getIssuersController);

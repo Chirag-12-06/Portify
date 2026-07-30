@@ -7,6 +7,22 @@ export async function createSkill(data) {
   });
 }
 
+export async function resolveSkill(data) {
+  const existing = await prisma.skill.findUnique({
+    where: {
+      name: data.name,
+    },
+  });
+
+  if (existing) {
+    return existing;
+  }
+
+  return prisma.skill.create({
+    data,
+  });
+}
+
 export async function getSkills(category) {
   return prisma.skill.findMany({
     where: category

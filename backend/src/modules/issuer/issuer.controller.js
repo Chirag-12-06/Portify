@@ -2,6 +2,7 @@ import { asyncHandler } from "../../utils/asyncHandler.js";
 
 import {
   createIssuer,
+  resolveIssuer,
   getIssuers,
   getIssuerById,
   updateIssuer,
@@ -21,6 +22,18 @@ export const createIssuerController = asyncHandler(async (req, res) => {
   return res.status(201).json({
     success: true,
     message: "Issuer created successfully",
+    data: issuer,
+  });
+});
+
+export const resolveIssuerController = asyncHandler(async (req, res) => {
+  const data = createIssuerSchema.parse(req.body);
+
+  const issuer = await resolveIssuer(data);
+
+  return res.status(200).json({
+    success: true,
+    message: "Issuer resolved successfully",
     data: issuer,
   });
 });

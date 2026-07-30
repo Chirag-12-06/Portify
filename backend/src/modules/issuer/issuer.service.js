@@ -7,6 +7,22 @@ export async function createIssuer(data) {
   });
 }
 
+export async function resolveIssuer(data) {
+  const existing = await prisma.issuer.findUnique({
+    where: {
+      name: data.name,
+    },
+  });
+
+  if (existing) {
+    return existing;
+  }
+
+  return prisma.issuer.create({
+    data,
+  });
+}
+
 export async function getIssuers() {
   return prisma.issuer.findMany({
     orderBy: {
