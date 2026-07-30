@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import {toast} from "sonner";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -47,7 +48,9 @@ export default function SkillForm({ skill, onClose }) {
       reset(defaultValues);
       onClose();
     } catch {
-      // Toast is handled inside mutation hooks.
+      toast.error("Skill already exists", {
+  duration: 1500, // 1 second
+});
     }
   };
 

@@ -26,7 +26,7 @@ export default function CertificateForm({ certificate, onClose }) {
     register,
     handleSubmit,
     reset,
-    watch,
+    // watch,
     formState: { errors, isDirty },
   } = useForm({
     resolver: zodResolver(certificateSchema),
@@ -36,7 +36,7 @@ export default function CertificateForm({ certificate, onClose }) {
   const { data: skills = [] } = useSkills();
   const { data: issuers = [] } = useIssuers();
 
-  const selectedSkills = watch("skillIds");
+  // const selectedSkills = watch("skillIds");
 
   useEffect(() => {
     if (!certificate) {
@@ -90,9 +90,10 @@ export default function CertificateForm({ certificate, onClose }) {
           />
 
           <div className="space-y-2">
-            <label className="text-sm font-medium">Issuer</label>
+            <label className="text-sm font-medium" htmlFor="issuerId">Issuer</label>
 
             <select
+            id="issuerId"
               {...register("issuerId")}
               className="w-full rounded-lg border border-input bg-background px-3 py-2"
             >

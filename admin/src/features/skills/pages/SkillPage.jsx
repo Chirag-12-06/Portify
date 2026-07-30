@@ -70,6 +70,7 @@ export default function SkillsPage() {
       </Card>
 
       <Modal
+        role="dialog"
         isOpen={isModalOpen}
         title={editingSkill ? "Edit Skill" : "Add Skill"}
         onClose={handleClose}

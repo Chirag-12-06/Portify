@@ -49,19 +49,19 @@ export default function ProjectCard({ project }) {
         {/* Tech */}
         <div className="mt-5 flex items-center">
           {project.techs.slice(0, 5).map((tech, index) => (
-  <div
-    key={index}
-    className={`relative flex h-10 w-10 items-center justify-center rounded-full bg-slate-800 ring-2 ring-slate-900 ${
-      index !== 0 ? "-ml-2" : ""
-    }`}
-  >
-    <img
-      src={tech.imageUrl}
-      alt=""
-      className="h-5 w-5 object-contain"
-    />
-  </div>
-))}
+            <div
+              key={index}
+              className={`relative flex h-10 w-10 items-center justify-center rounded-full bg-slate-800 ring-2 ring-slate-900 ${
+                index !== 0 ? "-ml-2" : ""
+              }`}
+            >
+              <img
+                src={tech.imageUrl}
+                alt=""
+                className="h-5 w-5 object-contain"
+              />
+            </div>
+          ))}
 
           {project.techs.length > 5 && (
             <div className="-ml-2 flex h-10 w-10 items-center justify-center rounded-full bg-slate-700 text-xs font-semibold text-white ring-2 ring-slate-900">

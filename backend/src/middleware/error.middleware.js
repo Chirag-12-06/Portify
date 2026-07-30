@@ -23,17 +23,17 @@ export function errorHandler(err, req, res, next) {
   if (err instanceof Prisma.PrismaClientKnownRequestError) {
     switch (err.code) {
       case "P2002":
-  if (err.meta?.target?.includes("slug")) {
-    return res.status(409).json({
-      success: false,
-      message: "Project slug already exists.",
-    });
-  }
+        if (err.meta?.target?.includes("slug")) {
+          return res.status(409).json({
+            success: false,
+            message: "Project slug already exists.",
+          });
+        }
 
-  return res.status(409).json({
-    success: false,
-    message: "Duplicate value.",
-  });
+        return res.status(409).json({
+          success: false,
+          message: "Duplicate value.",
+        });
 
       case "P2025":
         return res.status(404).json({

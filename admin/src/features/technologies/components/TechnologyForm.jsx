@@ -86,7 +86,7 @@ export default function TechnologyForm({ technology, onClose }) {
           type="button"
           variant="secondary"
           onClick={() => {
-            reset(skill ?? defaultValues);
+            reset(technology ?? defaultValues);
             onClose();
           }}
         >
@@ -94,7 +94,7 @@ export default function TechnologyForm({ technology, onClose }) {
         </Button>
 
         <Button type="submit" disabled={!isDirty || isSubmitting}>
-          {isSubmitting ? "Saving..." : skill ? "Update Skill" : "Create Skill"}
+          {isSubmitting ? "Saving..." : technology ? "Update Technology" : "Create Technology"}
         </Button>
       </FormActions>
     </form>
