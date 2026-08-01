@@ -20,6 +20,23 @@ function buildHeatmap(contributionMap) {
   });
 }
 
+const CONTRIBUTION_QUERY = `
+query($username: String!) {
+  user(login: $username) {
+    contributionsCollection {
+      contributionCalendar {
+        weeks {
+          contributionDays {
+            date
+            contributionCount
+          }
+        }
+      }
+    }
+  }
+}
+`;
+
 export async function getGithubStats() {
   const socialLink = await prisma.socialLink.findFirst({
     where: {
@@ -34,21 +51,49 @@ export async function getGithubStats() {
   const username = extractUsername(socialLink.url);
 
   try {
-    const { data: user } = await axios.get(
-      `https://api.github.com/users/${username}`,
-      {
-        headers: {
-          Accept: "application/vnd.github+json",
-        },
-      },
-    );
+    // Fetch profile
+   const github = axios.create({
+  baseURL: "https://api.github.com",
+  timeout: 10000,
+  headers: {
+    Accept: "application/vnd.github+json",
+    Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
+  },
+});
 
-    const { data: heatmapData } = await axios.get(
-      `https://github-contributions-api.jogruber.de/v4/${username}`,
-    );
+const { data: user } = await github.get(`/users/${username}`);
+
+    // Fetch contribution graph
+    const { data: graphQLData } = await github.post(
+  "/graphql",
+  {
+    query: CONTRIBUTION_QUERY,
+    variables: { username },
+  },
+  {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }
+);
+
+    if (graphQLData.errors) {
+      console.error(graphQLData.errors);
+      throw new ApiError(500, "Failed to fetch GitHub contributions");
+    }
+
+    const contributionDays =
+      graphQLData.data.user.contributionsCollection.contributionCalendar.weeks.flatMap(
+        (week) => week.contributionDays,
+      );
 
     const contributionMap = Object.fromEntries(
-      heatmapData.contributions.map((day) => [day.date, day]),
+      contributionDays.map((day) => [
+        day.date,
+        {
+          count: day.contributionCount,
+        },
+      ]),
     );
 
     const heatmap = buildHeatmap(contributionMap);
@@ -57,10 +102,14 @@ export async function getGithubStats() {
       profileUrl: user.html_url,
       username: user.login,
       publicRepos: user.public_repos,
-
-      heatmap: heatmap,
+      heatmap,
     };
   } catch (error) {
+    console.error("GitHub API Error:", {
+      message: error.message,
+      response: error.response?.data,
+    });
+
     if (error.response?.status === 404) {
       throw new ApiError(404, "GitHub user not found");
     }

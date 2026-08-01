@@ -1,0 +1,14 @@
+-- AlterEnum
+-- This migration adds more than one value to an enum.
+-- With PostgreSQL versions 11 and earlier, this is not possible
+-- in a single migration. This can be worked around by creating
+-- multiple migrations, each migration adding only one value to
+-- the enum.
+
+
+ALTER TYPE "SkillCategory" ADD VALUE 'FRONTEND';
+ALTER TYPE "SkillCategory" ADD VALUE 'BACKEND';
+ALTER TYPE "SkillCategory" ADD VALUE 'DATA_ANALYTICS';
+ALTER TYPE "SkillCategory" ADD VALUE 'COMPUTER_VISION';
+ALTER TYPE "SkillCategory" ADD VALUE 'NLP_LLM';
+ALTER TYPE "SkillCategory" ADD VALUE 'MLOPS';

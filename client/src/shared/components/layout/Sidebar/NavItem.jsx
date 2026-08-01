@@ -10,7 +10,7 @@ export default function NavItem({ item, activeSection }) {
   const Icon = hover || isActive ? item.hoverIcon : item.icon;
 
   return (
-    <div className="flex items-center gap-3">
+    <div className="flex items-center gap-3 bg-amber-300">
       <div className="relative w-5 flex items-center justify-center">
         {showDot && <div className="h-2 w-2 rounded-full bg-white" />}
 
