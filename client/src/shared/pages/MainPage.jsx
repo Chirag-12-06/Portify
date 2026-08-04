@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Outlet } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Outlet, useLocation } from "react-router-dom";
 
 import Navbar from "../components/layout/Navbar";
 import Drawer from "../components/layout/Sidebar/Drawer";
@@ -19,6 +19,22 @@ import useActiveSection from "../hooks/useActiveSection";
 export default function MainLayout() {
   const [open, setOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
+
+
+const location = useLocation();
+
+useEffect(() => {
+  if (!location.state?.scrollTo) return;
+
+  requestAnimationFrame(() => {
+    document
+      .getElementById(location.state.scrollTo)
+      ?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+  });
+}, [location]);
 
   useActiveSection(setActiveSection);
 

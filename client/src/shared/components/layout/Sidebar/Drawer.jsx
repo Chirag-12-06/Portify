@@ -23,22 +23,20 @@ export default function Drawer({ open, onMouseEnter, onMouseLeave, activeSection
       }}
     >
       <aside
-        className="
-       flex
-      h-[55vh]
-      w-72
-      rounded-r-3xl
-      bg-slate-700
-      text-white
-      shadow-xl
-      items-center
-  justify-center
-    "
-      >
-        <Navigation 
-        activeSection={activeSection}
-        />
-      </aside>
+  className="
+    flex
+    flex-col
+    h-[55vh]
+    w-72
+    rounded-r-3xl
+    bg-slate-700
+    text-white
+    shadow-xl
+    justify-center
+  "
+>
+  <Navigation activeSection={activeSection} />
+</aside>
 
       <Handle open={open} />
     </div>

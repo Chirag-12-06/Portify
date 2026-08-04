@@ -2,6 +2,7 @@ import Section from "../../shared/components/ui/Section";
 import { useTechnologies } from "./hooks/useTechnologies";
 import { useState, useMemo } from "react";
 import { technologyLabels } from "./constants/technologyLabels";
+import SectionCategory from "../../shared/components/ui/SectionCategory";
 
 export default function Technologies() {
   const [activeCategory, setActiveCategory] = useState(null);
@@ -28,17 +29,12 @@ export default function Technologies() {
     <Section id="technologies" title="Technologies">
       <div className=" flex flex-col gap-8">
         {/* Categories */}
-        <div className="bg-pink-600 flex gap-3 overflow-x-auto text-2xl">
-          {categories.map((category) => (
-            <button
-              key={category}
-              onClick={() => setActiveCategory(category)}
-              className={selectedCategory === category ? "active" : ""}
-            >
-              {technologyLabels[category]}
-            </button>
-          ))}
-        </div>
+        <SectionCategory
+          categories={categories}
+          Labels={technologyLabels}
+          selectedCategory={selectedCategory}
+          setActiveCategory={setActiveCategory}
+        />
 
         <div className="flex flex-wrap justify-center gap-15">
           {groupedTechnologies[selectedCategory]?.map((technology) => (

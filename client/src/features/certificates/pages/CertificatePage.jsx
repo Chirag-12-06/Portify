@@ -1,6 +1,6 @@
 import { ArrowLeft } from "lucide-react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Footer from "../../footer/FooterSection";
 import { skillLabels } from "../../skills/constants/skillLabels";
 import { useSkills } from "../../skills/hooks/useSkills";
@@ -8,6 +8,7 @@ import CertificateCard from "../components/CertificateCard";
 import { useCertificateCards, useIssuers } from "../hooks/useCertificates";
 
 export default function CertificatesPage() {
+  const navigate = useNavigate();
   const [search, setSearch] = useState("");
   const [issuer, setIssuer] = useState("");
   const [skillCategory, setSkillCategory] = useState("");
@@ -63,13 +64,17 @@ export default function CertificatesPage() {
               </p>
             </div>
 
-            <Link
-              to="/"
+            <button
+              onClick={() =>
+                navigate("/", {
+                  state: { scrollTo: "certificates" },
+                })
+              }
               className="inline-flex items-center gap-2 rounded-lg border border-border bg-background px-4 py-2 text-sm font-medium transition hover:bg-accent hover:text-accent-foreground"
             >
               <ArrowLeft className="h-4 w-4" />
               Home
-            </Link>
+            </button>
           </div>
 
           {/* Filters */}

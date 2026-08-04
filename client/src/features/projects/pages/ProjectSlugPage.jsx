@@ -35,7 +35,7 @@ export default function ProjectSlugPage() {
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
           <button
             onClick={() => navigate(-1)}
-            className="inline-flex items-center gap-2 rounded-lg border border-border px-4 py-2 transition hover:bg-accent"
+            className="inline-flex items-center gap-2 rounded-lg border border-border px-4 py-2 transition hover:bg-accent hover:cursor-pointer"
           >
             <ArrowLeft className="h-4 w-4" />
             Back

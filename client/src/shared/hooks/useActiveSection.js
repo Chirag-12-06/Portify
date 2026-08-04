@@ -14,7 +14,8 @@ export default function useActiveSection(setActiveSection) {
   ];
 
   useEffect(() => {
-    const navbarHeight = 64;
+    // const navbarHeight = 64;
+    const activationLine = 180;
 
     const updateActiveSection = () => {
       let current = ids[0];
@@ -28,7 +29,8 @@ export default function useActiveSection(setActiveSection) {
 
         const top = heading.getBoundingClientRect().top;
 
-        if (top <= navbarHeight) {
+        if (top <= activationLine) {
+        // if (top <= navbarHeight) {
           current = id;
         } else {
           break;

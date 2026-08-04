@@ -3,6 +3,7 @@ import Section from "../../shared/components/ui/Section";
 import { useSkills } from "./hooks/useSkills";
 import { useState, useMemo } from "react";
 import { skillLabels } from "./constants/skillLabels";
+import SectionCategory from "../../shared/components/ui/SectionCategory";
 
 export default function Skills() {
   const [activeCategory, setActiveCategory] = useState("");
@@ -29,17 +30,12 @@ export default function Skills() {
     <Section id="skills" title="Skills">
       <div className=" flex flex-col gap-8">
         {/* Categories */}
-        <div className="bg-pink-600 flex gap-3 overflow-x-auto text-2xl">
-          {categories.map((category) => (
-            <button
-              key={category}
-              onClick={() => setActiveCategory(category)}
-              className={selectedCategory === category ? "active" : ""}
-            >
-              {skillLabels[category]}
-            </button>
-          ))}
-        </div>
+        <SectionCategory
+          categories={categories}
+          Labels={skillLabels}
+          selectedCategory={selectedCategory}
+          setActiveCategory={setActiveCategory}
+        />
 
         <ul className="list-disc columns-2 gap-12 space-y-4 pl-6 text-3xl">
           {groupedSkills[selectedCategory]?.map((skill) => (

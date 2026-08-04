@@ -1,6 +1,6 @@
 import { ArrowLeft } from "lucide-react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import Footer from "../../footer/FooterSection";
 import ProjectCard from "../components/ProjectCard";
@@ -11,6 +11,8 @@ import { useTechnologies } from "../../technologies/hooks/useTechnologies";
 import { technologyLabels } from "../../technologies/constants/technologyLabels";
 
 export default function ProjectsPage() {
+  const navigate = useNavigate();
+
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("");
   const [technologyCategory, setTechnologyCategory] = useState("");
@@ -62,13 +64,17 @@ export default function ProjectsPage() {
               </p>
             </div>
 
-            <Link
-              to="/"
+            <button
+              onClick={() =>
+                navigate("/", {
+                  state: { scrollTo: "projects" },
+                })
+              }
               className="inline-flex items-center gap-2 rounded-lg border border-border bg-background px-4 py-2 text-sm font-medium transition hover:bg-accent hover:text-accent-foreground"
             >
               <ArrowLeft className="h-4 w-4" />
               Home
-            </Link>
+            </button>
           </div>
 
           <div className="space-y-4">
