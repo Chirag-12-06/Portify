@@ -6,9 +6,10 @@ export default function CertificateCard({ certificate }) {
   const [selectedCertificate, setSelectedCertificate] = useState(null);
   return (
     <>
-      <div 
-      onClick={() => setSelectedCertificate(certificate)}
-      className="group hover:cursor-pointer rounded-2xl border border-slate-700/60 bg-slate-900/60 p-6 transition-all duration-300 hover:-translate-y-1 hover:border-cyan-400/50">
+      <div
+        onClick={() => setSelectedCertificate(certificate)}
+        className="group hover:cursor-pointer rounded-2xl border border-slate-700/60 bg-slate-900/60 p-6 transition-all duration-300 hover:-translate-y-1 hover:border-cyan-400/50"
+      >
         {/* Header */}
         <div className="flex items-start justify-between gap-6">
           <div className="flex flex-col gap-2">
@@ -29,16 +30,30 @@ export default function CertificateCard({ certificate }) {
             </h3>
           </div>
 
-          <a
-            href={certificate.credentialUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-             onClick={(e) => e.stopPropagation()}
-            className="flex shrink-0 items-center gap-2 rounded-lg border border-slate-700 px-4 py-2 text-sm font-medium text-cyan-400 transition-all hover:border-cyan-400 hover:bg-cyan-400/10"
-          >
-            Credential
-            <ExternalLink size={16} />
-          </a>
+          <div className="flex shrink-0 flex-col gap-2">
+            {certificate.badgeImageUrl && (
+              <a
+                href={certificate.badgeImageUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={(e) => e.stopPropagation()}
+                className="flex items-center justify-center gap-2 rounded-lg border border-slate-700 px-4 py-2 text-sm font-medium text-cyan-400 transition-all hover:border-cyan-400 hover:bg-cyan-400/10"
+              >
+                Badge
+              </a>
+            )}
+
+            <a
+              href={certificate.credentialUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()}
+              className="flex items-center justify-center gap-2 rounded-lg border border-slate-700 px-4 py-2 text-sm font-medium text-cyan-400 transition-all hover:border-cyan-400 hover:bg-cyan-400/10"
+            >
+              Credential
+              <ExternalLink size={16} />
+            </a>
+          </div>
         </div>
 
         {/* Skills */}
@@ -53,11 +68,9 @@ export default function CertificateCard({ certificate }) {
           ))}
 
           {certificate.skills.length > 5 && (
-           <span
-  className="rounded-full border border-cyan-500/30 bg-cyan-500/10 px-3 py-1 text-xs font-medium text-cyan-300"
->
-  +{certificate.skills.length - 5} more
-</span>
+            <span className="rounded-full border border-cyan-500/30 bg-cyan-500/10 px-3 py-1 text-xs font-medium text-cyan-300">
+              +{certificate.skills.length - 5} more
+            </span>
           )}
         </div>
       </div>

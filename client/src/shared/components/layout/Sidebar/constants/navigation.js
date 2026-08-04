@@ -1,8 +1,12 @@
 import {
+  Award,
   BadgeCheck,
+  Book,
+  BookOpen,
   Briefcase,
   BriefcaseBusiness,
-  Code2,
+  CircuitBoard,
+  Cpu,
   Folder,
   FolderOpen,
   GraduationCap,
@@ -23,14 +27,14 @@ export const menuItems = [
   {
     id: "skills",
     name: "Skills",
-    icon: Code2,
-    hoverIcon: Code2,
+    icon: Book,
+    hoverIcon: BookOpen,
   },
   {
     id: "technologies",
     name: "Technologies",
-    icon: Code2,
-    hoverIcon: Code2,
+    icon: Cpu,
+    hoverIcon: CircuitBoard,
   },
   {
     id: "projects",
@@ -53,7 +57,7 @@ export const menuItems = [
   {
     id: "certificates",
     name: "Certificates",
-    icon: BadgeCheck,
+    icon: Award,
     hoverIcon: BadgeCheck,
   },
   {

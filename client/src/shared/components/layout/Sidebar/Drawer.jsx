@@ -29,10 +29,18 @@ export default function Drawer({ open, onMouseEnter, onMouseLeave, activeSection
     h-[55vh]
     w-72
     rounded-r-3xl
-    bg-slate-700
+    border
+    border-l-0
+    border-white/10
+    bg-linear-to-b
+    from-slate-800/95
+    to-slate-900/95
     text-white
-    shadow-xl
+    shadow-2xl
+    shadow-black/50
+    backdrop-blur-xl
     justify-center
+    py-2
   "
 >
   <Navigation activeSection={activeSection} />

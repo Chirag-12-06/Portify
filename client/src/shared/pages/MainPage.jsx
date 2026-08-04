@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet, useLocation,useNavigate } from "react-router-dom";
 
 import Navbar from "../components/layout/Navbar";
 import Drawer from "../components/layout/Sidebar/Drawer";
@@ -20,10 +20,10 @@ export default function MainLayout() {
   const [open, setOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
 
+  const location = useLocation();
+  const navigate = useNavigate();
 
-const location = useLocation();
-
-useEffect(() => {
+  useEffect(() => {
   if (!location.state?.scrollTo) return;
 
   requestAnimationFrame(() => {
@@ -33,8 +33,11 @@ useEffect(() => {
         behavior: "smooth",
         block: "start",
       });
+
+    // Clear the state
+    navigate(location.pathname, { replace: true });
   });
-}, [location]);
+}, [location, navigate]);
 
   useActiveSection(setActiveSection);
 

@@ -25,6 +25,41 @@ export default function Technologies() {
 
   const selectedCategory = activeCategory ?? categories[0] ?? null;
 
+  const technologyColors = {
+    Blue: {
+      glow: "bg-blue-500/25 group-hover:bg-blue-500/50",
+      text: "group-hover:text-blue-300",
+    },
+    Green: {
+      glow: "bg-green-500/25 group-hover:bg-green-500/50",
+      text: "group-hover:text-green-300",
+    },
+    Purple: {
+      glow: "bg-purple-500/25 group-hover:bg-purple-500/50",
+      text: "group-hover:text-purple-300",
+    },
+    Cyan: {
+      glow: "bg-cyan-500/25 group-hover:bg-cyan-500/50",
+      text: "group-hover:text-cyan-300",
+    },
+    Red: {
+      glow: "bg-red-500/25 group-hover:bg-red-500/50",
+      text: "group-hover:text-red-300",
+    },
+    Yellow: {
+      glow: "bg-yellow-500/25 group-hover:bg-yellow-500/50",
+      text: "group-hover:text-yellow-300",
+    },
+    White: {
+      glow: "bg-white/25 group-hover:bg-white/50",
+      text: "group-hover:text-white",
+    },
+    Orange: {
+      glow: "bg-orange-500/25 group-hover:bg-orange-500/50",
+      text: "group-hover:text-orange-300",
+    },
+  };
+
   return (
     <Section id="technologies" title="Technologies">
       <div className=" flex flex-col gap-8">
@@ -34,28 +69,41 @@ export default function Technologies() {
           Labels={technologyLabels}
           selectedCategory={selectedCategory}
           setActiveCategory={setActiveCategory}
+          sectionId="technologies"
         />
 
         <div className="flex flex-wrap justify-center gap-15">
-          {groupedTechnologies[selectedCategory]?.map((technology) => (
-            <div
-              key={technology.id}
-              className="group flex flex-col items-center"
-            >
-              <div className="relative flex h-56 w-56 items-center justify-center">
-                <div className="absolute h-32 w-32 rounded-full bg-cyan-400/25 blur-3xl transition-all duration-300 group-hover:h-40 group-hover:w-40 group-hover:bg-cyan-400/50" />
-                <img
-                  src={technology.imageUrl}
-                  alt={technology.name}
-                  className="relative h-40 w-40 transition-all duration-300 group-hover:scale-110"
-                />
-              </div>
+          {groupedTechnologies[selectedCategory]?.map((technology) => {
+            const color = technologyColors[technology.color] ?? {
+              glow: "bg-gray-500/25 group-hover:bg-gray-500/50",
+              text: "group-hover:text-gray-300",
+            };
 
-              <p className="mt-3 text-center text-3xl font-medium transition-all duration-300 group-hover:text-cyan-300">
-                {technology.name}
-              </p>
-            </div>
-          ))}
+            return (
+              <div
+                key={technology.id}
+                className="group flex flex-col items-center"
+              >
+                <div className="relative flex h-56 w-56 items-center justify-center">
+                  <div
+                    className={`absolute h-32 w-32 rounded-full blur-3xl transition-all duration-300 group-hover:h-40 group-hover:w-40 ${color.glow}`}
+                  />
+
+                  <img
+                    src={technology.imageUrl}
+                    alt={technology.name}
+                    className="relative h-40 w-40 transition-all duration-300 group-hover:scale-110"
+                  />
+                </div>
+
+                <p
+                  className={`mt-3 text-center text-3xl font-medium transition-all duration-300 ${color.text}`}
+                >
+                  {technology.name}
+                </p>
+              </div>
+            );
+          })}
         </div>
       </div>
     </Section>

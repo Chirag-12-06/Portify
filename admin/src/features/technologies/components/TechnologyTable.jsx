@@ -34,6 +34,7 @@ export default function TechnologyTable({ technologies, onEdit, onDelete }) {
           <TableHead className="w-32">Technology</TableHead>
           <TableHead className="w-48">Category</TableHead>
           <TableHead className="w-24">Image</TableHead>
+          <TableHead className="w-24">Color</TableHead>
           <TableHead className="w-28" align="center">
             Actions
           </TableHead>
@@ -59,6 +60,12 @@ export default function TechnologyTable({ technologies, onEdit, onDelete }) {
               ) : (
                 <span className="text-slate-400">—</span>
               )}
+            </TableCell>
+
+            <TableCell>
+              <Badge style={{ backgroundColor: technology.color }}>
+                {technology.color}
+              </Badge>
             </TableCell>
 
             <TableCell align="right" className="w-28">

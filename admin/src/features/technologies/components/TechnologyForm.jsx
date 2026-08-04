@@ -8,12 +8,14 @@ import Button from "../../../components/ui/Button";
 import FormActions from "../../../components/ui/Form/FormActions";
 
 import { TECHNOLOGY_CATEGORIES } from "../constants/TechnologyCategories";
+import { TECHNOLOGY_COLORS } from "../constants/TechnologyColor";
 
 import { technologySchema, defaultValues } from "../schemas/technology.schema";
 import { useCreateTechnology } from "../hooks/useCreateTechnology";
 import { useUpdateTechnology } from "../hooks/useUpdateTechnology";
 
 const categories = TECHNOLOGY_CATEGORIES;
+const colors = TECHNOLOGY_COLORS;
 
 export default function TechnologyForm({ technology, onClose }) {
   const createTechnology = useCreateTechnology();
@@ -80,6 +82,18 @@ export default function TechnologyForm({ technology, onClose }) {
         error={errors.imageUrl?.message}
         {...register("imageUrl")}
       />
+
+      <Select
+        label="Color"
+        error={errors.color?.message}
+        {...register("color")}
+      >
+        {colors.map((color) => (
+          <option key={color} value={color}>
+            {color}
+          </option>
+        ))}
+      </Select>
 
       <FormActions>
         <Button

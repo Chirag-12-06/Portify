@@ -1,5 +1,6 @@
 import { z } from "zod";
-import { TECHNOLOGY_CATEGORIES } from "../constants/technologyCategories";
+import { TECHNOLOGY_CATEGORIES } from "../constants/TechnologyCategories";
+import { TECHNOLOGY_COLORS } from "../constants/TechnologyColor";
 
 export const technologySchema = z.object({
   name: z
@@ -8,6 +9,8 @@ export const technologySchema = z.object({
     .min(1, "Technology name is required"),
 
   category: z.enum(TECHNOLOGY_CATEGORIES),
+
+  color: z.enum(TECHNOLOGY_COLORS),
 
   imageUrl: z
     .string()
@@ -21,4 +24,5 @@ export const defaultValues = {
   name: "",
   category: "FRONTEND",
   imageUrl: "",
+  color: "Cyan",
 };

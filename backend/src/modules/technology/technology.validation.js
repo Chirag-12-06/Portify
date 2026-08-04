@@ -1,10 +1,7 @@
 import { z } from "zod";
 
 export const createTechSchema = z.object({
-  name: z
-    .string()
-    .trim()
-    .min(1, "Tech name is required"),
+  name: z.string().trim().min(1, "Tech name is required"),
 
   category: z.enum([
     "LANGUAGE",
@@ -20,9 +17,11 @@ export const createTechSchema = z.object({
   ]),
 
   imageUrl: z.preprocess(
-  (value) => value === "" ? undefined : value,
-  z.string().url().optional()
-),
+    (value) => (value === "" ? undefined : value),
+    z.string().url().optional(),
+  ),
+
+  color: z.string().trim(),
 });
 
 export const updateTechSchema = createTechSchema.partial();

@@ -35,6 +35,7 @@ export default function Skills() {
           Labels={skillLabels}
           selectedCategory={selectedCategory}
           setActiveCategory={setActiveCategory}
+          sectionId="skills"
         />
 
         <ul className="list-disc columns-2 gap-12 space-y-4 pl-6 text-3xl">

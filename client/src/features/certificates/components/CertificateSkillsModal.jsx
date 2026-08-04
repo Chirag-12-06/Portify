@@ -1,5 +1,5 @@
 import Modal from "../../../shared/components/ui/Modal";
-
+import { ExternalLink } from "lucide-react";
 export default function CertificateSkillsModal({ certificate, open, onClose }) {
   if (!certificate) return null;
 
@@ -23,21 +23,30 @@ export default function CertificateSkillsModal({ certificate, open, onClose }) {
             </div>
           </div>
 
-          <a
-            href={certificate.credentialUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-lg
-      border border-cyan-500/40
-      bg-cyan-500/10
-      px-4 py-2
-      text-sm font-medium text-cyan-300
-      transition-all
-      hover:bg-cyan-500
-      hover:text-slate-950"
-          >
-            View Credential ↗
-          </a>
+          <div className="flex shrink-0 flex-col gap-2">
+            {certificate.badgeImageUrl && (
+              <a
+                href={certificate.badgeImageUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={(e) => e.stopPropagation()}
+                className="flex items-center justify-center gap-2 rounded-lg border border-slate-700 px-4 py-2 text-sm font-medium text-cyan-400 transition-all hover:border-cyan-400 hover:bg-cyan-400/10"
+              >
+                Badge
+              </a>
+            )}
+
+            <a
+              href={certificate.credentialUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()}
+              className="flex items-center justify-center gap-2 rounded-lg border border-slate-700 px-4 py-2 text-sm font-medium text-cyan-400 transition-all hover:border-cyan-400 hover:bg-cyan-400/10"
+            >
+              Credential
+              <ExternalLink size={16} />
+            </a>
+          </div>
         </div>
 
         <div className="mt-8">
