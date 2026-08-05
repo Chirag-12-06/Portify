@@ -3,8 +3,8 @@ import { useMemo } from "react";
 export default function QuestionDistribution({ easy, medium, hard }) {
   const total = easy + medium + hard;
 
-  const radius = 100;
-  const strokeWidth = 8;
+  const radius = 130;
+  const strokeWidth = 10;
   const circumference = 2 * Math.PI * radius;
 
   // Leave some gaps between segments
@@ -36,14 +36,14 @@ export default function QuestionDistribution({ easy, medium, hard }) {
   }, [easy, medium, hard]);
 
   return (
-    <div className="flex items-center justify-between rounded-3xl">
-      <div className="relative h-56 w-35 ">
-        <svg viewBox="0 0 220 220" className="h-full w-full -rotate-90">
+    <div className="flex w-full items-center justify-between">
+      <div className="relative h-56 w-60 ">
+        <svg viewBox="0 0 320 320" className="h-full w-full -rotate-90">
           {segments.map((segment, index) => (
             <circle
               key={index}
-              cx="110"
-              cy="90"
+              cx="160"
+              cy="160"
               r={radius}
               fill="none"
               stroke={segment.color}
@@ -92,7 +92,7 @@ export default function QuestionDistribution({ easy, medium, hard }) {
 function Stat({ title, value, color, bg }) {
   return (
     <div
-      className={`flex w-30 items-center justify-between rounded-xl border px-2 py-3 ${bg}`}
+      className={`flex w-40 items-center justify-between rounded-xl border px-4 py-3 ${bg}`}
     >
       <span className={`text-md font-semibold ${color}`}>{title}</span>
 

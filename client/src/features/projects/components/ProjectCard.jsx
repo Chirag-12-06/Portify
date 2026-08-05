@@ -10,7 +10,7 @@ export default function ProjectCard({ project }) {
   return (
     <article
       onClick={() => navigate(`/projects/${project.slug}`)}
-      className="group overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-200 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl dark:bg-slate-900 dark:ring-slate-800"
+      className="group overflow-hidden rounded-2xl border border-white/10 bg-slate-800/80 shadow-xl shadow-black/40 transition-all duration-300 hover:-translate-y-2 hover:border-cyan-400/40 hover:shadow-[0_0_40px_-15px_rgba(34,211,238,0.4)]"
     >
       {/* Screenshot */}
       <div className="relative aspect-16/10 overflow-hidden">
@@ -33,16 +33,14 @@ export default function ProjectCard({ project }) {
             {project.status === "COMPLETED" ? "Completed" : "In Progress"}
           </Badge>
 
-          <span className="text-sm text-slate-500">{project.projectYear}</span>
+          <span className="text-sm text-slate-400">{project.projectYear}</span>
         </div>
 
         {/* Title */}
-        <h3 className="text-xl font-bold text-slate-900 dark:text-white">
-          {project.title}
-        </h3>
+        <h3 className="text-xl font-bold text-white">{project.title}</h3>
 
         {/* Description */}
-        <p className="mt-3 h-18 overflow-hidden text-sm leading-6 text-slate-600 dark:text-slate-400">
+        <p className="mt-3 h-18 overflow-hidden text-sm leading-6 text-slate-400">
           {project.shortDescription}
         </p>
 
@@ -51,7 +49,7 @@ export default function ProjectCard({ project }) {
           {project.techs.slice(0, 5).map((tech, index) => (
             <div
               key={index}
-              className={`relative flex h-10 w-10 items-center justify-center rounded-full bg-slate-800 ring-2 ring-slate-900 ${
+              className={`relative flex h-10 w-10 items-center justify-center rounded-full bg-slate-700 ring-2 ring-slate-900 ${
                 index !== 0 ? "-ml-2" : ""
               }`}
             >
@@ -64,7 +62,7 @@ export default function ProjectCard({ project }) {
           ))}
 
           {project.techs.length > 5 && (
-            <div className="-ml-2 flex h-10 w-10 items-center justify-center rounded-full bg-slate-700 text-xs font-semibold text-white ring-2 ring-slate-900">
+            <div className="-ml-2 flex h-10 w-10 items-center justify-center rounded-full bg-slate-700 text-xs font-semibold text-white ring-2 ring-slate-800">
               +{project.techs.length - 5}
             </div>
           )}
@@ -78,7 +76,7 @@ export default function ProjectCard({ project }) {
               target="_blank"
               rel="noreferrer"
               onClick={(e) => e.stopPropagation()}
-              className="flex items-center gap-2 text-sm font-medium text-slate-700 transition hover:text-primary"
+              className="flex items-center gap-2 text-sm font-medium text-slate-300 transition-colors duration-200 hover:text-cyan-400"
             >
               <FaGithub size={18} />
               GitHub
@@ -91,7 +89,7 @@ export default function ProjectCard({ project }) {
               target="_blank"
               rel="noreferrer"
               onClick={(e) => e.stopPropagation()}
-              className="flex items-center gap-2 text-sm font-medium text-slate-700 transition hover:text-primary"
+              className="flex items-center gap-2 text-sm font-medium text-slate-300 transition-colors duration-200 hover:text-cyan-400"
             >
               <ArrowUpRight size={18} />
               Live Demo

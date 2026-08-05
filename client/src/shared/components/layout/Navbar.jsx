@@ -1,4 +1,5 @@
 import { useProfile } from "../../../features/profile/hooks/useProfile";
+import Button from "../ui/Button";
 
 export default function Navbar({ activeSection }) {
   const { data: profile, isLoading } = useProfile();
@@ -11,14 +12,15 @@ export default function Navbar({ activeSection }) {
         </h1>
 
         {!isLoading && profile?.resumeUrl && (
-          <a
+          <Button
+            variant="secondary"
+            iconPosition="left"
             href={profile.resumeUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-sm font-medium"
           >
             Resume
-          </a>
+          </Button>
         )}
       </div>
     </header>

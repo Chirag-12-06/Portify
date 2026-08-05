@@ -1,7 +1,10 @@
+import { ArrowRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+
 import Section from "../../shared/components/ui/Section";
+import Button from "../../shared/components/ui/Button";
 import { useFeaturedCertificates } from "./hooks/useCertificates";
 import CertificateCard from "./components/CertificateCard";
-import { useNavigate } from "react-router-dom";
 
 export default function Certificates() {
   const navigate = useNavigate();
@@ -17,9 +20,14 @@ export default function Certificates() {
         </div>
 
         <div className="mt-8 flex justify-center">
-          <button variant="secondary" onClick={() => navigate("/certificates")}>
-            View All Certificates →
-          </button>
+          <Button
+            variant="secondary"
+            icon={ArrowRight}
+            iconPosition="right"
+            onClick={() => navigate("/certificates")}
+          >
+            View All Certificates
+          </Button>
         </div>
       </div>
     </Section>

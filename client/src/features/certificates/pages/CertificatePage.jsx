@@ -1,20 +1,43 @@
-import { ArrowLeft } from "lucide-react";
+import {
+  ArrowLeft,
+  Search,
+  Database,
+  Server,
+  Award,
+  ShieldCheck,
+  LayoutGrid,
+  Rocket,
+} from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Footer from "../../footer/FooterSection";
+import Button from "../../../shared/components/ui/Button";
+import Input from "../../../shared/components/ui/Input";
+import Select from "../../../shared/components/ui/Select";
+import LoadingScreen from "../../../shared/components/ui/LoadingScreen";
 import { skillLabels } from "../../skills/constants/skillLabels";
 import { useSkills } from "../../skills/hooks/useSkills";
 import CertificateCard from "../components/CertificateCard";
 import { useCertificateCards, useIssuers } from "../hooks/useCertificates";
 
+const LOADING_STEPS = [
+  { icon: Database, text: "Connecting to backend" },
+  { icon: Server, text: "Fetching certificate data" },
+  { icon: Award, text: "Loading credentials" },
+  { icon: ShieldCheck, text: "Verifying badges" },
+  { icon: LayoutGrid, text: "Forming certificate cards" },
+  { icon: Rocket, text: "Ready to explore" },
+];
+
 export default function CertificatesPage() {
   const navigate = useNavigate();
+  const [booting, setBooting] = useState(true);
   const [search, setSearch] = useState("");
   const [issuer, setIssuer] = useState("");
   const [skillCategory, setSkillCategory] = useState("");
   const [skill, setSkill] = useState("");
 
-  const { data: certificates = [] } = useCertificateCards();
+  const { data: certificates = [], isLoading } = useCertificateCards();
   const { data: skills = [] } = useSkills();
   const { data: issuers = [] } = useIssuers();
 
@@ -52,109 +75,93 @@ export default function CertificatesPage() {
   });
 
   return (
-    <main className="h-screen bg-background flex flex-col">
+    <>
+      {booting && (
+        <LoadingScreen
+          steps={LOADING_STEPS}
+          isReady={!isLoading}
+          onDone={() => setBooting(false)}
+        />
+      )}
+
+      <main className="h-screen bg-slate-950 text-white flex flex-col">
       {/* Fixed Header */}
-      <div className="sticky top-0 z-20 border-b border-border bg-background/95 backdrop-blur">
+      <div className="sticky top-0 z-20 border-b border-white/10 bg-slate-950/95 backdrop-blur-xl">
         <div className="mx-auto max-w-7xl px-6 py-6">
           <div className="mb-6 flex items-start justify-between">
             <div>
               <h1 className="text-4xl font-bold">Certificates</h1>
-              <p className="mt-2 text-muted-foreground">
-                Browse all certificates.
-              </p>
+              <p className="mt-2 text-slate-400">Browse all certificates.</p>
             </div>
 
-            <button
+            <Button
+              variant="secondary"
+              icon={ArrowLeft}
+              iconPosition="left"
               onClick={() =>
                 navigate("/", {
                   state: { scrollTo: "certificates" },
                 })
               }
-              className="inline-flex items-center gap-2 rounded-lg border border-border bg-background px-4 py-2 text-sm font-medium transition hover:bg-accent hover:text-accent-foreground"
             >
-              <ArrowLeft className="h-4 w-4" />
               Home
-            </button>
+            </Button>
           </div>
 
           {/* Filters */}
           <div className="space-y-4">
             {/* Search */}
-            <input
+            <Input
+              icon={Search}
               type="text"
               placeholder="Search certificates..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="h-11 w-full rounded-lg border border-border bg-background px-4 outline-none transition focus:ring-2 focus:ring-primary"
             />
 
             {/* Filters */}
             <div className="grid gap-4 md:grid-cols-3">
               {/* Issuer */}
-              <select
+              <Select
                 value={issuer}
-                onChange={(e) => setIssuer(e.target.value)}
-                className="h-11 rounded-lg border border-border bg-background px-4 outline-none transition focus:ring-2 focus:ring-primary"
-              >
-                <option value="" className="text-black">
-                  All Issuers
-                </option>
-
-                {issuers.map((issuer) => (
-                  <option
-                    key={issuer.id}
-                    value={issuer.name}
-                    className="text-black"
-                  >
-                    {issuer.name}
-                  </option>
-                ))}
-              </select>
+                onChange={setIssuer}
+                options={[
+                  { value: "", label: "All Issuers" },
+                  ...issuers.map((issuer) => ({
+                    value: issuer.name,
+                    label: issuer.name,
+                  })),
+                ]}
+              />
 
               {/* Skill Category */}
-              <select
+              <Select
                 value={skillCategory}
-                onChange={(e) => {
-                  setSkillCategory(e.target.value);
+                onChange={(value) => {
+                  setSkillCategory(value);
                   setSkill("");
                 }}
-                className="h-11 rounded-lg border border-border bg-background px-4 outline-none transition focus:ring-2 focus:ring-primary"
-              >
-                <option value="" className="text-black">
-                  All Categories
-                </option>
-
-                {categories.map((category) => (
-                  <option
-                    key={category}
-                    value={category}
-                    className="text-black"
-                  >
-                    {skillLabels[category]}
-                  </option>
-                ))}
-              </select>
+                options={[
+                  { value: "", label: "All Categories" },
+                  ...categories.map((category) => ({
+                    value: category,
+                    label: skillLabels[category],
+                  })),
+                ]}
+              />
 
               {/* Skill */}
-              <select
+              <Select
                 value={skill}
-                onChange={(e) => setSkill(e.target.value)}
-                className="h-11 rounded-lg border border-border bg-background px-4 outline-none transition focus:ring-2 focus:ring-primary"
-              >
-                <option value="" className="text-black">
-                  All Skills
-                </option>
-
-                {filteredSkills.map((skill) => (
-                  <option
-                    key={skill.id}
-                    value={skill.name}
-                    className="text-black"
-                  >
-                    {skill.name}
-                  </option>
-                ))}
-              </select>
+                onChange={setSkill}
+                options={[
+                  { value: "", label: "All Skills" },
+                  ...filteredSkills.map((skill) => ({
+                    value: skill.name,
+                    label: skill.name,
+                  })),
+                ]}
+              />
             </div>
           </div>
         </div>
@@ -162,15 +169,31 @@ export default function CertificatesPage() {
 
       {/* Scrollable Content */}
       <div className="flex-1 overflow-y-auto">
-        <div className="mx-auto w-full px-6 py-8">
-          <div>
-            {filteredCertificates?.map((certificate) => (
-              <CertificateCard key={certificate.id} certificate={certificate} />
-            ))}
-          </div>
+        <div className="mx-auto max-w-7xl px-6 py-8">
+          {filteredCertificates.length > 0 ? (
+            <div className="space-y-5">
+              {filteredCertificates?.map((certificate) => (
+                <CertificateCard
+                  key={certificate.id}
+                  certificate={certificate}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="flex flex-col items-center justify-center rounded-2xl border border-white/10 bg-slate-900/50 py-24 text-center">
+              <p className="text-lg font-medium text-white">
+                No certificates match your filters
+              </p>
+              <p className="mt-2 text-sm text-slate-400">
+                Try adjusting your search or filters.
+              </p>
+            </div>
+          )}
+
           <Footer />
         </div>
       </div>
-    </main>
+      </main>
+    </>
   );
 }

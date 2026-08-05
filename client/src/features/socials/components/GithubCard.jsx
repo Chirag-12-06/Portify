@@ -1,12 +1,14 @@
 import { FaGithub } from "react-icons/fa";
+import { ExternalLink } from "lucide-react";
 import { useGithub } from "../hooks/useSocials";
 import Heatmap from "./Heatmap";
+import Button from "../../../shared/components/ui/Button";
 
 export default function GithubCard() {
   const { data: github } = useGithub();
 
   return (
-    <div className="flex flex-col rounded-xl border-amber-600 shadow-md mt-8">
+    <div className="flex flex-col rounded-3xl border border-slate-700 bg-slate-900 shadow-xl">
       <header className="flex items-center justify-between border-b border-slate-700 p-6">
         {/* Left */}
         <div className="flex items-center gap-3">
@@ -28,12 +30,16 @@ export default function GithubCard() {
         </div>
 
         {/* Right */}
-        <button
-          onClick={() => window.open(github?.profileUrl, "_blank")}
-          className="rounded-lg border border-slate-600 px-4 py-2 text-sm font-medium text-slate-300 transition hover:border-slate-500 hover:bg-slate-800 hover:text-white"
+        <Button
+          variant="primary"
+          icon={ExternalLink}
+          iconPosition="right"
+          href={github?.profileUrl}
+          target="_blank"
+          rel="noopener noreferrer"
         >
-          View Profile ↗
-        </button>
+          View Profile
+        </Button>
       </header>
 
       <div className="flex flex-1 items-center justify-center p-6">

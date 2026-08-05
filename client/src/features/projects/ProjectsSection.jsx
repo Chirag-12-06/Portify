@@ -1,6 +1,8 @@
+import { ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 import Section from "../../shared/components/ui/Section";
+import Button from "../../shared/components/ui/Button";
 
 import ProjectCard from "./components/ProjectCard";
 
@@ -21,9 +23,14 @@ export default function Projects() {
         </div>
 
         <div className="mt-10 flex justify-center">
-          <button type="button" onClick={() => navigate("/projects")}>
-            View All Projects →
-          </button>
+          <Button
+            variant="secondary"
+            icon={ArrowRight}
+            iconPosition="right"
+            onClick={() => navigate("/projects")}
+          >
+            View All Projects
+          </Button>
         </div>
       </div>
     </Section>

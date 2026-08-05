@@ -1,4 +1,4 @@
-import { ExternalLink } from "lucide-react";
+import { Award, ExternalLink } from "lucide-react";
 import { useState } from "react";
 import CertificateSkillsModal from "./CertificateSkillsModal";
 
@@ -8,7 +8,7 @@ export default function CertificateCard({ certificate }) {
     <>
       <div
         onClick={() => setSelectedCertificate(certificate)}
-        className="group hover:cursor-pointer rounded-2xl border border-slate-700/60 bg-slate-900/60 p-6 transition-all duration-300 hover:-translate-y-1 hover:border-cyan-400/50"
+        className="group hover:cursor-pointer rounded-2xl border border-slate-700/60 bg-slate-800/80 p-6 shadow-xl shadow-black/40 transition-all duration-300 hover:-translate-y-1 hover:border-cyan-400/50"
       >
         {/* Header */}
         <div className="flex items-start justify-between gap-6">
@@ -37,8 +37,9 @@ export default function CertificateCard({ certificate }) {
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={(e) => e.stopPropagation()}
-                className="flex items-center justify-center gap-2 rounded-lg border border-slate-700 px-4 py-2 text-sm font-medium text-cyan-400 transition-all hover:border-cyan-400 hover:bg-cyan-400/10"
+                className="flex items-center justify-center gap-2 rounded-full border border-amber-400/30 bg-amber-400/10 px-4 py-2 text-sm font-medium text-amber-300 transition-all hover:border-amber-400/60 hover:bg-amber-400/20"
               >
+                <Award size={16} />
                 Badge
               </a>
             )}
@@ -48,7 +49,7 @@ export default function CertificateCard({ certificate }) {
               target="_blank"
               rel="noopener noreferrer"
               onClick={(e) => e.stopPropagation()}
-              className="flex items-center justify-center gap-2 rounded-lg border border-slate-700 px-4 py-2 text-sm font-medium text-cyan-400 transition-all hover:border-cyan-400 hover:bg-cyan-400/10"
+              className="flex items-center justify-center gap-2 rounded-full border border-cyan-400/30 bg-cyan-400/10 px-4 py-2 text-sm font-medium text-cyan-300 transition-all hover:border-cyan-400/60 hover:bg-cyan-400/20"
             >
               Credential
               <ExternalLink size={16} />
