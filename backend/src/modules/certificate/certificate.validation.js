@@ -16,6 +16,8 @@ export const createCertificateSchema = z.object({
 
   featured: z.boolean().optional(),
 
+  displayOrder: z.coerce.number().int().min(1),
+
   issueDate: z.coerce.date(),
 
   expiryDate: z.coerce.date().optional(),

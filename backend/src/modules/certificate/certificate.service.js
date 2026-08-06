@@ -96,7 +96,7 @@ export async function getCertificates() {
     },
 
     orderBy: {
-      issueDate: "desc",
+      displayOrder: "asc",
     },
   });
 }
@@ -123,11 +123,16 @@ export async function getCertificateById(id) {
   return certificate;
 }
 
-export async function getCertificateCards(){
+export async function getCertificateCards() {
   return prisma.certificate.findMany({
     where: {
       isVisible: true,
     },
+
+    orderBy: {
+      displayOrder: "asc",
+    },
+
     select: certificateCardSelect,
   });
 }

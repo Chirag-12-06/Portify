@@ -39,6 +39,8 @@ export default function CertificateForm({ certificate, onClose }) {
   // const selectedSkills = watch("skillIds");
 
   useEffect(() => {
+    console.log(certificate.displayOrder);
+console.log(typeof certificate.displayOrder);
     if (!certificate) {
       reset(defaultValues);
       return;
@@ -56,6 +58,7 @@ export default function CertificateForm({ certificate, onClose }) {
   }, [certificate, reset]);
 
   const onSubmit = async (values) => {
+    console.log(values);
     try {
       if (certificate) {
         await updateCertificate.mutateAsync({

@@ -6,7 +6,7 @@ import { skillLabels } from "./constants/skillLabels";
 import SectionCategory from "../../shared/components/ui/SectionCategory";
 
 export default function Skills() {
-  const [activeCategory, setActiveCategory] = useState("");
+  const [activeCategory, setActiveCategory] = useState(null);
 
   const { data: skills = [] } = useSkills();
 

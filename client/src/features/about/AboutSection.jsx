@@ -36,29 +36,37 @@ export default function About() {
             {about.heading}
           </h2>
 
-          <p className="text-lg leading-8 text-slate-300 whitespace-pre-line">
+          <p className="text-lg leading-8 text-slate-300 whitespace-pre-line justify">
             {about.content}
           </p>
         </div>
 
         {/* Right */}
         <div className="grid grid-cols-2 gap-8">
-          {about.highlights?.map((highlight) => (
-            <div
-              key={highlight.id}
-              onMouseMove={handleTiltMove}
-              onMouseLeave={handleTiltLeave}
-              className="group rounded-2xl border border-white/15 bg-slate-800/80 p-10 text-center shadow-xl shadow-black/40 backdrop-blur-sm transition-[border-color,box-shadow] duration-300 will-change-transform hover:border-cyan-400/30 hover:shadow-[0_0_30px_-10px_rgba(34,211,238,0.45)]"
-            >
-              <h3 className="bg-linear-to-br from-cyan-300 to-cyan-500 bg-clip-text text-5xl font-extrabold text-transparent transition-transform duration-300 group-hover:scale-110">
-                {highlight.stat}+
-              </h3>
+          {about.highlights?.map((highlight, index) => {
+            const isLastOdd =
+              about.highlights.length % 2 !== 0 &&
+              index === about.highlights.length - 1;
 
-              <p className="mt-3 text-xs font-medium tracking-wider text-slate-400 uppercase">
-                {highlight.label}
-              </p>
-            </div>
-          ))}
+            return (
+              <div
+                key={highlight.id}
+                onMouseMove={handleTiltMove}
+                onMouseLeave={handleTiltLeave}
+                className={`group rounded-2xl border border-white/15 bg-slate-800/80 p-10 text-center shadow-xl shadow-black/40 backdrop-blur-sm transition-[border-color,box-shadow] duration-300 will-change-transform hover:border-cyan-400/30 hover:shadow-[0_0_30px_-10px_rgba(34,211,238,0.45)] ${
+                  isLastOdd ? "col-span-2 mx-auto w-full max-w-[calc(50%-1rem)]" : ""
+                }`}
+              >
+                <h3 className="bg-linear-to-br from-cyan-300 to-cyan-500 bg-clip-text text-5xl font-extrabold text-transparent transition-transform duration-300 group-hover:scale-110">
+                  {highlight.stat}+
+                </h3>
+
+                <p className="mt-3 text-xs font-medium tracking-wider text-slate-400 uppercase">
+                  {highlight.label}
+                </p>
+              </div>
+            );
+          })}
         </div>
       </div>
     </Section>
