@@ -13,7 +13,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: ["http://localhost:5173", "http://localhost:5174", "https://portify-backend-5xiz.onrender.com"],
+    origin: ["http://localhost:5173", "http://localhost:5174", "https://portfolio-aay1qxcnh-aka2.vercel.app"],
     credentials: true,
   }),
 );
