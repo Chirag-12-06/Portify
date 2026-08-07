@@ -11,12 +11,13 @@ import { errorHandler } from "./middleware/error.middleware.js";
 
 const app = express();
 
-app.use(
-  cors({
-    origin: ["http://localhost:5173", "http://localhost:5174", "https://portfolio-aay1qxcnh-aka2.vercel.app"],
-    credentials: true,
-  }),
-);
+// app.use(
+//   cors({
+//     origin: ["http://localhost:5173", "http://localhost:5174", "https://portfolio-aay1qxcnh-aka2.vercel.app"],
+//     credentials: true,
+//   }),
+// );
+app.use(cors());
 
 app.use(express.json());
 
