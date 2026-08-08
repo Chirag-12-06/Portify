@@ -14,6 +14,7 @@ export const createTechSchema = z.object({
     "CLOUD",
     "DATA_ANALYSIS",
     "DATA_VISUALIZATION",
+    "DEPLOYMENT",
   ]),
 
   imageUrl: z.preprocess(

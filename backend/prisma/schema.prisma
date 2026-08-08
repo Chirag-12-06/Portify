@@ -33,6 +33,7 @@ enum TechCategory {
   ML_AI
   DATA_ANALYSIS
   DATA_VISUALIZATION
+  DEPLOYMENT
 }
 
 model Tech {

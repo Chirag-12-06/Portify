@@ -13,7 +13,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: ["http://localhost:5173", "http://localhost:5174", "https://portfolio-nu-two-libo5ay6os.vercel.app"],
+    origin: ["http://localhost:5173", "http://localhost:5174", "https://chirag-gupta-portfolio.vercel.app"],
     credentials: true,
   }),
 );

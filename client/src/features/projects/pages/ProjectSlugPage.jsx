@@ -152,81 +152,40 @@ export default function ProjectSlugPage() {
         </div>
       </div>
       {/* Hero */}
-      {/* <section className="mx-auto grid max-w-7xl gap-12 px-6 py-16 lg:grid-cols-2">
-        <div>
-          <Badge
-            variant={project?.status === "COMPLETED" ? "success" : "warning"}
-          >
-            {project?.status.replace("_", " ")}
-          </Badge>
-
-          <h1 className="mt-5 text-5xl font-bold">{project?.title}</h1>
-
-          <p className="mt-6 text-lg text-slate-300">
-            {project?.shortDescription}
-          </p>
-
-          <div className="mt-8 flex flex-wrap items-center gap-6 text-sm text-slate-400">
-            <div className="flex items-center gap-2">
-              <Calendar className="h-4 w-4 text-cyan-400" />
-              {project?.projectYear}
-            </div>
-          </div>
-        </div>
-
-        <div>
-          <img
-            src={project?.thumbnailUrl}
-            alt={project?.title}
-            className="h-full w-full rounded-2xl border border-white/10 object-cover shadow-2xl shadow-black/40"
-          />
-        </div>
-      </section>
-      {/* Overview */}
-      {/* <section className="mx-auto max-w-5xl px-6 py-10">
-        <h2 className="mb-6 text-3xl font-bold">Overview</h2>
-
-        <p className="whitespace-pre-line leading-8 text-slate-300">
-          {project?.fullDescription}
-        </p>
-      </section> */}
-
-      <section className="mx-auto grid max-w-7xl gap-12 px-6 py-16 lg:grid-cols-2">
-        <div className="flex flex-col">
-          <Badge
-            variant={project?.status === "COMPLETED" ? "success" : "warning"}
-            className="w-fit font-bold text-sm"
-          >
-            {project?.status.replace("_", " ")}
-          </Badge>
-
-          <h1 className="mt-5 text-5xl font-bold">{project.title}</h1>
-
-          <p className="mt-6 text-lg text-slate-300">
-            {project.shortDescription}
-          </p>
-
-          <div className="mt-6 flex items-center gap-2 text-sm text-slate-400">
-            <Calendar className="h-4 w-4 text-cyan-400" />
-            {project.projectYear}
-          </div>
-
-          {/* Overview starts here */}
-          <div className="mt-10">
-            <h2 className="mb-4 text-2xl font-bold">Overview</h2>
-
-            <p className="whitespace-pre-line leading-8 text-slate-300 text-justify">
-              {project.fullDescription}
-            </p>
-          </div>
-        </div>
-
-        <div>
+      <section className="mx-auto max-w-7xl flow-root px-6 py-16">
+        <div className="mb-8 lg:float-right lg:mb-6 lg:ml-12 lg:w-[45%]">
           <img
             src={project.thumbnailUrl}
             alt={project.title}
             className="w-full rounded-2xl border border-white/10 object-cover shadow-2xl"
           />
+        </div>
+
+        <Badge
+          variant={project?.status === "COMPLETED" ? "success" : "warning"}
+          className="w-fit font-bold text-sm"
+        >
+          {project?.status.replace("_", " ")}
+        </Badge>
+
+        <h1 className="mt-5 text-5xl font-bold">{project.title}</h1>
+
+        <p className="mt-6 text-lg text-slate-300 text-justify">
+          {project.shortDescription}
+        </p>
+
+        <div className="mt-6 flex items-center gap-2 text-sm text-slate-400">
+          <Calendar className="h-4 w-4 text-cyan-400" />
+          {project.projectYear}
+        </div>
+
+        {/* Overview starts here */}
+        <div className="mt-10">
+          <h2 className="mb-4 text-2xl font-bold">Overview</h2>
+
+          <p className="whitespace-pre-line leading-8 text-slate-300 text-justify">
+            {project.fullDescription}
+          </p>
         </div>
       </section>
       {/* Gallery */}

@@ -10,4 +10,5 @@ export const technologyLabels = {
   DATA_VISUALIZATION: "Data Visualization",
   TOOLS: "Tools",
   CLOUD: "Cloud",
+  DEPLOYMENT: "Deployment",
 };
