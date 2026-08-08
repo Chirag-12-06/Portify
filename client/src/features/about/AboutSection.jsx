@@ -36,7 +36,7 @@ export default function About() {
             {about.heading}
           </h2>
 
-          <p className="text-lg leading-8 text-slate-300 whitespace-pre-line justify">
+          <p className="text-lg leading-8 text-slate-300 whitespace-pre-line text-left md:text-justify">
             {about.content}
           </p>
         </div>

@@ -10,17 +10,19 @@ export default function ProjectCard({ project }) {
   return (
     <article
       onClick={() => navigate(`/projects/${project.slug}`)}
-      className="group overflow-hidden rounded-2xl border border-white/10 bg-slate-800/80 shadow-xl shadow-black/40 transition-all duration-300 hover:-translate-y-2 hover:border-cyan-400/40 hover:shadow-[0_0_40px_-15px_rgba(34,211,238,0.4)]"
+      className="group overflow-hidden rounded-2xl border border-white/10 bg-neutral-800/90 shadow-xl shadow-black/40 transition-all duration-300 hover:-translate-y-2 hover:border-cyan-400/40 hover:shadow-[0_0_40px_-15px_rgba(34,211,238,0.4)]"
     >
       {/* Screenshot */}
-      <div className="relative aspect-16/10 overflow-hidden">
-        <img
-          src={project.thumbnailUrl}
-          alt={project.title}
-          className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
-        />
+      <div className="relative aspect-16/10 overflow-hidden bg-neutral-900 p-3">
+        <div className="relative h-full w-full overflow-hidden rounded-lg ring-1 ring-white/10">
+          <img
+            src={project.thumbnailUrl}
+            alt={project.title}
+            className="h-full w-full object-cover object-top transition duration-500 group-hover:scale-105"
+          />
 
-        <div className="absolute inset-0 bg-linear-to-t from-black/40 via-black/10 to-transparent opacity-0 transition duration-300 group-hover:opacity-100" />
+          <div className="absolute inset-0 bg-linear-to-t from-black/40 via-black/10 to-transparent opacity-0 transition duration-300 group-hover:opacity-100" />
+        </div>
       </div>
 
       {/* Content */}
@@ -29,6 +31,7 @@ export default function ProjectCard({ project }) {
         <div className="mb-3 flex items-center justify-between">
           <Badge
             variant={project.status === "COMPLETED" ? "success" : "warning"}
+            className="w-fit font-bold text-sm"
           >
             {project.status === "COMPLETED" ? "Completed" : "In Progress"}
           </Badge>
@@ -49,7 +52,7 @@ export default function ProjectCard({ project }) {
           {project.techs.slice(0, 5).map((tech, index) => (
             <div
               key={index}
-              className={`relative flex h-10 w-10 items-center justify-center rounded-full bg-slate-700 ring-2 ring-slate-900 ${
+              className={`relative flex h-10 w-10 items-center justify-center rounded-full bg-neutral-700 ring-2 ring-neutral-800 ${
                 index !== 0 ? "-ml-2" : ""
               }`}
             >
@@ -62,7 +65,7 @@ export default function ProjectCard({ project }) {
           ))}
 
           {project.techs.length > 5 && (
-            <div className="-ml-2 flex h-10 w-10 items-center justify-center rounded-full bg-slate-700 text-xs font-semibold text-white ring-2 ring-slate-800">
+            <div className="-ml-2 flex h-10 w-10 items-center justify-center rounded-full bg-neutral-700 text-xs font-semibold text-white ring-2 ring-neutral-800">
               +{project.techs.length - 5}
             </div>
           )}

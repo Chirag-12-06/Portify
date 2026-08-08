@@ -11,7 +11,7 @@ export default function EducationCard({ education, reverse }) {
       <div className="flex w-full justify-center md:w-1/3">
         <div className="aspect-square w-64 overflow-hidden rounded-3xl border border-white/10 bg-white/5">
           <img
-            src={education.imageUrl}
+            src={education.institutionImageUrl}
             alt={education.institution}
             className="h-full w-full object-cover"
           />

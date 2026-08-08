@@ -39,8 +39,6 @@ export default function CertificateForm({ certificate, onClose }) {
   // const selectedSkills = watch("skillIds");
 
   useEffect(() => {
-    console.log(certificate.displayOrder);
-console.log(typeof certificate.displayOrder);
     if (!certificate) {
       reset(defaultValues);
       return;
