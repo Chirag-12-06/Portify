@@ -1,124 +1,73 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "postgresql"
-  url=env("DATABASE_URL")
+  url      = env("DATABASE_URL")
 }
 
 model User {
   id        String   @id @default(cuid())
   email     String   @unique
   password  String
-
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
-enum TechCategory {
-  FRONTEND
-  BACKEND
-  DATABASE
-  LANGUAGE
-  FRAMEWORK
-  DEVOPS
-  CLOUD
-  TOOLS
-  ML_AI
-  DATA_ANALYSIS
-  DATA_VISUALIZATION
-  DEPLOYMENT
-}
-
 model Tech {
-  id        String       @id @default(cuid())
-  name      String       @unique
-  category  TechCategory
-  imageUrl  String?
-  color     String?
-
+  id       String        @id @default(cuid())
+  name     String        @unique
+  category TechCategory
+  imageUrl String?
+  color    String?
   projects ProjectTech[]
 }
 
-enum SkillCategory {
-  SOFTWARE_DEVELOPMENT
-  FRONTEND
-  BACKEND
-  DATABASES
-  DEVOPS
-  CLOUD
-  DATA_ANALYTICS
-  DATA_SCIENCE
-  MACHINE_LEARNING
-  ARTIFICIAL_INTELLIGENCE
-  COMPUTER_VISION
-  NLP_LLM
-  MLOPS
-  UI_UX
-  TESTING
-  VERSION_CONTROL
-  SOFT_SKILLS
-}
-
 model Skill {
-  id       String        @id @default(cuid())
-  name     String        @unique
-  category SkillCategory
-
-  projects     ProjectSkill[]
-  experiences  ExperienceSkill[]
+  id           String             @id @default(cuid())
+  name         String             @unique
+  category     SkillCategory
   certificates CertificateSkill[]
-}
-
-enum ProjectStatus {
-  COMPLETED
-  IN_PROGRESS
+  experiences  ExperienceSkill[]
+  projects     ProjectSkill[]
 }
 
 model Project {
-  id               String        @id @default(cuid())
-  slug             String        @unique
+  id               String         @id @default(cuid())
+  slug             String         @unique
   title            String
   shortDescription String
   fullDescription  String
   githubUrl        String?
   liveUrl          String?
-  isVisible        Boolean       @default(true)
-  featured         Boolean       @default(false)
-  displayOrder     Int           @default(1)
+  isVisible        Boolean        @default(true)
+  featured         Boolean        @default(false)
+  displayOrder     Int            @default(1)
   status           ProjectStatus
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
   projectYear      Int
   thumbnailUrl     String
-  createdAt        DateTime      @default(now())
-  updatedAt        DateTime      @updatedAt
-
   gallery          ProjectImage[]
   skills           ProjectSkill[]
   techs            ProjectTech[]
 }
 
 model ProjectImage {
-  id           String   @id @default(cuid())
+  id           String  @id @default(cuid())
   imageUrl     String
   displayOrder Int
-  caption      String?
-
   projectId    String
-  project      Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  caption      String?
+  project      Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
 }
 
 model ProjectSkill {
   projectId String
   skillId   String
-
-  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  skill   Skill   @relation(fields: [skillId], references: [id], onDelete: Cascade)
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  skill     Skill   @relation(fields: [skillId], references: [id], onDelete: Cascade)
 
   @@id([projectId, skillId])
 }
@@ -126,134 +75,118 @@ model ProjectSkill {
 model ProjectTech {
   projectId String
   techId    String
-
-  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  tech    Tech    @relation(fields: [techId], references: [id], onDelete: Cascade)
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  tech      Tech    @relation(fields: [techId], references: [id], onDelete: Cascade)
 
   @@id([projectId, techId])
 }
 
 model Issuer {
-  id   String @id @default(cuid())
-  name String @unique
-  logo String?
-
+  id           String        @id @default(cuid())
+  name         String        @unique
+  logo         String?
   certificates Certificate[]
 }
 
 model Certificate {
-  id              String   @id @default(cuid())
-  title           String
-  issuerId        String
-  issuer          Issuer   @relation(fields: [issuerId], references: [id])
-  credentialUrl   String
-  badgeImageUrl   String?
-  isVisible       Boolean  @default(true)
-  featured        Boolean  @default(false)
-  displayOrder    Int      @default(1)
-  issueDate       DateTime
-  expiryDate      DateTime?
-
-  skills          CertificateSkill[]
+  id            String             @id @default(cuid())
+  title         String
+  credentialUrl String
+  badgeImageUrl String?
+  isVisible     Boolean            @default(true)
+  featured      Boolean            @default(false)
+  displayOrder  Int                @default(1)
+  issueDate     DateTime
+  expiryDate    DateTime?
+  issuerId      String
+  issuer        Issuer             @relation(fields: [issuerId], references: [id])
+  skills        CertificateSkill[]
 }
 
 model CertificateSkill {
   certificateId String
   skillId       String
-
-  certificate Certificate @relation(fields: [certificateId], references: [id], onDelete: Cascade)
-  skill        Skill       @relation(fields: [skillId], references: [id], onDelete: Cascade)
+  certificate   Certificate @relation(fields: [certificateId], references: [id], onDelete: Cascade)
+  skill         Skill       @relation(fields: [skillId], references: [id], onDelete: Cascade)
 
   @@id([certificateId, skillId])
 }
 
 model Experience {
-  id                String   @id @default(cuid())
-  company           String
-  role              String
-  location          String?
-  startDate         DateTime
-  endDate           DateTime?
-  isVisible         Boolean  @default(true)
-  currentlyWorking  Boolean  @default(false)
-  displayOrder      Int      @default(1)
-  companyImageUrl   String?
-
-  points            ExperiencePoint[]
-  skills            ExperienceSkill[]
+  id               String            @id @default(cuid())
+  company          String
+  role             String
+  location         String?
+  startDate        DateTime
+  endDate          DateTime?
+  isVisible        Boolean           @default(true)
+  currentlyWorking Boolean           @default(false)
+  displayOrder     Int               @default(1)
+  companyImageUrl  String?
+  points           ExperiencePoint[]
+  skills           ExperienceSkill[]
 }
 
 model ExperiencePoint {
-  id           String      @id @default(cuid())
+  id           String     @id @default(cuid())
   content      String
   displayOrder Int
-
   experienceId String
-  experience   Experience  @relation(fields: [experienceId], references: [id], onDelete: Cascade)
+  experience   Experience @relation(fields: [experienceId], references: [id], onDelete: Cascade)
 }
 
 model ExperienceSkill {
   experienceId String
   skillId      String
-
-  experience Experience @relation(fields: [experienceId], references: [id], onDelete: Cascade)
-  skill       Skill      @relation(fields: [skillId], references: [id], onDelete: Cascade)
+  experience   Experience @relation(fields: [experienceId], references: [id], onDelete: Cascade)
+  skill        Skill      @relation(fields: [skillId], references: [id], onDelete: Cascade)
 
   @@id([experienceId, skillId])
 }
 
 model Profile {
-  id              String @id @default(cuid())
+  id              String  @id @default(cuid())
   name            String
   email           String
   phone           String?
   location        String?
   resumeUrl       String?
   profileImageUrl String?
-
-  hero            Hero?
   about           About?
+  hero            Hero?
 }
 
 model Hero {
-  id            String @id @default(cuid())
-
-  heroTitle      String?
-  tagline       String?
-  description   String?
-  availability  String?
-  heroImageUrl    String?
-
-  profileId     String @unique
-  profile       Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  id           String  @id @default(cuid())
+  heroTitle    String?
+  tagline      String?
+  description  String?
+  availability String?
+  heroImageUrl String?
+  profileId    String  @unique
+  profile      Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
 }
 
 model About {
-  id          String @id @default(cuid())
-
-  heading     String?
-  content     String?
-
-  profileId   String @unique
-  profile     Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
-
-  highlights  Highlight[]
+  id         String      @id @default(cuid())
+  heading    String?
+  content    String?
+  profileId  String      @unique
+  profile    Profile     @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  highlights Highlight[]
 }
 
 model Highlight {
-  id        String @id @default(cuid())
-
-  stat      String
-  label     String
-
-  order     Int @default(1)
-
-  aboutId   String
-  about     About @relation(fields: [aboutId], references: [id], onDelete: Cascade)
+  id      String @id @default(cuid())
+  stat    String
+  label   String
+  order   Int    @default(1)
+  aboutId String
+  about   About  @relation(fields: [aboutId], references: [id], onDelete: Cascade)
 }
 
 model Education {
-  id                  String   @id @default(cuid())
+  id                  String    @id @default(cuid())
   institution         String
   degree              String
   fieldOfStudy        String
@@ -261,21 +194,8 @@ model Education {
   location            String?
   startDate           DateTime
   endDate             DateTime?
-  currentlyStudying   Boolean  @default(false)
+  currentlyStudying   Boolean   @default(false)
   institutionImageUrl String?
-}
-
-enum SocialPlatform {
-  GITHUB
-  LINKEDIN
-  LEETCODE
-  CODEFORCES
-  CODECHEF
-  HACKERRANK
-  TWITTER
-  INSTAGRAM
-  EMAIL
-  OTHER
 }
 
 model SocialLink {
@@ -295,4 +215,57 @@ model ContactMessage {
   replied   Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+enum TechCategory {
+  FRONTEND
+  BACKEND
+  DATABASE
+  LANGUAGE
+  FRAMEWORK
+  DEVOPS
+  CLOUD
+  TOOLS
+  ML_AI
+  DATA_ANALYSIS
+  DATA_VISUALIZATION
+  DEPLOYMENT
+}
+
+enum SkillCategory {
+  SOFTWARE_DEVELOPMENT
+  DATA_SCIENCE
+  MACHINE_LEARNING
+  ARTIFICIAL_INTELLIGENCE
+  DATABASES
+  DEVOPS
+  CLOUD
+  VERSION_CONTROL
+  TESTING
+  UI_UX
+  SOFT_SKILLS
+  FRONTEND
+  BACKEND
+  DATA_ANALYTICS
+  COMPUTER_VISION
+  NLP_LLM
+  MLOPS
+}
+
+enum ProjectStatus {
+  COMPLETED
+  IN_PROGRESS
+}
+
+enum SocialPlatform {
+  GITHUB
+  LINKEDIN
+  LEETCODE
+  CODEFORCES
+  CODECHEF
+  HACKERRANK
+  TWITTER
+  INSTAGRAM
+  EMAIL
+  OTHER
 }

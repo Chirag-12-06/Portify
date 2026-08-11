@@ -11,10 +11,10 @@ export default function Hero() {
   const { data: profile } = useProfile();
   const { data: hero } = useHeroes();
   return (
-    <Section
-      id="home"
-      className="flex min-h-screen items-center overflow-hidden"
-    >
+   <Section
+  id="home"
+  className="flex items-center overflow-hidden py-16"
+>
       {/* Ambient background glow */}
       <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
         <div className="absolute -top-32 -left-32 h-96 w-96 rounded-full bg-cyan-500/20 blur-[120px]" />

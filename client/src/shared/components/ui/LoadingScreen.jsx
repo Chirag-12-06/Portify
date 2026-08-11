@@ -34,8 +34,7 @@ export default function LoadingScreen({
     return () => clearTimeout(timer);
   }, [revealed, steps.length, stepDuration]);
 
-  const allRevealed = revealed >= steps.length;
-  const canFinish = allRevealed && isReady;
+  const canFinish = isReady;
 
   // Only start exiting once every step has been shown AND the real data is ready.
   useEffect(() => {
