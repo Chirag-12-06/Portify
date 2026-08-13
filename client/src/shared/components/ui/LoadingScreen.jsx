@@ -20,7 +20,7 @@ const DEFAULT_STEPS = [
 
 export default function LoadingScreen({
   steps = DEFAULT_STEPS,
-  stepDuration = 900,
+  stepDuration = 600,
   isReady = true,
   onDone,
 }) {

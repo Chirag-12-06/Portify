@@ -17,10 +17,23 @@ export default function Projects() {
     <Section id="projects" title="Projects">
       <div>
         <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
-          {featuredProjects.map((featuredProject) => (
-            <ProjectCard key={featuredProject.id} project={featuredProject} />
-          ))}
-        </div>
+  {featuredProjects.map((featuredProject, index) => (
+    <div
+      key={featuredProject.id}
+      className={
+        featuredProjects.length % 3 === 2 &&
+        index >= featuredProjects.length - 2
+          ? "xl:translate-x-[calc(50%+1rem)]"
+          : featuredProjects.length % 3 === 1 &&
+            index === featuredProjects.length - 1
+          ? "xl:translate-x-1/2"
+          : ""
+      }
+    >
+      <ProjectCard project={featuredProject} />
+    </div>
+  ))}
+</div>
 
         <div className="mt-10 flex justify-center">
           <Button

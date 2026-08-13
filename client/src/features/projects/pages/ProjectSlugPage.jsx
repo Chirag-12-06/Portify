@@ -83,31 +83,64 @@ const DEFAULT_STACK_COLOR = {
 export default function ProjectSlugPage() {
   const { slug } = useParams();
   const navigate = useNavigate();
-  const [booting, setBooting] = useState(true);
 
-  const { data: project, isLoading } = useProjectBySlug(slug);
+  // const [booting, setBooting] = useState(
+    // () => sessionStorage.getItem("project-loader-shown") !== "true"
+  // );
 
-  if (booting) {
-    return (
-      <LoadingScreen
-        steps={LOADING_STEPS}
-        isReady={!isLoading}
-        onDone={() => setBooting(false)}
-      />
-    );
-  }
+  const [showLoader, setShowLoader] = useState(
+  () => sessionStorage.getItem("project-loader-shown") !== "true"
+);
+
+const { data: project, isLoading } = useProjectBySlug(slug);
+
+if (showLoader) {
+  return (
+    <LoadingScreen
+      steps={LOADING_STEPS}
+      isReady={!isLoading}
+      onDone={() => {
+        sessionStorage.setItem("project-loader-shown", "true");
+        setShowLoader(false);
+      }}
+    />
+  );
+}
+
+if (isLoading) {
+  return (
+    <LoadingScreen
+      steps={LOADING_STEPS}
+      isReady={false}
+    />
+  );
+}
+
+if (!project) {
+  return (
+    <main className="flex h-screen flex-col items-center justify-center gap-4 bg-slate-950 text-lg text-slate-400">
+      Project not found.
+      <Button variant="secondary" onClick={() => navigate("/projects")}>
+        Back to Projects
+      </Button>
+    </main>
+  );
+}
 
   if (!project) {
     return (
       <main className="flex h-screen flex-col items-center justify-center gap-4 bg-slate-950 text-lg text-slate-400">
         Project not found.
-        <Button variant="secondary" onClick={() => navigate("/projects")}>
+
+        <Button
+          variant="secondary"
+          onClick={() => navigate("/projects")}
+        >
           Back to Projects
         </Button>
       </main>
     );
   }
-
   return (
     <main className="flex min-h-screen flex-col bg-slate-950 text-white">
       {/* Header */}

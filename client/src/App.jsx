@@ -9,7 +9,11 @@ export default function App() {
 
   return (
     <>
-      {booting && <LoadingScreen onDone={() => setBooting(false)} />}
+      {booting && (
+        <LoadingScreen
+          onDone={() => setBooting(false)}
+        />
+      )}
 
       <RouterProvider router={router} />
     </>
