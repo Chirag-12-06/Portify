@@ -285,6 +285,7 @@ enum RagSourceType {
 }
 
 model RagDocument {
+<<<<<<< HEAD
   id           String        @id @default(cuid())
   sourceType   RagSourceType
   sourceId     String
@@ -297,7 +298,6 @@ model RagDocument {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
   @@unique([sourceType, sourceId])
 }
 
@@ -314,6 +314,7 @@ model RagChunk {
   updatedAt DateTime @updatedAt
 
   @@unique([documentId, chunkIndex])
+
 }
 
 model RagQuestion {
@@ -325,4 +326,5 @@ model RagQuestion {
   isPublished Boolean  @default(false)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
 }
