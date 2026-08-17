@@ -279,15 +279,18 @@ enum RagSourceType {
 }
 
 model RagDocument {
-  id         String        @id @default(cuid())
-  sourceType RagSourceType
-  sourceId   String
-  title      String
+  id           String        @id @default(cuid())
+  sourceType   RagSourceType
+  sourceId     String
+  title        String
 
-  chunks     RagChunk[]
+  skills       String[]
+  technologies String[]
 
-  createdAt  DateTime      @default(now())
-  updatedAt  DateTime      @updatedAt
+  chunks       RagChunk[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@unique([sourceType, sourceId])
 }
