@@ -285,7 +285,6 @@ enum RagSourceType {
 }
 
 model RagDocument {
-<<<<<<< HEAD
   id           String        @id @default(cuid())
   sourceType   RagSourceType
   sourceId     String
