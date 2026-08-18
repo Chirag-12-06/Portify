@@ -7,10 +7,10 @@ coverage
 
 .vscode/
 
+venv/
 embedding-service/venv/
 __pycache__/
 *.pyc
 
-
-
 backend/src/services/rag/sample.txt
+
