@@ -1,5 +1,13 @@
+CREATE EXTENSION IF NOT EXISTS vector;
+
 -- CreateEnum
-CREATE TYPE "RagSourceType" AS ENUM ('PROJECT', 'EXPERIENCE', 'CERTIFICATE', 'EDUCATION', 'PROFILE');
+CREATE TYPE "RagSourceType" AS ENUM (
+    'PROJECT',
+    'EXPERIENCE',
+    'CERTIFICATE',
+    'EDUCATION',
+    'PROFILE'
+);
 
 -- CreateTable
 CREATE TABLE "RagDocument" (
@@ -7,6 +15,8 @@ CREATE TABLE "RagDocument" (
     "sourceType" "RagSourceType" NOT NULL,
     "sourceId" TEXT NOT NULL,
     "title" TEXT NOT NULL,
+    "skills" TEXT[],
+    "technologies" TEXT[],
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -19,7 +29,7 @@ CREATE TABLE "RagChunk" (
     "documentId" TEXT NOT NULL,
     "content" TEXT NOT NULL,
     "chunkIndex" INTEGER NOT NULL,
-    "embedding" vector NOT NULL,
+    "embedding" vector(384) NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
