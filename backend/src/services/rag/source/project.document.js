@@ -1,4 +1,4 @@
-import prisma from "../../lib/prisma.js";
+import prisma from "../../../lib/prisma.js";
 
 export async function generateProjectDocument(projectId) {
   const project = await prisma.project.findUnique({
@@ -22,7 +22,6 @@ export async function generateProjectDocument(projectId) {
   }
 
   const skills = project.skills.map(({ skill }) => skill.name);
-
   const technologies = project.techs.map(({ tech }) => tech.name);
 
   const content = `
@@ -44,37 +43,5 @@ Status: ${project.status}
     skills,
     technologies,
     content,
-  };
-}
-
-export async function indexProjectDocument(projectId) {
-  const document = await generateProjectDocument(projectId);
-
-  const ragDocument = await prisma.ragDocument.upsert({
-    where: {
-      sourceType_sourceId: {
-        sourceType: document.sourceType,
-        sourceId: document.sourceId,
-      },
-    },
-
-    create: {
-      sourceType: document.sourceType,
-      sourceId: document.sourceId,
-      title: document.title,
-      skills: document.skills,
-      technologies: document.technologies,
-    },
-
-    update: {
-      title: document.title,
-      skills: document.skills,
-      technologies: document.technologies,
-    },
-  });
-
-  return {
-    ...ragDocument,
-    content: document.content,
   };
 }
