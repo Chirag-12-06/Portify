@@ -15,10 +15,14 @@ import {
 
 import { asyncHandler } from "../../utils/asyncHandler.js";
 
+import { indexProject } from "../../services/rag/output/project.rag.service.js";
+
 export const createProjectController = asyncHandler(async (req, res) => {
   const data = createProjectSchema.parse(req.body);
 
   const project = await createProject(data);
+
+  await indexProject(project.id);
 
   return res.status(201).json({
     success: true,
@@ -69,6 +73,8 @@ export const updateProjectController = asyncHandler(async (req, res) => {
   const data = updateProjectSchema.parse(req.body);
 
   const project = await updateProject(req.params.id, data);
+
+  await indexProject(project.id);
 
   return res.status(200).json({
     success: true,
