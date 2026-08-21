@@ -64,6 +64,24 @@ export default function ExperienceCard({ experience }) {
         ))}
       </ul>
 
+      {/* Skills */}
+      {experience.skills?.length > 0 && (
+        <>
+          <div className="my-6 h-px bg-white/10" />
+
+          <div className="flex flex-wrap gap-3">
+            {experience.skills.map(({ skill }) => (
+              <span
+                key={skill.name}
+                className="rounded-full border border-cyan-500/30 bg-cyan-500/10 px-4 py-2 text-sm text-cyan-300 transition-colors duration-200 hover:border-cyan-400/50 hover:bg-cyan-400/15"
+              >
+                {skill.name}
+              </span>
+            ))}
+          </div>
+        </>
+      )}
+
       {/* Divider */}
       {experience.techs?.length > 0 && (
         <>

@@ -6,3 +6,7 @@ coverage
 .DS_Store
 
 .vscode/
+
+embedding-service/venv/
+__pycache__/
+*.pyc
