@@ -1,12 +1,16 @@
 import prisma from "../../../lib/prisma.js";
 
-export async function searchSimilarChunks(queryEmbedding, limit = 5) {
-  if (!queryEmbedding || queryEmbedding.length !== 384) {
-    throw new Error("Query embedding must contain 384 dimensions");
-  }
+const TOP_K = 5;
+const SIMILARITY_THRESHOLD = 0.70;
 
-  if (limit < 1) {
-    throw new Error("Limit must be greater than 0");
+export async function searchSimilarChunks(
+  queryEmbedding,
+  limit = TOP_K
+) {
+  if (!queryEmbedding || queryEmbedding.length !== 384) {
+    throw new Error(
+      "Query embedding must contain 384 dimensions"
+    );
   }
 
   const vector = `[${queryEmbedding.join(",")}]`;
@@ -28,5 +32,17 @@ export async function searchSimilarChunks(queryEmbedding, limit = 5) {
     LIMIT ${limit};
   `;
 
-  return results;
+  // return results
+    // .map((result) => ({
+    //   ...result,
+    //   similarity: Number(result.similarity),
+    // }))
+    // .filter(
+    //   (result) =>
+    //     result.similarity >= SIMILARITY_THRESHOLD
+    // );
+    return results.map((result) => ({
+  ...result,
+  similarity: Number(result.similarity),
+}));
 }
