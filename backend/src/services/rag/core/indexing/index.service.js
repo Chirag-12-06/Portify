@@ -1,6 +1,6 @@
 // core/index.service.js
 
-import prisma from "../../../lib/prisma.js";
+import prisma from "../../../../lib/prisma.js";
 import { createChunks } from "./chunk.service.js";
 import { generateEmbeddings } from "./embedding.service.js";
 import { saveChunks } from "./vector.service.js";
