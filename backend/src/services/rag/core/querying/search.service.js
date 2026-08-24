@@ -2,6 +2,11 @@ import prisma from "../../../../lib/prisma.js";
 
 const TOP_K = 5;
 
+/**
+ * Semantic/vector search.
+ * Used as the fallback when exact portfolio matching
+ * cannot determine the relevant source.
+ */
 export async function searchSimilarChunks(
   queryEmbedding,
   limit = TOP_K
@@ -36,6 +41,9 @@ export async function searchSimilarChunks(
 }
 
 
+/**
+ * Retrieve all chunks belonging to specific projects.
+ */
 export async function searchChunksByProjectIds(projectIds) {
   if (!projectIds || projectIds.length === 0) {
     return [];
@@ -73,6 +81,10 @@ export async function searchChunksByProjectIds(projectIds) {
 }
 
 
+/**
+ * Find projects associated with the given skills,
+ * then retrieve their RAG chunks.
+ */
 export async function searchChunksBySkillIds(skillIds) {
   if (!skillIds || skillIds.length === 0) {
     return [];
@@ -106,6 +118,10 @@ export async function searchChunksBySkillIds(skillIds) {
 }
 
 
+/**
+ * Find projects associated with the given technologies,
+ * then retrieve their RAG chunks.
+ */
 export async function searchChunksByTechnologyIds(
   technologyIds
 ) {

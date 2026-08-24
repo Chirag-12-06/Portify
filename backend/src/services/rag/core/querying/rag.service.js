@@ -17,52 +17,87 @@ export async function answerQuestion(question) {
     throw new Error("Question is required");
   }
 
-  // 1. Detect exact portfolio terms
+  // --------------------------------
+  // 1. Match portfolio terms
+  // --------------------------------
+
   const matches = await matchTerms(question);
 
   console.dir(matches, { depth: null });
 
   let chunks = [];
 
+  // Tracks whether the question explicitly
+  // asks about projects and we attempted
+  // structured project retrieval.
+  let structuredProjectQuery = false;
+
+
   // --------------------------------
-  // 2. Direct project match
+  // 2. Exact project title match
   // --------------------------------
 
   if (matches.projects.length > 0) {
+    structuredProjectQuery = true;
+
     const projectIds = matches.projects.map(
       (project) => project.id
     );
 
-    chunks = await searchChunksByProjectIds(projectIds);
+    console.log("PROJECT MATCH");
+    console.log("Project IDs:", projectIds);
+
+    chunks = await searchChunksByProjectIds(
+      projectIds
+    );
   }
 
+
   // --------------------------------
-  // 3. Skill match
+  // 3. Project + skill match
   // --------------------------------
 
   if (
     chunks.length === 0 &&
+    matches.sourceType === "PROJECT" &&
     matches.skills.length > 0
   ) {
+    structuredProjectQuery = true;
+
     const skillIds = matches.skills.map(
       (skill) => skill.id
     );
 
-    chunks = await searchChunksBySkillIds(skillIds);
+    console.log("SKILL → PROJECT MATCH");
+    console.log("Skill IDs:", skillIds);
+
+    chunks = await searchChunksBySkillIds(
+      skillIds
+    );
   }
 
+
   // --------------------------------
-  // 4. Technology match
+  // 4. Project + technology match
   // --------------------------------
 
   if (
     chunks.length === 0 &&
+    matches.sourceType === "PROJECT" &&
     matches.technologies.length > 0
   ) {
+    structuredProjectQuery = true;
+
     const technologyIds =
       matches.technologies.map(
         (technology) => technology.id
       );
+
+    console.log("TECHNOLOGY → PROJECT MATCH");
+    console.log(
+      "Technology IDs:",
+      technologyIds
+    );
 
     chunks =
       await searchChunksByTechnologyIds(
@@ -70,11 +105,40 @@ export async function answerQuestion(question) {
       );
   }
 
+
   // --------------------------------
-  // 5. Semantic fallback
+  // 5. Explicit project query but
+  //    no matching project found
+  // --------------------------------
+
+  if (
+    structuredProjectQuery &&
+    chunks.length === 0
+  ) {
+    console.log(
+      "NO MATCHING PROJECT FOUND"
+    );
+
+    return {
+      answer:
+        "I don't have any projects matching that requirement.",
+
+      sources: [],
+
+      matches,
+    };
+  }
+
+
+  // --------------------------------
+  // 6. Semantic fallback
   // --------------------------------
 
   if (chunks.length === 0) {
+    console.log(
+      "NO STRUCTURED MATCH → VECTOR SEARCH"
+    );
+
     const [queryEmbedding] =
       await generateEmbeddings([question]);
 
@@ -84,8 +148,9 @@ export async function answerQuestion(question) {
     );
   }
 
+
   // --------------------------------
-  // 6. Generate answer
+  // 7. Generate answer
   // --------------------------------
 
   const answer = await generateAnswer(
