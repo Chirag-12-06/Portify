@@ -7,6 +7,8 @@ import {
   searchChunksByProjectIds,
   searchChunksBySkillIds,
   searchChunksByTechnologyIds,
+  searchChunksByCertificateIds,
+  searchChunksByCertificateSkillIds,
 } from "./search.service.js";
 
 import { generateAnswer } from "./answer.service.js";
@@ -27,10 +29,13 @@ export async function answerQuestion(question) {
 
   let chunks = [];
 
-  // Tracks whether the question explicitly
-  // asks about projects and we attempted
-  // structured project retrieval.
   let structuredProjectQuery = false;
+  let structuredCertificateQuery = false;
+
+
+  // =================================
+  // PROJECT RETRIEVAL
+  // =================================
 
 
   // --------------------------------
@@ -93,7 +98,10 @@ export async function answerQuestion(question) {
         (technology) => technology.id
       );
 
-    console.log("TECHNOLOGY → PROJECT MATCH");
+    console.log(
+      "TECHNOLOGY → PROJECT MATCH"
+    );
+
     console.log(
       "Technology IDs:",
       technologyIds
@@ -107,8 +115,7 @@ export async function answerQuestion(question) {
 
 
   // --------------------------------
-  // 5. Explicit project query but
-  //    no matching project found
+  // 5. No matching project
   // --------------------------------
 
   if (
@@ -130,9 +137,97 @@ export async function answerQuestion(question) {
   }
 
 
+  // =================================
+  // CERTIFICATE RETRIEVAL
+  // =================================
+
+
   // --------------------------------
-  // 6. Semantic fallback
+  // 6. Exact certificate title match
   // --------------------------------
+
+  if (
+    matches.certificates &&
+    matches.certificates.length > 0
+  ) {
+    structuredCertificateQuery = true;
+
+    const certificateIds =
+      matches.certificates.map(
+        (certificate) => certificate.id
+      );
+
+    console.log("CERTIFICATE MATCH");
+
+    console.log(
+      "Certificate IDs:",
+      certificateIds
+    );
+
+    chunks =
+      await searchChunksByCertificateIds(
+        certificateIds
+      );
+  }
+
+
+  // --------------------------------
+  // 7. Certificate + skill match
+  // --------------------------------
+
+  if (
+    chunks.length === 0 &&
+    matches.sourceType === "CERTIFICATE" &&
+    matches.skills.length > 0
+  ) {
+    structuredCertificateQuery = true;
+
+    const skillIds = matches.skills.map(
+      (skill) => skill.id
+    );
+
+    console.log(
+      "SKILL → CERTIFICATE MATCH"
+    );
+
+    console.log(
+      "Skill IDs:",
+      skillIds
+    );
+
+    chunks =
+      await searchChunksByCertificateSkillIds(
+        skillIds
+      );
+  }
+
+
+  // --------------------------------
+  // 8. No matching certificate
+  // --------------------------------
+
+  if (
+    structuredCertificateQuery &&
+    chunks.length === 0
+  ) {
+    console.log(
+      "NO MATCHING CERTIFICATE FOUND"
+    );
+
+    return {
+      answer:
+        "I don't have any certificates matching that requirement.",
+
+      sources: [],
+
+      matches,
+    };
+  }
+
+
+  // =================================
+  // SEMANTIC FALLBACK
+  // =================================
 
   if (chunks.length === 0) {
     console.log(
@@ -149,9 +244,9 @@ export async function answerQuestion(question) {
   }
 
 
-  // --------------------------------
-  // 7. Generate answer
-  // --------------------------------
+  // =================================
+  // GENERATE ANSWER
+  // =================================
 
   const answer = await generateAnswer(
     question,

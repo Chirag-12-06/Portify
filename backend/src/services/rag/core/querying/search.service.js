@@ -155,3 +155,85 @@ export async function searchChunksByTechnologyIds(
 
   return searchChunksByProjectIds(projectIds);
 }
+
+/**
+ * Retrieve chunks belonging to specific certificates.
+ */
+export async function searchChunksByCertificateIds(
+  certificateIds
+) {
+  if (!certificateIds || certificateIds.length === 0) {
+    return [];
+  }
+
+  return prisma.ragChunk.findMany({
+    where: {
+      document: {
+        sourceType: "CERTIFICATE",
+        sourceId: {
+          in: certificateIds,
+        },
+      },
+    },
+
+    select: {
+      id: true,
+      documentId: true,
+      content: true,
+      chunkIndex: true,
+
+      document: {
+        select: {
+          sourceType: true,
+          sourceId: true,
+          title: true,
+        },
+      },
+    },
+
+    orderBy: {
+      chunkIndex: "asc",
+    },
+  });
+}
+
+
+/**
+ * Find certificates associated with the given skills,
+ * then retrieve their RAG chunks.
+ */
+export async function searchChunksByCertificateSkillIds(
+  skillIds
+) {
+  if (!skillIds || skillIds.length === 0) {
+    return [];
+  }
+
+  const certificates = await prisma.certificate.findMany({
+    where: {
+      skills: {
+        some: {
+          skillId: {
+            in: skillIds,
+          },
+        },
+      },
+    },
+
+    select: {
+      id: true,
+    },
+  });
+
+  const certificateIds = certificates.map(
+    (certificate) => certificate.id
+  );
+
+  if (certificateIds.length === 0) {
+    return [];
+  }
+
+  return searchChunksByCertificateIds(
+    certificateIds
+  );
+}
