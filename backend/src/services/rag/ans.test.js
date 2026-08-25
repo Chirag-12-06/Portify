@@ -2,7 +2,7 @@ import { answerQuestion } from "./core/querying/rag.service.js";
 
 const result = await answerQuestion(
   // "Which projects demonstrate mongodb?",
-  "Which certifications demonstrate branding?",
+  "Which certifications demonstrate CI/CD?",
   // "devops projects?",
 );
 
