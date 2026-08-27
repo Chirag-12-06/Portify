@@ -12,8 +12,6 @@ export async function generateAnswer(question, chunks) {
     return FALLBACK_ANSWER;
   }
 
-  return chunks;
-
   const context = chunks
     .map(
       (chunk, index) => `

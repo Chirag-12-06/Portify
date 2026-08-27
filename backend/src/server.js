@@ -1,5 +1,10 @@
 import dotenv from "dotenv";
-dotenv.config();
+
+const result = dotenv.config({
+  override: true,
+  debug: true,
+});
+
 
 import app from "./app.js";
 
