@@ -1,32 +1,38 @@
 import github from "./github.api.js";
 
 export async function getRepositoryLanguages(owner, repo) {
-  const { data } = await github.get(
-    `/repos/${owner}/${repo}/languages`,
-  );
+  const { data } = await github.get(`/repos/${owner}/${repo}/languages`);
 
   return data;
 }
 
-
 export async function getGithubLanguages(username, repositories) {
+  const originalRepositories = repositories.filter((repo) => !repo.fork);
+
+  const results = await Promise.allSettled(
+    originalRepositories.map((repo) =>
+      getRepositoryLanguages(username, repo.name),
+    ),
+  );
+
   const languageTotals = {};
+  let failedRepositories = 0;
 
-  for (const repo of repositories) {
-    if (repo.fork) continue;
+  for (const result of results) {
+    if (result.status === "rejected") {
+      failedRepositories++;
+      continue;
+    }
 
-    const languages = await getRepositoryLanguages(
-      username,
-      repo.name,
-    );
-
-    for (const [language, bytes] of Object.entries(languages)) {
-      languageTotals[language] =
-        (languageTotals[language] ?? 0) + bytes;
+    for (const [language, bytes] of Object.entries(result.value)) {
+      languageTotals[language] = (languageTotals[language] ?? 0) + bytes;
     }
   }
 
-  return languageTotals;
+  return {
+    languageTotals,
+    failedRepositories,
+  };
 }
 
 export function calculateLanguagePercentages(languageTotals) {
@@ -41,9 +47,7 @@ export function calculateLanguagePercentages(languageTotals) {
     .map(([language, bytes]) => ({
       language,
       bytes,
-      percentage: Number(
-        ((bytes / totalBytes) * 100).toFixed(2),
-      ),
+      percentage: Number(((bytes / totalBytes) * 100).toFixed(2)),
     }))
     .sort((a, b) => b.bytes - a.bytes);
 }

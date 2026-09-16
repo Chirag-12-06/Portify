@@ -1,18 +1,34 @@
 import "dotenv/config";
 
 import { getGithubRepositories } from "./github.repository.service.js";
+
 import {
   getGithubLanguages,
   calculateLanguagePercentages,
 } from "./github.language.service.js";
 
-const repositories =
-  await getGithubRepositories("Chirag-12-06");
+const username = "Chirag-12-06";
 
-const languageTotals =
-  await getGithubLanguages("Chirag-12-06", repositories);
+const repositories =
+  await getGithubRepositories(username);
+
+const {
+  languageTotals,
+  failedRepositories,
+} = await getGithubLanguages(
+  username,
+  repositories
+);
 
 const languages =
-  calculateLanguagePercentages(languageTotals);
+  calculateLanguagePercentages(
+    languageTotals
+  );
 
-console.dir(languages, { depth: null });
+console.dir(
+  {
+    languages,
+    failedRepositories,
+  },
+  { depth: null }
+);
