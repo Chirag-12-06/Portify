@@ -92,11 +92,25 @@ function calculateRepositoryStats(repositories) {
 }
 
 function calculateActivityStats(contributionDays) {
-  const activeDays = contributionDays.filter(
+  const today = new Date();
+
+  // Start of the month after the same month last year
+  const startDate = new Date(
+    today.getFullYear() - 1,
+    today.getMonth() + 1,
+    1
+  );
+
+  const filteredDays = contributionDays.filter((day) => {
+    const date = new Date(day.date);
+    return date >= startDate && date <= today;
+  });
+
+  const activeDays = filteredDays.filter(
     (day) => day.contributionCount > 0,
   );
 
-  const totalContributions = contributionDays.reduce(
+  const totalContributions = filteredDays.reduce(
     (total, day) => total + day.contributionCount,
     0,
   );
@@ -108,8 +122,11 @@ function calculateActivityStats(contributionDays) {
       ? 0
       : Number((totalContributions / activeDayCount).toFixed(2));
 
-  const mostActiveDay = contributionDays.reduce((mostActive, day) => {
-    if (!mostActive || day.contributionCount > mostActive.contributionCount) {
+  const mostActiveDay = filteredDays.reduce((mostActive, day) => {
+    if (
+      !mostActive ||
+      day.contributionCount > mostActive.contributionCount
+    ) {
       return day;
     }
 
@@ -118,7 +135,7 @@ function calculateActivityStats(contributionDays) {
 
   const contributionsByMonth = {};
 
-  for (const day of contributionDays) {
+  for (const day of filteredDays) {
     const month = day.date.slice(0, 7);
 
     contributionsByMonth[month] =
@@ -141,26 +158,12 @@ function calculateActivityStats(contributionDays) {
   };
 }
 
-function getTopRepositories(repositories, limit = 5) {
-  return repositories
-    .filter((repo) => !repo.fork)
-    .sort((a, b) => b.stargazers_count - a.stargazers_count)
-    .slice(0, limit)
-    .map((repo) => ({
-      name: repo.name,
-      description: repo.description,
-      url: repo.html_url,
-      stars: repo.stargazers_count,
-      forks: repo.forks_count,
-      language: repo.language,
-      updatedAt: repo.updated_at,
-    }));
-}
 
 export function extractGithubStats(
   user,
   contributions,
   repositories,
+  pinnedRepositories,
   languages,
 ) {
   const contributionDays = contributions.weeks.flatMap(
@@ -189,7 +192,7 @@ export function extractGithubStats(
 
   const repositoryStats = calculateRepositoryStats(repositories);
 
-  const topRepositories = getTopRepositories(repositories);
+  // const pinnedRepositoryStats = calculateRepositoryStats(pinnedRepositories);
 
   return {
   profile: {
@@ -243,7 +246,7 @@ export function extractGithubStats(
     mostStarredRepository:
       repositoryStats.mostStarredRepository,
 
-    topRepositories,
+    pinnedRepositories,
   },
 
   languages,

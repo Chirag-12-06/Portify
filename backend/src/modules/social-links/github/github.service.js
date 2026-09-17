@@ -5,6 +5,7 @@ import { getGithubProfile } from "../../../services/github/github.profile.servic
 import { getGithubContributions } from "../../../services/github/github.contribution.service.js";
 import { extractGithubStats } from "../../../services/github/github.stats.service.js";
 import { getGithubRepositories } from "../../../services/github/github.repository.service.js";
+import { getPinnedRepositories } from "../../../services/github/github.pinnedRepository.js";
 
 import {
   getGithubLanguages,
@@ -24,12 +25,14 @@ function extractUsername(url) {
 }
 
 async function fetchGithubStats(username) {
-    try {
+  try {
     const user = await getGithubProfile(username);
 
     const contributions = await getGithubContributions(username);
 
     const repositories = await getGithubRepositories(username);
+
+    const pinnedRepositories = await getPinnedRepositories(username);
 
     const { languageTotals, failedRepositories } = await getGithubLanguages(
       username,
@@ -42,6 +45,7 @@ async function fetchGithubStats(username) {
       user,
       contributions,
       repositories,
+      pinnedRepositories,
       languages,
     );
 

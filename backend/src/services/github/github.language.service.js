@@ -46,7 +46,6 @@ export function calculateLanguagePercentages(languageTotals) {
   return Object.entries(languageTotals)
     .map(([language, bytes]) => ({
       language,
-      // bytes,
       percentage: Number(((bytes / totalBytes) * 100).toFixed(2)),
     }))
     .sort((a, b) => b.bytes - a.bytes);
