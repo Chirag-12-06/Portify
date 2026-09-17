@@ -28,7 +28,6 @@ async function fetchGithubStats(username) {
     const user = await getGithubProfile(username);
 
     const contributions = await getGithubContributions(username);
-console.dir(contributions, { depth: null });
 
     const repositories = await getGithubRepositories(username);
 
