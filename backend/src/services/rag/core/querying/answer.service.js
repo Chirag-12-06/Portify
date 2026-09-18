@@ -25,9 +25,9 @@ ${chunk.content}
     .join("\n---\n");
 
   const response = await openai.responses.create({
-    model: "gpt-4o-mini",
+  model: "gpt-4o-mini",
 
-    input: `
+  input: `
 You are an AI assistant for a personal portfolio.
 
 Your job is to answer questions about the portfolio owner
@@ -40,8 +40,12 @@ Rules:
 - If the context does not contain enough information,
   say that the information is not available.
 - Give a concise and direct answer.
-- When useful, mention the relevant project, experience,
-  certificate, or other source.
+- Identify ALL projects, certificates, experiences, or other sources
+  that match the user's question.
+- If multiple sources match the question, mention ALL of them.
+- Do not mention only one matching source when multiple matching
+  sources are present in the context.
+- Use the source title exactly as provided when referring to a source.
 
 User Question:
 ${question}
@@ -49,7 +53,7 @@ ${question}
 Portfolio Context:
 ${context}
 `,
-  });
+});
 
   return response.output_text;
 }
