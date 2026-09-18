@@ -1,7 +1,5 @@
 import prisma from "../../../../lib/prisma.js";
 
-
-
 function detectSourceType(question) {
   const text = normalize(question);
 
@@ -30,7 +28,6 @@ function detectSourceType(question) {
 
   return null;
 }
-
 
 function normalize(text) {
   return text
