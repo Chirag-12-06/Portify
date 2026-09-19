@@ -1,65 +1,17 @@
 import prisma from "../../../lib/prisma.js";
 import { ApiError } from "../../../utils/apiError.js";
 
-import { getGithubProfile } from "../../../services/github/github.profile.service.js";
-import { getGithubContributions } from "../../../services/github/github.contribution.service.js";
-import { extractGithubStats } from "../../../services/github/github.stats.service.js";
-import { getGithubRepositories } from "../../../services/github/github.repository.service.js";
-import { getPinnedRepositories } from "../../../services/github/github.pinnedRepository.js";
-
-import {
-  getGithubLanguages,
-  calculateLanguagePercentages,
-} from "../../../services/github/github.language.service.js";
+import { fetchGithubStats } from "../../../services/github/github.fetch.service.js";
 
 import {
   getCachedGithubStats,
-  setCachedGithubStats,
   getInFlightRequest,
-  setInFlightRequest,
   removeInFlightRequest,
+  setInFlightRequest,
 } from "../../../services/github/github.cache.js";
 
 function extractUsername(url) {
   return url.replace(/\/$/, "").split("/").pop();
-}
-
-async function fetchGithubStats(username) {
-  try {
-    const user = await getGithubProfile(username);
-
-    const contributions = await getGithubContributions(username);
-
-    const repositories = await getGithubRepositories(username);
-
-    const pinnedRepositories = await getPinnedRepositories(username);
-
-    const { languageTotals, failedRepositories } = await getGithubLanguages(
-      username,
-      repositories,
-    );
-
-    const languages = calculateLanguagePercentages(languageTotals);
-
-    const stats = extractGithubStats(
-      user,
-      contributions,
-      repositories,
-      pinnedRepositories,
-      languages,
-    );
-
-    setCachedGithubStats(username, stats);
-
-    return stats;
-  } catch (error) {
-    console.error("GitHub stats error:", error);
-    if (error.response?.status === 404) {
-      throw new ApiError(404, "GitHub user not found");
-    }
-
-    throw new ApiError(500, "Failed to fetch GitHub data");
-  }
 }
 
 export async function getGithubStats() {
