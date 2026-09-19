@@ -29,13 +29,9 @@ export async function answerQuestion(question) {
   if (matches.projects.length > 0) {
     structuredProjectQuery = true;
 
-    const projectIds = matches.projects.map(
-      (project) => project.id
-    );
+    const projectIds = matches.projects.map((project) => project.id);
 
-    chunks = await searchChunksByProjectIds(
-      projectIds
-    );
+    chunks = await searchChunksByProjectIds(projectIds);
   }
 
   // Project + skill
@@ -46,13 +42,9 @@ export async function answerQuestion(question) {
   ) {
     structuredProjectQuery = true;
 
-    const skillIds = matches.skills.map(
-      (skill) => skill.id
-    );
+    const skillIds = matches.skills.map((skill) => skill.id);
 
-    chunks = await searchChunksBySkillIds(
-      skillIds
-    );
+    chunks = await searchChunksBySkillIds(skillIds);
   }
 
   // Project + technology
@@ -63,44 +55,29 @@ export async function answerQuestion(question) {
   ) {
     structuredProjectQuery = true;
 
-    const technologyIds =
-      matches.technologies.map(
-        (technology) => technology.id
-      );
+    const technologyIds = matches.technologies.map(
+      (technology) => technology.id,
+    );
 
-    chunks =
-      await searchChunksByTechnologyIds(
-        technologyIds
-      );
+    chunks = await searchChunksByTechnologyIds(technologyIds);
   }
 
   // No matching project
-  if (
-    structuredProjectQuery &&
-    chunks.length === 0
-  ) {
+  if (structuredProjectQuery && chunks.length === 0) {
     return {
-      answer:
-        "I don't have any projects matching that requirement.",
+      answer: "I don't have any projects matching that requirement.",
     };
   }
 
   // Certificate title match
-  if (
-    matches.certificates &&
-    matches.certificates.length > 0
-  ) {
+  if (matches.certificates && matches.certificates.length > 0) {
     structuredCertificateQuery = true;
 
-    const certificateIds =
-      matches.certificates.map(
-        (certificate) => certificate.id
-      );
+    const certificateIds = matches.certificates.map(
+      (certificate) => certificate.id,
+    );
 
-    chunks =
-      await searchChunksByCertificateIds(
-        certificateIds
-      );
+    chunks = await searchChunksByCertificateIds(certificateIds);
   }
 
   // Certificate + skill
@@ -111,42 +88,26 @@ export async function answerQuestion(question) {
   ) {
     structuredCertificateQuery = true;
 
-    const skillIds = matches.skills.map(
-      (skill) => skill.id
-    );
+    const skillIds = matches.skills.map((skill) => skill.id);
 
-    chunks =
-      await searchChunksByCertificateSkillIds(
-        skillIds
-      );
+    chunks = await searchChunksByCertificateSkillIds(skillIds);
   }
 
   // No matching certificate
-  if (
-    structuredCertificateQuery &&
-    chunks.length === 0
-  ) {
+  if (structuredCertificateQuery && chunks.length === 0) {
     return {
-      answer:
-        "I don't have any certificates matching that requirement.",
+      answer: "I don't have any certificates matching that requirement.",
     };
   }
 
   // Semantic fallback
   if (chunks.length === 0) {
-    const [queryEmbedding] =
-      await generateEmbeddings([question]);
+    const [queryEmbedding] = await generateEmbeddings([question]);
 
-    chunks = await searchSimilarChunks(
-      queryEmbedding,
-      5
-    );
+    chunks = await searchSimilarChunks(queryEmbedding, 5);
   }
 
-  const answer = await generateAnswer(
-    question,
-    chunks
-  );
+  const answer = await generateAnswer(question, chunks);
 
   return {
     answer,

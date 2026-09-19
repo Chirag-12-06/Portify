@@ -1,12 +1,18 @@
 import prisma from "../../../../lib/prisma.js";
+import Keywords from "../../keywords/keywords.json";
 
 function detectSourceType(question) {
   const text = normalize(question);
 
   if (
-    /\bprojects?\b/.test(text) ||
-    /\bproject(s)?\b/.test(text)
+    Keywords.github.some((keyword) =>
+      text.includes(normalize(keyword))
+    )
   ) {
+    return "GITHUB";
+  }
+
+  if (/\bprojects?\b/.test(text)) {
     return "PROJECT";
   }
 
