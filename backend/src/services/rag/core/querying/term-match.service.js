@@ -4,30 +4,22 @@ import Keywords from "../../keywords/keywords.json";
 function detectSourceType(question) {
   const text = normalize(question);
 
-  if (
-    Keywords.github.some((keyword) =>
-      text.includes(normalize(keyword))
-    )
-  ) {
+  if (Keywords.github.some((keyword) => text.includes(normalize(keyword)))) {
     return "GITHUB";
   }
 
-  if (/\bprojects?\b/.test(text)) {
+  if (Keywords.project.some((keyword) => text.includes(normalize(keyword)))) {
     return "PROJECT";
   }
 
   if (
-    /\bcertificates?\b/.test(text) ||
-    /\bcertifications?\b/.test(text)
+    Keywords.certificate.some((keyword) => text.includes(normalize(keyword)))
   ) {
     return "CERTIFICATE";
   }
 
   if (
-    /\bexperience\b/.test(text) ||
-    /\bwork experience\b/.test(text) ||
-    /\bworked\b/.test(text) ||
-    /\bintern(ship)?\b/.test(text)
+    Keywords.experience.some((keyword) => text.includes(normalize(keyword)))
   ) {
     return "EXPERIENCE";
   }
@@ -46,48 +38,39 @@ function normalize(text) {
 export async function matchTerms(question) {
   const normalizedQuestion = normalize(question);
 
-  const [skills, technologies, projects] =
-    await Promise.all([
-      prisma.skill.findMany({
-        select: {
-          id: true,
-          name: true,
-        },
-      }),
+  const [skills, technologies, projects] = await Promise.all([
+    prisma.skill.findMany({
+      select: {
+        id: true,
+        name: true,
+      },
+    }),
 
-      prisma.tech.findMany({
-        select: {
-          id: true,
-          name: true,
-        },
-      }),
+    prisma.tech.findMany({
+      select: {
+        id: true,
+        name: true,
+      },
+    }),
 
-      prisma.project.findMany({
-        select: {
-          id: true,
-          title: true,
-        },
-      }),
-    ]);
+    prisma.project.findMany({
+      select: {
+        id: true,
+        title: true,
+      },
+    }),
+  ]);
 
   const matchedSkills = skills.filter((skill) =>
-    normalizedQuestion.includes(
-      normalize(skill.name)
-    )
+    normalizedQuestion.includes(normalize(skill.name)),
   );
 
-  const matchedTechnologies = technologies.filter(
-    (tech) =>
-      normalizedQuestion.includes(
-        normalize(tech.name)
-      )
+  const matchedTechnologies = technologies.filter((tech) =>
+    normalizedQuestion.includes(normalize(tech.name)),
   );
 
-  const matchedProjects = projects.filter(
-    (project) =>
-      normalizedQuestion.includes(
-        normalize(project.title)
-      )
+  const matchedProjects = projects.filter((project) =>
+    normalizedQuestion.includes(normalize(project.title)),
   );
 
   return {

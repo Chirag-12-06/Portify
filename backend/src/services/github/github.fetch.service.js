@@ -16,7 +16,7 @@ export async function fetchGithubStats(username) {
 
     const pinnedRepositories = await getPinnedRepositories(username);
 
-    const { languageTotals, failedRepositories } = await getGithubLanguages(
+    const { languageTotals } = await getGithubLanguages(
       username,
       repositories,
     );
