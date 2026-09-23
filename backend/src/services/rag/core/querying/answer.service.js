@@ -1,5 +1,8 @@
 import OpenAI from "openai";
 
+import { BASE_PROMPT } from "./prompts/base.prompt.js";
+import { PORTFOLIO_PROMPT } from "./prompts/portfolio.prompt.js";
+
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
@@ -25,27 +28,12 @@ ${chunk.content}
     .join("\n---\n");
 
   const response = await openai.responses.create({
-  model: "gpt-4o-mini",
+    model: "gpt-4o-mini",
 
-  input: `
-You are an AI assistant for a personal portfolio.
+    input: `
+${BASE_PROMPT}
 
-Your job is to answer questions about the portfolio owner
-using ONLY the provided portfolio context.
-
-Rules:
-- Do not invent information.
-- Do not use outside knowledge.
-- Do not make assumptions.
-- If the context does not contain enough information,
-  say that the information is not available.
-- Give a concise and direct answer.
-- Identify ALL projects, certificates, experiences, or other sources
-  that match the user's question.
-- If multiple sources match the question, mention ALL of them.
-- Do not mention only one matching source when multiple matching
-  sources are present in the context.
-- Use the source title exactly as provided when referring to a source.
+${PORTFOLIO_PROMPT}
 
 User Question:
 ${question}
@@ -53,7 +41,7 @@ ${question}
 Portfolio Context:
 ${context}
 `,
-});
+  });
 
   return response.output_text;
 }

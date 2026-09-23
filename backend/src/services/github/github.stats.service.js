@@ -192,8 +192,6 @@ export function extractGithubStats(
 
   const repositoryStats = calculateRepositoryStats(repositories);
 
-  // const pinnedRepositoryStats = calculateRepositoryStats(pinnedRepositories);
-
   return {
   profile: {
     profileUrl: user.html_url,

@@ -1,4 +1,5 @@
 import { matchTerms } from "./term-match.service.js";
+import { getGithubStats } from "../../../modules/social-links/github/github.service.js";
 
 import { generateEmbeddings } from "../indexing/embedding.service.js";
 
@@ -19,6 +20,17 @@ export async function answerQuestion(question) {
   }
 
   const matches = await matchTerms(question);
+
+  //GITHUB
+  if (matches.sourceType === "GITHUB") {
+    const githubContext = await getGithubStats();
+
+    const answer = await generateGithubAnswer(question, githubContext);
+
+    return {
+      answer,
+    };
+  }
 
   let chunks = [];
 
