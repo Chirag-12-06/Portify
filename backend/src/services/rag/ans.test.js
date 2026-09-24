@@ -3,16 +3,17 @@ import "dotenv/config";
 import { answerQuestion } from "./core/querying/rag.service.js";
 
 const questions = [
-  "Which projects demonstrate MongoDB?",
-  "Which certifications demonstrate CI/CD?",
-  "DevOps projects?",
-  "Which projects use React?",
-  "Which projects use PostgreSQL?",
-  "Tell me about BudgetWise.",
-  "Tell me about RoamAI.",
-  "What projects demonstrate machine learning?",
-  "What projects demonstrate AI?",
-  "Which certifications demonstrate machine learning?",
+  // "Which projects demonstrate MongoDB?",
+  // "Which certifications demonstrate CI/CD?",
+  // "DevOps projects?",
+  // "Which projects use React?",
+  // "Which projects use PostgreSQL?",
+  // "Tell me about BudgetWise.",
+  // "Tell me about RoamAI.",
+  // "What projects demonstrate machine learning?",
+  // "What projects demonstrate AI?",
+  // "Which certifications demonstrate machine learning?",
+  // "What is the max streak on Chirag's GitHub?",
 ];
 
 for (const question of questions) {

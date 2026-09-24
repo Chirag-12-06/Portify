@@ -1,5 +1,5 @@
 import { matchTerms } from "./term-match.service.js";
-import { getGithubStats } from "../../../modules/social-links/github/github.service.js";
+import { getGithubStats } from "../../../../modules/social-links/github/github.service.js";
 
 import { generateEmbeddings } from "../indexing/embedding.service.js";
 
@@ -12,7 +12,7 @@ import {
   searchChunksByCertificateSkillIds,
 } from "./search.service.js";
 
-import { generateAnswer } from "./answer.service.js";
+import { generateAnswer, generateGithubAnswer } from "./answer.service.js";
 
 export async function answerQuestion(question) {
   if (!question || !question.trim()) {

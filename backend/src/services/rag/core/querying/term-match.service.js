@@ -1,5 +1,5 @@
 import prisma from "../../../../lib/prisma.js";
-import Keywords from "../../keywords/keywords.json";
+import Keywords from "../../keywords/keywords.json" with { type: "json" };
 
 function detectSourceType(question) {
   const text = normalize(question);
