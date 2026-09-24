@@ -148,13 +148,6 @@ export async function getLeetCodeStats() {
       ]),
     );
 
-    // const submissions = Object.fromEntries(
-    //   user.submitStats.totalSubmissionNum.map((item) => [
-    //     item.difficulty.toLowerCase(),
-    //     item,
-    //   ]),
-    // );
-
     const calendar = JSON.parse(user.userCalendar?.submissionCalendar || "{}");
 
     return {
@@ -175,14 +168,6 @@ export async function getLeetCodeStats() {
       easy: solved.easy,
       medium: solved.medium,
       hard: solved.hard,
-
-      // Submission statistics
-      // submissions: {
-      //   all: submissions.all,
-      //   easy: submissions.easy,
-      //   medium: submissions.medium,
-      //   hard: submissions.hard,
-      // },
 
       // Activity
       activity: {
