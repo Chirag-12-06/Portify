@@ -31,37 +31,91 @@ export async function getLeetCodeStats() {
   }
 
   const username = extractUsername(socialLink.url);
-
+ 
   const query = `
-    query getUserProfile($username: String!) {
-  matchedUser(username: $username) {
-    username
+  query getUserProfile($username: String!) {
+    matchedUser(username: $username) {
+      username
 
-    submitStats {
-      acSubmissionNum {
-        difficulty
-        count
+      profile {
+        realName
+        aboutMe
+        userAvatar
+        ranking
+      }
+
+      submitStats {
+        acSubmissionNum {
+          difficulty
+          count
+          submissions
+        }
+
+        totalSubmissionNum {
+          difficulty
+          count
+          submissions
+        }
+      }
+
+      userCalendar {
+        streak
+        totalActiveDays
+        submissionCalendar
+      }
+
+      badges {
+        id
+        name
+        displayName
+        icon
+        creationDate
+      }
+
+      languageProblemCount {
+        languageName
+        problemsSolved
+      }
+
+      tagProblemCounts {
+        advanced {
+          tagName
+          problemsSolved
+        }
+
+        intermediate {
+          tagName
+          problemsSolved
+        }
+
+        fundamental {
+          tagName
+          problemsSolved
+        }
       }
     }
 
-    userCalendar {
-      streak
-      totalActiveDays
-      submissionCalendar
+    userContestRanking(username: $username) {
+      attendedContestsCount
+      rating
+      globalRanking
+      totalParticipants
+      topPercentage
     }
 
-    profile {
+    userContestRankingHistory(username: $username) {
+      attended
+      rating
       ranking
+      problemsSolved
+
+      contest {
+        title
+        startTime
+      }
     }
-
   }
-
-  userContestRanking(username: $username) {
-    rating
-    topPercentage
-  }
-}
-  `;
+`;
 
   try {
     const { data } = await axios.post(
@@ -72,6 +126,11 @@ export async function getLeetCodeStats() {
           username,
         },
       },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
     );
 
     if (!data.data?.matchedUser) {
@@ -80,6 +139,7 @@ export async function getLeetCodeStats() {
 
     const user = data.data.matchedUser;
     const contest = data.data.userContestRanking;
+    const contestHistory = data.data.userContestRankingHistory;
 
     const solved = Object.fromEntries(
       user.submitStats.acSubmissionNum.map((item) => [
@@ -88,25 +148,82 @@ export async function getLeetCodeStats() {
       ]),
     );
 
-    const calendar = JSON.parse(user.userCalendar.submissionCalendar);
+    // const submissions = Object.fromEntries(
+    //   user.submitStats.totalSubmissionNum.map((item) => [
+    //     item.difficulty.toLowerCase(),
+    //     item,
+    //   ]),
+    // );
+
+    const calendar = JSON.parse(user.userCalendar?.submissionCalendar || "{}");
 
     return {
       profileUrl: socialLink.url,
+
+      // Basic identity
       username: user.username,
 
+      profile: {
+        realName: user.profile?.realName,
+        aboutMe: user.profile?.aboutMe,
+        avatar: user.profile?.userAvatar,
+        ranking: user.profile?.ranking,
+      },
+
+      // Problems solved
       solved: solved.all,
       easy: solved.easy,
       medium: solved.medium,
       hard: solved.hard,
 
-      streak: user.userCalendar.streak,
-      activeDays: user.userCalendar.totalActiveDays,
+      // Submission statistics
+      // submissions: {
+      //   all: submissions.all,
+      //   easy: submissions.easy,
+      //   medium: submissions.medium,
+      //   hard: submissions.hard,
+      // },
 
-      ranking: user.profile?.ranking,
+      // Activity
+      activity: {
+        streak: user.userCalendar?.streak,
+        activeDays: user.userCalendar?.totalActiveDays,
+      },
 
-      contestRating: contest?.rating,
-      topPercentage: contest?.topPercentage,
+      // Languages
+      languages: user.languageProblemCount?.map((item) => ({
+        language: item.languageName,
+        problemsSolved: item.problemsSolved,
+      })),
 
+      // DSA / topic skills
+      skills: {
+        advanced: user.tagProblemCounts?.advanced,
+        intermediate: user.tagProblemCounts?.intermediate,
+        fundamental: user.tagProblemCounts?.fundamental,
+      },
+
+      // Contest
+      contest: {
+        attended: contest?.attendedContestsCount,
+        rating: contest?.rating,
+        globalRanking: contest?.globalRanking,
+        totalParticipants: contest?.totalParticipants,
+        topPercentage: contest?.topPercentage,
+      },
+
+      // Contest history
+      contestHistory: contestHistory
+        ?.filter((item) => item.attended)
+        .map((item) => ({
+          contest: item.contest?.title,
+          startTime: item.contest?.startTime,
+          rating: item.rating,
+          ranking: item.ranking,
+          problemsSolved: item.problemsSolved,
+        })),
+
+      // Daily activity
       heatmap: buildHeatmap(calendar),
     };
   } catch (error) {
