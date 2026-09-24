@@ -1,7 +1,8 @@
 import OpenAI from "openai";
 
-import { BASE_PROMPT } from "./prompts/base.prompt.js";
-import { PORTFOLIO_PROMPT } from "./prompts/portfolio.prompt.js";
+import { BASE_PROMPT } from "../../prompt/base.prompt.js";
+import { PORTFOLIO_PROMPT } from "../../prompt/portfolio.prompt.js";
+import { GITHUB_PROMPT } from "../../prompt/github.prompt.js";
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -40,6 +41,30 @@ ${question}
 
 Portfolio Context:
 ${context}
+`,
+  });
+
+  return response.output_text;
+}
+
+export async function generateGithubAnswer(question, githubContext) {
+  if (!githubContext) {
+    return FALLBACK_ANSWER;
+  }
+
+  const response = await openai.responses.create({
+    model: "gpt-4o-mini",
+
+    input: `
+${BASE_PROMPT}
+
+${GITHUB_PROMPT}
+
+User Question:
+${question}
+
+GitHub Context:
+${JSON.stringify(githubContext, null, 2)}
 `,
   });
 
