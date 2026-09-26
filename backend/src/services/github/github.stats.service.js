@@ -197,6 +197,7 @@ export function extractGithubStats(
     profileUrl: user.html_url,
     username: user.login,
     publicRepos: user.public_repos,
+    avatarUrl: user.avatar_url,
   },
 
   contributions: {

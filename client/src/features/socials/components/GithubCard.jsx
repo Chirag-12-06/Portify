@@ -11,11 +11,19 @@ export default function GithubCard() {
 
   return (
     <div className="flex flex-col rounded-3xl border border-slate-700 bg-slate-900 shadow-xl">
-      <header className="flex items-center justify-between border-b border-slate-700 p-6">
+      <header className="flex items-center justify-between border-b border-slate-700 px-6 py-4">
         {/* Left */}
         <div className="flex items-center gap-3">
           <div className="rounded-lg bg-white/10 p-2">
-            <FaGithub className="h-7 w-7 text-white" />
+            {github?.profile?.avatarUrl ? (
+              <img
+                src={github.profile.avatarUrl}
+                alt={github?.profile?.username || "GitHub"}
+                className="h-7 w-7 rounded-full"
+              />
+            ) : (
+              <FaGithub className="h-7 w-7 text-white" />
+            )}
           </div>
 
           <h2 className="text-xl font-semibold text-white">
@@ -70,7 +78,7 @@ export default function GithubCard() {
         </div>
       </div>
 
-      <div className="mx-auto w-full max-w-4xl rounded-3xl border border-slate-700 bg-slate-900 shadow-xl mb-4">
+      <div className="mx-auto w-full max-w-4xl rounded-3xl border border-slate-700 bg-slate-900 shadow-xl mb-1">
         {/* Top */}
         <div className="flex items-center justify-between px-6 pt-6">
           <div>
