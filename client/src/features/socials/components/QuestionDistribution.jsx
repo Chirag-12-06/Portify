@@ -1,9 +1,21 @@
 import { useMemo } from "react";
 
+function Stat({ title, value, color, bg }) {
+  return (
+    <div
+      className={`flex w-40 items-center justify-between rounded-xl border px-4 py-3 ${bg}`}
+    >
+      <span className={`text-md font-semibold ${color}`}>{title}</span>
+
+      <span className="text-xl font-bold text-white">{value}</span>
+    </div>
+  );
+}
+
 export default function QuestionDistribution({ easy, medium, hard }) {
   const total = easy + medium + hard;
 
-  const radius = 130;
+  const radius = 120;
   const strokeWidth = 10;
   const circumference = 2 * Math.PI * radius;
 
@@ -89,14 +101,4 @@ export default function QuestionDistribution({ easy, medium, hard }) {
   );
 }
 
-function Stat({ title, value, color, bg }) {
-  return (
-    <div
-      className={`flex w-40 items-center justify-between rounded-xl border px-4 py-3 ${bg}`}
-    >
-      <span className={`text-md font-semibold ${color}`}>{title}</span>
 
-      <span className="text-xl font-bold text-white">{value}</span>
-    </div>
-  );
-}
