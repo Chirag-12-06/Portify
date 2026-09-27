@@ -2,31 +2,26 @@ const CELL_SIZE = 12;
 const CELL_GAP = 4;
 
 export default function Heatmap({ heatmap }) {
-  
   const getLast12Months = () => {
-  const months = [];
+    const months = [];
 
-  const now = new Date();
+    const now = new Date();
 
-  for (let i = 11; i >= 0; i--) {
-    const date = new Date(
-      now.getFullYear(),
-      now.getMonth() - i,
-      1
-    );
+    for (let i = 11; i >= 0; i--) {
+      const date = new Date(now.getFullYear(), now.getMonth() - i, 1);
 
-    months.push(
-      date.toLocaleString("en-US", {
-        month: "short",
-      })
-    );
-  }
+      months.push(
+        date.toLocaleString("en-US", {
+          month: "short",
+        }),
+      );
+    }
 
-  return months;
-};
+    return months;
+  };
 
   const months = getLast12Months();
-  
+
   const getColor = (count) => {
     switch (count) {
       case 0:
@@ -44,21 +39,6 @@ export default function Heatmap({ heatmap }) {
 
   const weeks = Math.max(Math.ceil(heatmap.length / 7), 1);
   const gridWidth = weeks * CELL_SIZE + (weeks - 1) * CELL_GAP;
-
-  // const months = [
-  //   "Sep",
-  //   "Oct",
-  //   "Nov",
-  //   "Dec",
-  //   "Jan",
-  //   "Feb",
-  //   "Mar",
-  //   "Apr",
-  //   "May",
-  //   "Jun",
-  //   "Jul",
-  //   "Aug",
-  // ];
 
   return (
     <div className="overflow-x-auto">

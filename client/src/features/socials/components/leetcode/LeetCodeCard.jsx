@@ -1,9 +1,9 @@
 import { SiLeetcode } from "react-icons/si";
 import { ExternalLink } from "lucide-react";
-import { useLeetCode } from "../hooks/useSocials";
-import Heatmap from "./Heatmap";
+import { useLeetCode } from "../../hooks/useSocials";
+import Heatmap from "../Heatmap";
 import QuestionDistribution from "./QuestionDistribution";
-import Button from "../../../shared/components/ui/Button";
+import Button from "../../../../shared/components/ui/Button";
 import SkillsBubbleChart from "./SkillsBubbleChart";
 
 export default function LeetCodeCard() {

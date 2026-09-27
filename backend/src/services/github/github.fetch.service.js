@@ -5,6 +5,7 @@ import {getPinnedRepositories} from "./github.pinnedRepository.service.js";
 import {getGithubRepositories} from "./github.repository.service.js";
 import {getGithubLanguages, calculateLanguagePercentages} from "./github.language.service.js";
 import {setCachedGithubStats} from "./github.cache.js";
+import { ApiError } from "../../utils/apiError.js";
 
 export async function fetchGithubStats(username) {
   try {

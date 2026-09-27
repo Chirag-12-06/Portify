@@ -151,13 +151,13 @@ export default function SkillsBubbleChart({ skills }) {
         .force("y", forceY(() => height / 2).strength(0.015))
         .force(
           "collision",
-          forceCollide((d) => d.r + 8)
+          forceCollide((d) => d.r + 10)
             .strength(1)
             .iterations(3),
         )
         .force("legend", () => {
           const legendWidth = 160;
-          const legendHeight = 120;
+          const legendHeight = 180;
 
           const legendLeft = width - legendWidth - 12;
           const legendRight = width - 12;
