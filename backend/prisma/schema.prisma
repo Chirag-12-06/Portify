@@ -309,3 +309,14 @@ model RagChunk {
 
   @@unique([documentId, chunkIndex])
 }
+
+model RagQuestion {
+  id          String   @id @default(uuid())
+  question    String   @db.Text
+  answer      String   @db.Text
+  embedding   Unsupported("vector(384)")?
+  category    String?  @db.VarChar(100)
+  isPublished Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}

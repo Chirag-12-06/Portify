@@ -10,8 +10,8 @@ import {
   deleteSocialLinkController,
 } from "./socialLink.controller.js";
 
-import { getLeetCodeStatsController } from "./leetcode/leetcode.controller.js";
-import { getGithubStatsController } from "./github/github.controller.js";
+import { getLeetCodeStatsController } from "./services/leetcode/leetcode.controller.js";
+import { getGithubStatsController } from "./services/github/github.controller.js";
 
 const publicRouter = Router();
 const adminRouter = Router();

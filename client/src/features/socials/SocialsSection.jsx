@@ -1,4 +1,4 @@
-import { SiLeetCode } from "react-icons/si";
+import { SiLeetcode } from "react-icons/si";
 import { FaGithub } from "react-icons/fa";
 
 import Section from "../../shared/components/ui/Section";
@@ -11,7 +11,7 @@ export default function Socials() {
       <div className="flex flex-col gap-16">
         <div>
           <h3 className="mb-4 flex items-center gap-2 text-2xl font-semibold text-white">
-            <SiLeetCode className="h-6 w-6 text-[#FFA116]" />
+            <SiLeetcode className="h-6 w-6 text-[#FFA116]" />
             LeetCode
           </h3>
 

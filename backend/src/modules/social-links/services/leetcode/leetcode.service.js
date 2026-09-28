@@ -1,14 +1,14 @@
-import prisma from "../../../lib/prisma.js";
-import { ApiError } from "../../../utils/apiError.js";
+import prisma from "../../../../lib/prisma.js";
+import { ApiError } from "../../../../utils/apiError.js";
 
-import { fetchLeetCodeStats } from "../../../services/leetcode/leetcode.fetch.service.js";
+import { fetchLeetCodeStats } from "./leetcode.fetch.service.js";
 
 import {
   getCachedLeetCodeStats,
   getInFlightRequest,
   removeInFlightRequest,
   setInFlightRequest,
-} from "../../../services/leetcode/leetcode.cache.js";
+} from "./leetcode.cache.js";
 
 function extractUsername(url) {
   return url.replace(/\/$/, "").split("/").pop();

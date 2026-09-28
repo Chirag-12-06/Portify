@@ -1,4 +1,4 @@
-import { asyncHandler } from "../../../utils/asyncHandler.js";
+import { asyncHandler } from "../../../../utils/asyncHandler.js";
 import { getLeetCodeStats } from "./leetcode.service.js";
 
 export const getLeetCodeStatsController = asyncHandler(async (req, res) => {
