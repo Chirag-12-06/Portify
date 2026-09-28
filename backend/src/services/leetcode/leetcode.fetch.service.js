@@ -1,11 +1,11 @@
 import { ApiError } from "../../utils/apiError.js";
-import { getLeetcodeProfile } from "./leetcode.api.js";
-import { setCachedLeetcodeStats } from "./leetcode.cache.js";
-import { extractLeetcodeStats } from "./leetcode.extractor.js";
+import { getLeetCodeProfile } from "./leetcode.api.js";
+import { setCachedLeetCodeStats } from "./leetcode.cache.js";
+import { extractLeetCodeStats } from "./leetcode.extractor.js";
 
-export async function fetchLeetcodeStats(username) {
+export async function fetchLeetCodeStats(username) {
   try {
-    const data = await getLeetcodeProfile(username);
+    const data = await getLeetCodeProfile(username);
 
     if (!data?.data) {
       throw new ApiError(404, "LeetCode user not found");
@@ -24,7 +24,7 @@ export async function fetchLeetcodeStats(username) {
 
     const calendar = JSON.parse(user.userCalendar?.submissionCalendar || "{}");
 
-    const stats = extractLeetcodeStats(
+    const stats = extractLeetCodeStats(
       user,
       solved,
       contest,
@@ -32,7 +32,7 @@ export async function fetchLeetcodeStats(username) {
       calendar,
     );
 
-    setCachedLeetcodeStats(username, stats);
+    setCachedLeetCodeStats(username, stats);
 
     return stats;
   } catch (error) {

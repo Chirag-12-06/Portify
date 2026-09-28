@@ -87,7 +87,7 @@ const ContributionActivity = ({ contributions }) => {
   };
 
   return (
-    <div className="h-[120px] w-full">
+    <div className="h-30 w-full">
       <Bar data={data} options={options} className="color-green" />
     </div>
   );

@@ -1,10 +1,10 @@
 import prisma from "../../../lib/prisma.js";
 import { ApiError } from "../../../utils/apiError.js";
 
-import { fetchLeetcodeStats } from "../../../services/leetcode/leetcode.fetch.service.js";
+import { fetchLeetCodeStats } from "../../../services/leetcode/leetcode.fetch.service.js";
 
 import {
-  getCachedLeetcodeStats,
+  getCachedLeetCodeStats,
   getInFlightRequest,
   removeInFlightRequest,
   setInFlightRequest,
@@ -27,7 +27,7 @@ export async function getLeetCodeStats() {
 
   const username = extractUsername(socialLink.url);
 
-  const cachedStats = getCachedLeetcodeStats(username);
+  const cachedStats = getCachedLeetCodeStats(username);
 
   if (cachedStats) {
     return cachedStats;
@@ -39,7 +39,7 @@ export async function getLeetCodeStats() {
     return existingRequest;
   }
 
-  const request = fetchLeetcodeStats(username);
+  const request = fetchLeetCodeStats(username);
 
   setInFlightRequest(username, request);
 

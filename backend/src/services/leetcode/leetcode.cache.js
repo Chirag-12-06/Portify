@@ -3,7 +3,7 @@ const inFlight = new Map();
 
 const CACHE_TTL = 10 * 60 * 1000;
 
-export function getCachedLeetcodeStats(username) {
+export function getCachedLeetCodeStats(username) {
   const entry = cache.get(username);
 
   if (!entry) {
@@ -18,7 +18,7 @@ export function getCachedLeetcodeStats(username) {
   return entry.data;
 }
 
-export function setCachedLeetcodeStats(username, data) {
+export function setCachedLeetCodeStats(username, data) {
   cache.set(username, {
     data,
     timestamp: Date.now(),

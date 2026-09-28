@@ -85,7 +85,7 @@ const query = `
   }
 `;
 
-export async function getLeetcodeProfile(username) {
+export async function getLeetCodeProfile(username) {
   const data = await axios.post(
     "https://leetcode.com/graphql",
     {

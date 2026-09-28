@@ -14,6 +14,9 @@ const questions = [
   // "What projects demonstrate AI?",
   // "Which certifications demonstrate machine learning?",
   // "What is the max streak on Chirag's GitHub?",
+  // "What is the max streak on Chirag's LeetCode?",
+  // "How active is Chirag on LeetCode?",
+  // "Which topics has Chirag solved on LeetCode?",
 ];
 
 for (const question of questions) {

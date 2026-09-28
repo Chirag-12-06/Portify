@@ -1,4 +1,4 @@
-import { SiLeetcode } from "react-icons/si";
+import { SiLeetCode } from "react-icons/si";
 import { ExternalLink } from "lucide-react";
 import { useLeetCode } from "../../hooks/useSocials";
 import Heatmap from "../Heatmap";
@@ -24,7 +24,7 @@ export default function LeetCodeCard() {
               />
             ) : (
               <div className="flex h-full w-full items-center justify-center">
-                <SiLeetcode className="h-7 w-7 text-white" />
+                <SiLeetCode className="h-7 w-7 text-white" />
               </div>
             )}
           </div>
