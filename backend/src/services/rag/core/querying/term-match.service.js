@@ -8,6 +8,10 @@ function detectSourceType(question) {
     return "GITHUB";
   }
 
+  if (Keywords.leetcode.some((keyword) => text.includes(normalize(keyword)))) {
+    return "LEETCODE";
+  }
+
   if (Keywords.project.some((keyword) => text.includes(normalize(keyword)))) {
     return "PROJECT";
   }

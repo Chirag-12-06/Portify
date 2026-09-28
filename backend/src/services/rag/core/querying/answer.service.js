@@ -3,6 +3,7 @@ import OpenAI from "openai";
 import { BASE_PROMPT } from "../../prompt/base.prompt.js";
 import { PORTFOLIO_PROMPT } from "../../prompt/portfolio.prompt.js";
 import { GITHUB_PROMPT } from "../../prompt/github.prompt.js";
+import { LEETCODE_PROMPT } from "../../prompt/leetcode.prompt.js";
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -65,6 +66,30 @@ ${question}
 
 GitHub Context:
 ${JSON.stringify(githubContext, null, 2)}
+`,
+  });
+
+  return response.output_text;
+}
+
+export async function generateLeetCodeAnswer(question, leetcodeContext) {
+  if (!leetcodeContext) {
+    return FALLBACK_ANSWER;
+  }
+
+  const response = await openai.responses.create({
+    model: "gpt-4o-mini",
+
+    input: `
+${BASE_PROMPT}
+
+${LEETCODE_PROMPT}
+
+User Question:
+${question}
+
+LeetCode Context:
+${JSON.stringify(leetcodeContext, null, 2)}
 `,
   });
 

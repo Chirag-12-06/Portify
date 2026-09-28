@@ -1,5 +1,6 @@
 import { matchTerms } from "./term-match.service.js";
 import { getGithubStats } from "../../../../modules/social-links/github/github.service.js";
+import { getLeetCodeStats } from "../../../../modules/social-links/leetcode/leetcode.service.js";
 
 import { generateEmbeddings } from "../indexing/embedding.service.js";
 
@@ -12,7 +13,7 @@ import {
   searchChunksByCertificateSkillIds,
 } from "./search.service.js";
 
-import { generateAnswer, generateGithubAnswer } from "./answer.service.js";
+import { generateAnswer, generateGithubAnswer, generateLeetCodeAnswer } from "./answer.service.js";
 
 export async function answerQuestion(question) {
   if (!question || !question.trim()) {
@@ -26,6 +27,17 @@ export async function answerQuestion(question) {
     const githubContext = await getGithubStats();
 
     const answer = await generateGithubAnswer(question, githubContext);
+
+    return {
+      answer,
+    };
+  }
+
+  //LEETCODE
+  if (matches.sourceType === "LEETCODE") {
+    const leetcodeContext = await getLeetCodeStats();
+
+    const answer = await generateLeetCodeAnswer(question, leetcodeContext);
 
     return {
       answer,

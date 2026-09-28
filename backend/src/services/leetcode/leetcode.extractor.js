@@ -10,8 +10,7 @@ function buildHeatmap(calendar) {
   });
 }
 
-
-export function extractLeetcodeStats(
+export function extractLeetCodeStats(
   user,
   solved,
   contest,
@@ -19,7 +18,6 @@ export function extractLeetcodeStats(
   calendar,
 ) {
   return {
-
     // Basic identity
     username: user.username,
 
