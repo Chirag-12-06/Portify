@@ -1,4 +1,4 @@
-import { ApiError } from "../../utils/apiError.js";
+import { ApiError } from "../../../../utils/apiError.js";
 import { getLeetCodeProfile } from "./leetcode.api.js";
 import { setCachedLeetCodeStats } from "./leetcode.cache.js";
 import { extractLeetCodeStats } from "./leetcode.extractor.js";

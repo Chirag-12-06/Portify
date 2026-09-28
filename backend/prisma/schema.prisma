@@ -313,7 +313,6 @@ model RagChunk {
   updatedAt DateTime @updatedAt
 
   @@unique([documentId, chunkIndex])
-
 }
 
 model RagQuestion {
@@ -325,5 +324,4 @@ model RagQuestion {
   isPublished Boolean  @default(false)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-
 }

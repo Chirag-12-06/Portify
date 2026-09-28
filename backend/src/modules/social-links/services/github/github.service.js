@@ -1,14 +1,14 @@
-import prisma from "../../../lib/prisma.js";
-import { ApiError } from "../../../utils/apiError.js";
+import prisma from "../../../../lib/prisma.js";
+import { ApiError } from "../../../../utils/apiError.js";
 
-import { fetchGithubStats } from "../../../services/github/github.fetch.service.js";
+import { fetchGithubStats } from "./github.fetch.service.js";
 
 import {
   getCachedGithubStats,
   getInFlightRequest,
   removeInFlightRequest,
   setInFlightRequest,
-} from "../../../services/github/github.cache.js";
+} from "./github.cache.js";
 
 function extractUsername(url) {
   return url.replace(/\/$/, "").split("/").pop();
