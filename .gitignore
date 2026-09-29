@@ -12,6 +12,4 @@ embedding-service/venv/
 __pycache__/
 *.pyc
 
-backend/src/services/rag/sample.txt
-
-
+backend/src/modules/rag/services/sample.txt
