@@ -1,4 +1,4 @@
-import prisma from "../../../../lib/prisma.js";
+import prisma from "../../../../../lib/prisma.js";
 import Keywords from "../../keywords/keywords.json" with { type: "json" };
 
 function detectSourceType(question) {

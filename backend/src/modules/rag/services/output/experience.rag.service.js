@@ -1,4 +1,3 @@
-import prisma from "../../../lib/prisma.js";
 import { generateExperienceDocument } from "../source/experience.document.js";
 import { indexDocument } from "../core/index.service.js";
 

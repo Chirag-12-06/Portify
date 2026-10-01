@@ -1,4 +1,4 @@
-import prisma from "../../../../lib/prisma.js";
+import prisma from "../../../../../lib/prisma.js";
 
 const TOP_K = 5;
 
@@ -7,10 +7,7 @@ const TOP_K = 5;
  * Used as the fallback when exact portfolio matching
  * cannot determine the relevant source.
  */
-export async function searchSimilarChunks(
-  queryEmbedding,
-  limit = TOP_K
-) {
+export async function searchSimilarChunks(queryEmbedding, limit = TOP_K) {
   if (!queryEmbedding || queryEmbedding.length !== 384) {
     throw new Error("Query embedding must contain 384 dimensions");
   }
@@ -39,7 +36,6 @@ export async function searchSimilarChunks(
     similarity: Number(result.similarity),
   }));
 }
-
 
 /**
  * Retrieve all chunks belonging to specific projects.
@@ -80,7 +76,6 @@ export async function searchChunksByProjectIds(projectIds) {
   });
 }
 
-
 /**
  * Find projects associated with the given skills,
  * then retrieve their RAG chunks.
@@ -106,9 +101,7 @@ export async function searchChunksBySkillIds(skillIds) {
     },
   });
 
-  const projectIds = projects.map(
-    (project) => project.id
-  );
+  const projectIds = projects.map((project) => project.id);
 
   if (projectIds.length === 0) {
     return [];
@@ -117,14 +110,11 @@ export async function searchChunksBySkillIds(skillIds) {
   return searchChunksByProjectIds(projectIds);
 }
 
-
 /**
  * Find projects associated with the given technologies,
  * then retrieve their RAG chunks.
  */
-export async function searchChunksByTechnologyIds(
-  technologyIds
-) {
+export async function searchChunksByTechnologyIds(technologyIds) {
   if (!technologyIds || technologyIds.length === 0) {
     return [];
   }
@@ -145,9 +135,7 @@ export async function searchChunksByTechnologyIds(
     },
   });
 
-  const projectIds = projects.map(
-    (project) => project.id
-  );
+  const projectIds = projects.map((project) => project.id);
 
   if (projectIds.length === 0) {
     return [];
@@ -159,9 +147,7 @@ export async function searchChunksByTechnologyIds(
 /**
  * Retrieve chunks belonging to specific certificates.
  */
-export async function searchChunksByCertificateIds(
-  certificateIds
-) {
+export async function searchChunksByCertificateIds(certificateIds) {
   if (!certificateIds || certificateIds.length === 0) {
     return [];
   }
@@ -197,14 +183,11 @@ export async function searchChunksByCertificateIds(
   });
 }
 
-
 /**
  * Find certificates associated with the given skills,
  * then retrieve their RAG chunks.
  */
-export async function searchChunksByCertificateSkillIds(
-  skillIds
-) {
+export async function searchChunksByCertificateSkillIds(skillIds) {
   if (!skillIds || skillIds.length === 0) {
     return [];
   }
@@ -225,15 +208,11 @@ export async function searchChunksByCertificateSkillIds(
     },
   });
 
-  const certificateIds = certificates.map(
-    (certificate) => certificate.id
-  );
+  const certificateIds = certificates.map((certificate) => certificate.id);
 
   if (certificateIds.length === 0) {
     return [];
   }
 
-  return searchChunksByCertificateIds(
-    certificateIds
-  );
+  return searchChunksByCertificateIds(certificateIds);
 }

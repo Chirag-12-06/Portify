@@ -1,4 +1,4 @@
-import prisma from "../../../lib/prisma.js";
+import prisma from "../../../../lib/prisma.js";
 
 export async function generateProjectDocument(projectId) {
   const project = await prisma.project.findUnique({

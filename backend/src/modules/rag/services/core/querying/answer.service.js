@@ -5,12 +5,15 @@ import { PORTFOLIO_PROMPT } from "../../prompt/portfolio.prompt.js";
 import { GITHUB_PROMPT } from "../../prompt/github.prompt.js";
 import { LEETCODE_PROMPT } from "../../prompt/leetcode.prompt.js";
 
+import { getGithubStats } from "../../../../social-links/services/github/github.service.js";
+import { getLeetCodeStats } from "../../../../social-links/services/leetcode/leetcode.service.js";
+
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
 const FALLBACK_ANSWER =
-  "I couldn't find enough relevant information in my portfolio data to answer that question.";
+  "I couldn't find enough relevant information in portfolio data to answer that question.";
 
 export async function generateAnswer(question, chunks) {
   if (!chunks || chunks.length === 0) {
@@ -48,7 +51,9 @@ ${context}
   return response.output_text;
 }
 
-export async function generateGithubAnswer(question, githubContext) {
+export async function generateGithubAnswer(question) {
+  const githubContext = await getGithubStats();
+
   if (!githubContext) {
     return FALLBACK_ANSWER;
   }
@@ -57,22 +62,24 @@ export async function generateGithubAnswer(question, githubContext) {
     model: "gpt-4o-mini",
 
     input: `
-${BASE_PROMPT}
+    ${BASE_PROMPT}
 
-${GITHUB_PROMPT}
+    ${GITHUB_PROMPT}
 
-User Question:
-${question}
+    User Question:
+    ${question}
 
-GitHub Context:
-${JSON.stringify(githubContext, null, 2)}
-`,
+    GitHub Context:
+    ${JSON.stringify(githubContext, null, 2)}
+    `,
   });
 
   return response.output_text;
 }
 
-export async function generateLeetCodeAnswer(question, leetcodeContext) {
+export async function generateLeetCodeAnswer(question) {
+  const leetcodeContext = await getLeetCodeStats();
+
   if (!leetcodeContext) {
     return FALLBACK_ANSWER;
   }
@@ -81,16 +88,16 @@ export async function generateLeetCodeAnswer(question, leetcodeContext) {
     model: "gpt-4o-mini",
 
     input: `
-${BASE_PROMPT}
+    ${BASE_PROMPT}
 
-${LEETCODE_PROMPT}
+    ${LEETCODE_PROMPT}
 
-User Question:
-${question}
+    User Question:
+    ${question}
 
-LeetCode Context:
-${JSON.stringify(leetcodeContext, null, 2)}
-`,
+    LeetCode Context:
+    ${JSON.stringify(leetcodeContext, null, 2)}
+    `,
   });
 
   return response.output_text;

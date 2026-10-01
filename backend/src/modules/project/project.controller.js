@@ -15,7 +15,7 @@ import {
 
 import { asyncHandler } from "../../utils/asyncHandler.js";
 
-import { indexProject } from "../../services/rag/output/project.rag.service.js";
+import { indexProject } from "../rag/services/output/project.rag.service.js";
 
 export const createProjectController = asyncHandler(async (req, res) => {
   const data = createProjectSchema.parse(req.body);
