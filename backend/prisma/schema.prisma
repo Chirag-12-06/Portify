@@ -269,3 +269,54 @@ enum SocialPlatform {
   EMAIL
   OTHER
 }
+
+enum RagSourceType {
+  PROJECT
+  EXPERIENCE
+  CERTIFICATE
+  EDUCATION
+  PROFILE
+}
+
+model RagDocument {
+  id           String        @id @default(cuid())
+  sourceType   RagSourceType
+  sourceId     String
+  title        String
+
+  skills       String[]
+  technologies String[]
+
+  chunks       RagChunk[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([sourceType, sourceId])
+}
+
+model RagChunk {
+  id         String      @id @default(cuid())
+  documentId String
+  content    String
+  chunkIndex Int
+  embedding  Unsupported("vector")
+
+  document RagDocument @relation(fields: [documentId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([documentId, chunkIndex])
+}
+
+model RagQuestion {
+  id          String   @id @default(uuid())
+  question    String   @db.Text
+  answer      String   @db.Text
+  embedding   Unsupported("vector(384)")?
+  category    String?  @db.VarChar(100)
+  isPublished Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
