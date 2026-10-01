@@ -3,7 +3,9 @@ import { z } from "zod";
 const emptyToUndefined = (value) => (value === "" ? undefined : value);
 
 export const createEducationSchema = z.object({
-  institution: z.string().trim().min(1, "Institution is required"),
+  institutionName: z.string().trim().min(1, "Institution is required"),
+  
+  institutionType: z.enum(["SCHOOL", "COLLEGE"]).default("COLLEGE"),
 
   degree: z.string().trim().min(1, "Degree is required"),
 

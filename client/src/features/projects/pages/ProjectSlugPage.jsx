@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   ArrowLeft,
   Calendar,
@@ -83,64 +83,52 @@ const DEFAULT_STACK_COLOR = {
 export default function ProjectSlugPage() {
   const { slug } = useParams();
   const navigate = useNavigate();
-
-  // const [booting, setBooting] = useState(
-    // () => sessionStorage.getItem("project-loader-shown") !== "true"
-  // );
-
   const [showLoader, setShowLoader] = useState(
-  () => sessionStorage.getItem("project-loader-shown") !== "true"
-);
-
-const { data: project, isLoading } = useProjectBySlug(slug);
-
-if (showLoader) {
-  return (
-    <LoadingScreen
-      steps={LOADING_STEPS}
-      isReady={!isLoading}
-      onDone={() => {
-        sessionStorage.setItem("project-loader-shown", "true");
-        setShowLoader(false);
-      }}
-    />
+    () => sessionStorage.getItem("project-loader-shown") !== "true",
   );
-}
 
-if (isLoading) {
-  return (
-    <LoadingScreen
-      steps={LOADING_STEPS}
-      isReady={false}
-    />
-  );
-}
+  const [animationDone, setAnimationDone] = useState(false);
 
-if (!project) {
-  return (
-    <main className="flex h-screen flex-col items-center justify-center gap-4 bg-slate-950 text-lg text-slate-400">
-      Project not found.
-      <Button variant="secondary" onClick={() => navigate("/projects")}>
-        Back to Projects
-      </Button>
-    </main>
-  );
-}
+  const { data: project, isLoading } = useProjectBySlug(slug);
+
+  const shouldShowLoader = showLoader && !animationDone;
+
+useEffect(() => {
+  if (project?.title) {
+    document.title = `${project.title}`;
+  }
+
+  return () => {
+    document.title = "Projects";
+  };
+}, [project?.title]);
+
+
+  if (shouldShowLoader || isLoading) {
+    return (
+      <LoadingScreen
+        steps={LOADING_STEPS}
+        isReady={!isLoading}
+        onDone={() => {
+          setAnimationDone(true);
+          sessionStorage.setItem("project-loader-shown", "true");
+          setShowLoader(false);
+        }}
+      />
+    );
+  }
 
   if (!project) {
     return (
       <main className="flex h-screen flex-col items-center justify-center gap-4 bg-slate-950 text-lg text-slate-400">
         Project not found.
-
-        <Button
-          variant="secondary"
-          onClick={() => navigate("/projects")}
-        >
+        <Button variant="secondary" onClick={() => navigate("/projects")}>
           Back to Projects
         </Button>
       </main>
     );
   }
+
   return (
     <main className="flex min-h-screen flex-col bg-slate-950 text-white">
       {/* Header */}

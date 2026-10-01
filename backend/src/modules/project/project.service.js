@@ -48,6 +48,7 @@ const projectSelect = {
           name: true,
           imageUrl: true,
           category: true,
+          color: true,
         },
       },
     },

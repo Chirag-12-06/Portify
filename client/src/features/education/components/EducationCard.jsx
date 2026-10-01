@@ -3,7 +3,7 @@ import { Calendar, MapPin, Star } from "lucide-react";
 export default function EducationCard({ education, reverse }) {
   return (
     <article
-      className={`flex flex-col items-center gap-10 rounded-3xl border border-white/15 bg-slate-800/80 p-8 shadow-xl shadow-black/40 backdrop-blur-sm transition-all duration-300 hover:border-cyan-400/30 hover:shadow-[0_0_40px_-15px_rgba(34,211,238,0.4)] md:flex-row ${
+      className={`flex flex-col items-center gap-10 rounded-3xl border border-white/15 bg-slate-800/80 py-4 px-8 shadow-xl shadow-black/40 backdrop-blur-sm transition-all duration-300 hover:border-cyan-400/30 hover:shadow-[0_0_40px_-15px_rgba(34,211,238,0.4)] md:flex-row ${
         reverse ? "md:flex-row-reverse" : ""
       }`}
     >
@@ -19,10 +19,10 @@ export default function EducationCard({ education, reverse }) {
       </div>
 
       {/* Content */}
-      <div className="flex-1 space-y-5">
+      <div className={`flex-1 space-y-5 ${reverse ? "md:ml-18.5" : ""}`}>
         <div>
           <h2 className="text-3xl font-bold text-white">
-            {education.institution}
+            {education.institutionName}
           </h2>
 
           <p className="mt-2 text-xl font-medium text-cyan-300">
@@ -51,7 +51,8 @@ export default function EducationCard({ education, reverse }) {
           <div>
             <span className="inline-flex items-center gap-2 rounded-full border border-cyan-400/20 bg-cyan-400/10 px-4 py-2 text-cyan-300">
               <Star size={16} className="text-cyan-400" />
-              {education.grade} CGPA
+              {education.grade}{" "}
+              {education.institutionType === "COLLEGE" ? "CGPA" : "Percentage"}
             </span>
           </div>
         </div>

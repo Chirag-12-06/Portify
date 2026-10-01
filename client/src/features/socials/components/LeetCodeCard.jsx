@@ -77,13 +77,13 @@ export default function LeetCodeCard() {
                 <div>
                   <p className="text-slate-400">Active Days</p>
                   <p className="font-semibold text-white">
-                    {leetcode?.activeDays}
+                    {leetcode?.activity.activeDays}
                   </p>
                 </div>
 
                 <div>
                   <p className="text-slate-400">Max Streak</p>
-                  <p className="font-semibold text-white">{leetcode?.streak}</p>
+                  <p className="font-semibold text-white">{leetcode?.activity.streak}</p>
                 </div>
               </div>
             </div>

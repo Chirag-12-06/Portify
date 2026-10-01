@@ -35,7 +35,11 @@ const LOADING_STEPS = [
 export default function ProjectsPage() {
   const navigate = useNavigate();
 
-  const [booting, setBooting] = useState(true);
+  const [showLoader, setShowLoader] = useState(
+    () => sessionStorage.getItem("projects-loader-shown") !== "true",
+  );
+
+  const [animationDone, setAnimationDone] = useState(false);
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("");
   const [technologyCategory, setTechnologyCategory] = useState("");
@@ -44,6 +48,21 @@ export default function ProjectsPage() {
   const { data: projectCards = [], isLoading } = useProjectCards();
   const { data: technologies = [] } = useTechnologies();
 
+  const shouldShowLoader = showLoader && !animationDone;
+
+  if (shouldShowLoader || isLoading) {
+    return (
+      <LoadingScreen
+        steps={LOADING_STEPS}
+        isReady={!isLoading}
+        onDone={() => {
+          setAnimationDone(true);
+          sessionStorage.setItem("projects-loader-shown", "true");
+          setShowLoader(false);
+        }}
+      />
+    );
+  }
   const categories = [...new Set(technologies.map((tech) => tech.category))];
 
   const filteredTechnologies =
@@ -74,16 +93,7 @@ export default function ProjectsPage() {
   });
 
   return (
-    <>
-      {booting && (
-        <LoadingScreen
-          steps={LOADING_STEPS}
-          isReady={!isLoading}
-          onDone={() => setBooting(false)}
-        />
-      )}
-
-      <main className="flex h-screen flex-col bg-slate-950 text-white">
+    <main className="flex h-screen flex-col bg-slate-950 text-white">
       {/* Header */}
       <div className="sticky top-0 z-20 border-b border-white/10 bg-slate-950/95 backdrop-blur-xl">
         <div className="mx-auto max-w-7xl px-6 py-6">
@@ -188,7 +198,6 @@ export default function ProjectsPage() {
           <Footer />
         </div>
       </div>
-      </main>
-    </>
+    </main>
   );
 }

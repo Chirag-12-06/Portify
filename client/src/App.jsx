@@ -5,13 +5,23 @@ import router from "./shared/router";
 import LoadingScreen from "./shared/components/ui/LoadingScreen";
 
 export default function App() {
-  const [booting, setBooting] = useState(true);
+  const [showLoader, setShowLoader] = useState(
+    () => sessionStorage.getItem("app-loader-shown") !== "true",
+  );
+
+  const [animationDone, setAnimationDone] = useState(false);
+
+  const shouldShowLoader = showLoader && !animationDone;
 
   return (
     <>
-      {booting && (
+      {shouldShowLoader && (
         <LoadingScreen
-          onDone={() => setBooting(false)}
+          onDone={() => {
+            setAnimationDone(true);
+            sessionStorage.setItem("app-loader-shown", "true");
+            setShowLoader(false);
+          }}
         />
       )}
 
