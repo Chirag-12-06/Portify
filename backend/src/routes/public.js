@@ -12,6 +12,7 @@ import { publicRouter as technologyRoutes } from "../modules/technology/technolo
 import { publicRouter as heroRoutes } from "../modules/hero/hero.routes.js";
 import { publicRouter as socialLinkRoutes } from "../modules/social-links/socialLink.routes.js";
 import { publicRouter as aboutRoutes } from "../modules/about/about.routes.js";
+import { publicRouter as ragRoutes } from "../modules/rag/rag.routes.js";
 
 const router = Router();
 
@@ -26,6 +27,7 @@ router.use("/issuers", issuerRoutes);
 router.use("/contacts", contactRoutes);
 router.use("/profiles", profileRoutes);
 router.use("/educations", educationRoutes);
+router.use("/rag", ragRoutes);
 router.use("/about", aboutRoutes);
 
 export default router;

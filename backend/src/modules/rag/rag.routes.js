@@ -3,26 +3,26 @@ import { Router } from "express";
 import { authenticate } from "../../middleware/auth.middleware.js";
 
 import {
-  createSkillController,
-  resolveSkillController,
-  getSkillsController,
-  getSkillByIdController,
-  updateSkillController,
-  deleteSkillController,
+  askQuestion,
+  createQuestion,
+  getQuestions,
+  getQuestion,
+  updateQuestion,
+  deleteQuestion,
 } from "./rag.controller.js";
 
 const publicRouter = Router();
 const adminRouter = Router();
 
 /* ---------- Public Routes ---------- */
-
-publicRouter.get("/", getSkillsController);
-publicRouter.get("/:id", getSkillByIdController);
-
+publicRouter.post("/ask", askQuestion);
 
 /* ---------- Admin Routes ---------- */
-adminRouter.post("/", createSkillController);
-adminRouter.put("/:id", updateSkillController);
-adminRouter.delete("/:id", deleteSkillController);
+adminRouter.use(authenticate);
+adminRouter.post("/questions", createQuestion);
+adminRouter.get("/questions", getQuestions);
+adminRouter.get("/questions/:id", getQuestion);
+adminRouter.patch("/questions/:id", updateQuestion);
+adminRouter.delete("/questions/:id", deleteQuestion);
 
-export {publicRouter, adminRouter};
+export { publicRouter, adminRouter };
