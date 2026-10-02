@@ -5,7 +5,7 @@ import {
   searchChunksByTechnologyIds,
   searchChunksByCertificateIds,
   searchChunksByCertificateSkillIds,
-} from "./search.service.js";
+} from "./chunk.search.service.js";
 
 import { generateEmbeddings } from "../indexing/embedding.service.js";
 
@@ -55,9 +55,7 @@ export async function chunksExtractor(matches, question) {
 
   // No matching project
   if (structuredProjectQuery && chunks.length === 0) {
-    return {
-      answer: "I don't have any projects matching that requirement.",
-    };
+    return [];
   }
 
   // Certificate title match
@@ -86,9 +84,7 @@ export async function chunksExtractor(matches, question) {
 
   // No matching certificate
   if (structuredCertificateQuery && chunks.length === 0) {
-    return {
-      answer: "I don't have any certificates matching that requirement.",
-    };
+    return [];
   }
 
   // Semantic fallback

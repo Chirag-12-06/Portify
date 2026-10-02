@@ -1,78 +1,139 @@
-import { asyncHandler } from "../../utils/asyncHandler.js";
+import { answerQuestion } from "./services/core/querying/rag.service.js";
 
 import {
-  createSkill,
-  resolveSkill,
-  getSkills,
-  getSkillById,
-  updateSkill,
-  deleteSkill,
+  createQuestion as createQuestionService,
+  getQuestions as getQuestionsService,
+  getQuestionById,
+  updateQuestion as updateQuestionService,
+  deleteQuestion as deleteQuestionService,
 } from "./rag.service.js";
 
 import {
-  createSkillSchema,
-  updateSkillSchema,
+  createRagQuestionSchema,
+  updateRagQuestionSchema,
 } from "./rag.validation.js";
 
-export const createSkillController = asyncHandler(async (req, res) => {
-  const data = createSkillSchema.parse(req.body);
+// Create a Q&A entry
+export async function createQuestion(req, res, next) {
+  try {
+    const validatedData = createRagQuestionSchema.parse(req.body);
 
-  const skill = await createSkill(data);
+    const question = await createQuestionService(validatedData);
 
-  return res.status(201).json({
-    success: true,
-    message: "Skill created successfully",
-    data: skill,
-  });
-});
+    return res.status(201).json({
+      success: true,
+      message: "Question created successfully",
+      data: question,
+    });
+  } catch (error) {
+    next(error);
+  }
+}
 
-export const resolveSkillController = asyncHandler(async (req, res) => {
-  const data = createSkillSchema.parse(req.body);
 
-  const skill = await resolveSkill(data);
+// Ask a question using RAG
+export async function askQuestion(req, res, next) {
+  try {
+    const { question } = req.body;
 
-  return res.status(200).json({
-    success: true,
-    message: "Skill resolved successfully",
-    data: skill,
-  });
-});
+    if (typeof question !== "string" || !question.trim()) {
+      return res.status(400).json({
+        success: false,
+        message: "Question is required",
+      });
+    }
 
-export const getSkillsController = asyncHandler(async (req, res) => {
-  const skills = await getSkills(req.query.category);
+    const normalizedQuestion = question.trim();
 
-  return res.status(200).json({
-    success: true,
-    data: skills,
-  });
-});
+    // Check existing Q&A or generate a new answer
+    const result = await answerQuestion(normalizedQuestion);
 
-export const getSkillByIdController = asyncHandler(async (req, res) => {
-  const skill = await getSkillById(req.params.id);
+    // Save only if no existing Q&A was found
+    if (!result.cached && result.answer) {
+      await createQuestionService({
+        question: normalizedQuestion,
+        answer: result.answer,
+        embedding: normalizedQuestion.embedding,
+        category: result.source,
+        isPublished: true,
+      });
+    }
 
-  return res.status(200).json({
-    success: true,
-    data: skill,
-  });
-});
+    return res.status(200).json({
+      success: true,
+      data: result,
+    });
+  } catch (error) {
+    next(error);
+  }
+}
 
-export const updateSkillController = asyncHandler(async (req, res) => {
-  const data = updateSkillSchema.parse(req.body);
+// Get all Q&A entries
+export async function getQuestions(req, res, next) {
+  try {
+    const questions = await getQuestionsService({
+      page: Number(req.query.page) || 1,
+      limit: Number(req.query.limit) || 20,
+      search: req.query.search,
+    });
 
-  const skill = await updateSkill(req.params.id, data);
+    return res.status(200).json({
+      success: true,
+      data: questions,
+    });
+  } catch (error) {
+    next(error);
+  }
+}
 
-  return res.status(200).json({
-    success: true,
-    message: "Skill updated successfully",
-    data: skill,
-  });
-});
+// Get a single Q&A entry
+export async function getQuestion(req, res, next) {
+  try {
+    const question = await getQuestionById(req.params.id);
 
-export const deleteSkillController = asyncHandler(async (req, res) => {
-  await deleteSkill(req.params.id);
+    if (!question) {
+      return res.status(404).json({
+        success: false,
+        message: "Question not found",
+      });
+    }
 
-  return res.status(200).json({
-    success: true,
-    message: "Skill deleted successfully",
-  });
-});
+    return res.status(200).json({
+      success: true,
+      data: question,
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+// Update a Q&A entry
+export async function updateQuestion(req, res, next) {
+  try {
+    const validatedData = updateRagQuestionSchema.parse(req.body);
+
+    const question = await updateQuestionService(req.params.id, validatedData);
+
+    return res.status(200).json({
+      success: true,
+      message: "Question updated successfully",
+      data: question,
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+// Delete a Q&A entry
+export async function deleteQuestion(req, res, next) {
+  try {
+    await deleteQuestionService(req.params.id);
+
+    return res.status(200).json({
+      success: true,
+      message: "Question deleted successfully",
+    });
+  } catch (error) {
+    next(error);
+  }
+}
