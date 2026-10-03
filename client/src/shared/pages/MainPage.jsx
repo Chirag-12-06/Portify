@@ -13,6 +13,7 @@ import CertificatesSection from "../../features/certificates/CertificatesSection
 import EducationSection from "../../features/education/EducationSection";
 import SocialsSection from "../../features/socials/SocialsSection";
 import FooterSection from "../../features/footer/FooterSection";
+import RagButton from "../../features/rag/components/RagButton";
 import ContactButton from "../components/layout/ContactButton";
 import useActiveSection from "../hooks/useActiveSection";
 
@@ -66,6 +67,7 @@ export default function MainLayout() {
         <FooterSection />
       </main>
 
+      <RagButton />
       <ContactButton />
 
       <Outlet />

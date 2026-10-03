@@ -53,7 +53,6 @@ export async function askQuestion(req, res, next) {
       await createQuestionService({
         question: normalizedQuestion,
         answer: result.answer,
-        embedding: normalizedQuestion.embedding,
         category: result.source,
         isPublished: true,
       });
