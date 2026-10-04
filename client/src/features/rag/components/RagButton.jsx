@@ -1,15 +1,35 @@
-import { useState } from "react";
-import { Bot, X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
+import { Bot, X } from "lucide-react";
+import { useEffect, useState } from "react";
 import RagChatBox from "./RagChatBox";
 
 export default function RagButton() {
   const [isOpen, setIsOpen] = useState(false);
+  const [showGreeting, setShowGreeting] = useState(true);
+  const [messages, setMessages] = useState([]);
 
   const CHAT_WIDTH = 380;
   const GAP = 12;
 
   const shiftDistance = CHAT_WIDTH + GAP;
+
+  const handleToggle = () => {
+    if (isOpen) {
+      setShowGreeting(true);
+    }
+
+    setIsOpen((prev) => !prev);
+  };
+
+  useEffect(() => {
+    if (isOpen || !showGreeting) return;
+
+    const timer = setTimeout(() => {
+      setShowGreeting(false);
+    }, 5000);
+
+    return () => clearTimeout(timer);
+  }, [isOpen, showGreeting]);
 
   return (
     <div className="fixed bottom-28 right-6 z-50">
@@ -38,14 +58,18 @@ export default function RagButton() {
             }}
             className="absolute bottom-0 right-0 origin-bottom-right"
           >
-            <RagChatBox onClose={() => setIsOpen(false)} />
+            <RagChatBox
+              onClose={() => setIsOpen(false)}
+              messages={messages}
+              setMessages={setMessages}
+            />
           </motion.div>
         )}
       </AnimatePresence>
 
       {/* Floating Bot Button */}
       <motion.button
-        onClick={() => setIsOpen((prev) => !prev)}
+        onClick={handleToggle}
         animate={{
           x: isOpen ? -shiftDistance : 0,
         }}
@@ -88,12 +112,12 @@ export default function RagButton() {
 
       {/* Greeting Message */}
       <AnimatePresence>
-        {!isOpen && (
+        {!isOpen && showGreeting && (
           <motion.div
-            initial={{ opacity: 0, x: 15 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: 15 }}
-            transition={{ duration: 0.25 }}
+            initial={{ opacity: 0, x: 15, scale: 0.95 }}
+            animate={{ opacity: 1, x: 0, scale: 1 }}
+            exit={{ opacity: 0, x: 10, scale: 0.95 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
             className="absolute right-16 top-1/2 w-max max-w-64 -translate-y-1/2 rounded-xl border border-cyan-400/20 bg-slate-900 px-4 py-3 text-sm text-white shadow-xl"
           >
             <p className="font-semibold text-cyan-400">Hi, I'm your RAG Bot!</p>

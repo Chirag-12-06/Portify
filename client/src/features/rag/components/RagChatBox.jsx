@@ -1,12 +1,11 @@
-import { useState, useRef } from "react";
-import { Bot, X, Send, User, Sparkles } from "lucide-react";
-import useRag from "../hooks/useRag";
+import { Bot, Send, User, X } from "lucide-react";
+import { useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import useRag from "../hooks/useRag";
 
-export default function RagChatBox({ onClose }) {
+export default function RagChatBox({ onClose, messages, setMessages }) {
   const [input, setInput] = useState("");
-  const [messages, setMessages] = useState([]);
 
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
@@ -81,18 +80,36 @@ export default function RagChatBox({ onClose }) {
       {/* Chat Messages */}
       <div className="flex-1 space-y-4 overflow-y-auto p-4 scrollbar-thin [scrollbar-color:#334155_transparent]">
         {/* Welcome message */}
-        {messages.length === 1 && (
-          <div className="mb-5 text-center">
-            <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-cyan-500/10">
-              <Sparkles className="h-6 w-6 text-cyan-400" />
+        {messages.length === 0 ? (
+          <div className="flex h-full flex-col items-center justify-center px-6 text-center">
+            <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-cyan-500/10">
+              <Bot size={28} className="text-cyan-400" />
             </div>
-            <p className="text-sm font-medium text-slate-200">
+
+            <h3 className="mb-2 text-lg font-semibold text-white">
+              Hi, I'm Chirag's AI Assistant!
+            </h3>
+
+            <p className="text-sm leading-relaxed text-slate-400">
+              Welcome to my portfolio. Feel free to ask me about my projects,
+              technical skills, experience, or anything else you'd like to know.
+            </p>
+
+            <p className="mt-4 text-xs text-slate-500">
               How can I help you today?
             </p>
-            <p className="mt-1 text-xs text-slate-500">
-              Ask me about Chirag's portfolio.
-            </p>
           </div>
+        ) : (
+          messages.map((message, index) => (
+            <div
+              key={index}
+              className={`flex ${
+                message.role === "user" ? "justify-end" : "justify-start"
+              }`}
+            >
+              {/* Your existing message rendering */}
+            </div>
+          ))
         )}
 
         {messages.map((message, index) => (

@@ -13,4 +13,5 @@ export const Routes = {
   TECHNOLOGIES: "/technologies",
   HERO: "/heroes",
   ABOUT: "/about",
+  RAG_QUESTIONS: "/rag-questions",
 };

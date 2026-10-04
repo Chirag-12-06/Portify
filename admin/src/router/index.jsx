@@ -17,6 +17,7 @@ import ExperiencePage from "../features/experience/pages/ExperiencePage";
 import IssuersPage from "../features/issuer/pages/IssuerPage";
 import HeroPage from "../features/hero/pages/HeroPage";
 import AboutPage from "../features/about/pages/AboutPage";
+import RagQuestionsPage from "../features/rag/pages/RagQuestionsPage";
 
 import { Routes } from "../lib/routes";
 
@@ -54,6 +55,10 @@ const router = createBrowserRouter([
         {
           path: Routes.ABOUT,
           element: <AboutPage />,
+        },
+        {
+          path: Routes.RAG_QUESTIONS,
+          element: <RagQuestionsPage />,
         },
         {
           path: Routes.SOCIAL_LINKS,

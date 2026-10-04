@@ -13,4 +13,5 @@ export const queryKeys = {
   technologies: ["technologies"],
   heroes: ["heroes"],
   about: ["about"],
+  ragQuestions: ["rag-questions"],
 };
