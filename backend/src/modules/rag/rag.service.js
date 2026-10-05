@@ -3,7 +3,6 @@ import prisma from "../../lib/prisma.js";
 
 import { generateEmbeddings } from "./services/core/indexing/embedding.service.js";
 
-
 /**
  * Create a new Q&A entry.
  *
@@ -14,12 +13,7 @@ import { generateEmbeddings } from "./services/core/indexing/embedding.service.j
  * @param {string} [data.category]
  */
 
-
-export async function createQuestion({
-  question,
-  answer,
-  category = null,
-}) {
+export async function createQuestion({ question, answer, category = null }) {
   if (!question?.trim()) {
     throw new Error("Question is required");
   }
@@ -82,58 +76,21 @@ export async function createQuestion({
 /**
  * Fetch all Q&A entries.
  */
-export async function getQuestions({ page = 1, limit = 20, search } = {}) {
-  const skip = (page - 1) * limit;
-
-  const where = search
-    ? {
-        OR: [
-          {
-            question: {
-              contains: search,
-              mode: "insensitive",
-            },
-          },
-          {
-            answer: {
-              contains: search,
-              mode: "insensitive",
-            },
-          },
-        ],
-      }
-    : {};
-
-  const [questions, total] = await prisma.$transaction([
-    prisma.ragQuestion.findMany({
-      where,
-      orderBy: {
-        createdAt: "desc",
-      },
-      skip,
-      take: limit,
-      select: {
-        id: true,
-        question: true,
-        answer: true,
-        category: true,
-        isPublished: true,
-        createdAt: true,
-        updatedAt: true,
-      },
-    }),
-    prisma.ragQuestion.count({ where }),
-  ]);
-
-  return {
-    questions,
-    pagination: {
-      page,
-      limit,
-      total,
-      totalPages: Math.ceil(total / limit),
+export async function getQuestions() {
+  return prisma.ragQuestion.findMany({
+    orderBy: {
+      createdAt: "desc",
     },
-  };
+    select: {
+      id: true,
+      question: true,
+      answer: true,
+      category: true,
+      isPublished: true,
+      createdAt: true,
+      updatedAt: true,
+    },
+  });
 }
 
 /**
@@ -149,38 +106,70 @@ export async function getQuestionById(id) {
  * Update an existing Q&A entry.
  */
 export async function updateQuestion(id, data) {
-  const { question, answer, category, isPublished } = data;
-
-  const updateData = {};
-
-  if (question !== undefined) {
-    if (!question.trim()) {
-      throw new Error("Question cannot be empty");
-    }
-
-    updateData.question = question.trim();
-  }
-
-  if (answer !== undefined) {
-    if (!answer.trim()) {
-      throw new Error("Answer cannot be empty");
-    }
-
-    updateData.answer = answer.trim();
-  }
-
-  if (category !== undefined) {
-    updateData.category = category;
-  }
-
-  if (isPublished !== undefined) {
-    updateData.isPublished = isPublished;
-  }
-
-  return prisma.ragQuestion.update({
+  const existingQuestion = await prisma.ragQuestion.findUnique({
     where: { id },
-    data: updateData,
   });
+
+  if (!existingQuestion) {
+    throw new Error("Question not found");
+  }
+
+  let embedding;
+
+  if (data.question !== undefined) {
+    const normalizedQuestion = data.question.trim();
+
+    embedding = await generateEmbeddings(normalizedQuestion);
+
+    if (
+      !Array.isArray(embedding) ||
+      embedding.length !== 384 ||
+      !embedding.every(Number.isFinite)
+    ) {
+      throw new Error("Failed to generate a valid question embedding");
+    }
+  }
+
+  const updatedQuestion = await prisma.$queryRaw`
+    UPDATE "RagQuestion"
+    SET
+      "question" = COALESCE(
+        ${question !== undefined ? question.trim() : null},
+        "question"
+      ),
+      "answer" = COALESCE(
+        ${answer !== undefined ? answer.trim() : null},
+        "answer"
+      ),
+      "category" = COALESCE(
+        ${category !== undefined ? category : null},
+        "category"
+      ),
+      "isPublished" = COALESCE(
+        ${isPublished !== undefined ? isPublished : null},
+        "isPublished"
+      ),
+      "embedding" = COALESCE(
+        ${embedding}::vector,
+        "embedding"
+      ),
+      "updatedAt" = NOW()
+    WHERE "id" = ${id}
+    RETURNING
+      "id",
+      "question",
+      "answer",
+      "category",
+      "isPublished",
+      "createdAt",
+      "updatedAt"
+  `;
+
+  if (!updatedQuestion.length) {
+    throw new Error("Question not found");
+  }
+
+  return updatedQuestion[0];
 }
 
 /**

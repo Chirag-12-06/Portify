@@ -70,13 +70,9 @@ export async function askQuestion(req, res, next) {
 // Get all Q&A entries
 export async function getQuestions(req, res, next) {
   try {
-    const questions = await getQuestionsService({
-      page: Number(req.query.page) || 1,
-      limit: Number(req.query.limit) || 20,
-      search: req.query.search,
-    });
+    const questions = await getQuestionsService();
 
-    return res.status(200).json({
+    res.json({
       success: true,
       data: questions,
     });
