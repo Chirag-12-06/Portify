@@ -1,7 +1,17 @@
 import { z } from "zod";
 
-export const educationSchema = z.object({
-    institution: z.string().trim().min(1, "Institution is required"),
+import { TYPES } from "../constants/InstitutionType";
+
+export const educationSchema = z
+  .object({
+    institutionName: z
+      .string()
+      .trim()
+      .min(1, "Institution name is required"),
+
+    institutionType: z.enum(TYPES, {
+      error: "Institution type is required",
+    }),
 
     degree: z.string().trim().min(1, "Degree is required"),
 
@@ -10,9 +20,9 @@ export const educationSchema = z.object({
       .trim()
       .min(1, "Field of study is required"),
 
-    location: z.string().trim().optional(),
-
     grade: z.string().trim().optional(),
+
+    location: z.string().trim().optional(),
 
     startDate: z.string().min(1, "Start date is required"),
 
@@ -50,11 +60,12 @@ export const educationSchema = z.object({
   });
 
 export const defaultValues = {
-  institution: "",
+  institutionName: "",
+  institutionType: TYPES[0],
   degree: "",
   fieldOfStudy: "",
-  location: "",
   grade: "",
+  location: "",
   startDate: "",
   endDate: "",
   currentlyStudying: false,

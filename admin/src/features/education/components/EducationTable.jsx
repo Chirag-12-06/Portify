@@ -11,11 +11,7 @@ import {
 
 import { formatDateRange } from "../../../utils/formatDateRange";
 
-export default function EducationTable({
-  educations,
-  onEdit,
-  onDelete,
-}) {
+export default function EducationTable({ educations, onEdit, onDelete }) {
   if (!educations.length) {
     return (
       <EmptyState
@@ -29,7 +25,9 @@ export default function EducationTable({
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead className="w-64">Institution</TableHead>
+          <TableHead className="w-35">Institution Type</TableHead>
+
+          <TableHead className="w-64">Institution Name</TableHead>
 
           <TableHead className="w-56">Degree</TableHead>
 
@@ -47,24 +45,26 @@ export default function EducationTable({
         {educations.map((education) => (
           <TableRow key={education.id}>
             <TableCell>
+              {education.institutionType ? (
+                education.institutionType.charAt(0) +
+                education.institutionType.slice(1).toLowerCase()
+              ) : (
+                <span className="text-slate-400">—</span>
+              )}
+            </TableCell>
+            <TableCell>
               <div>
-                <p className="font-medium">
-                  {education.institution}
-                </p>
+                <p className="font-medium">{education.institutionName}</p>
 
                 {education.location && (
-                  <p className="text-sm text-slate-500">
-                    {education.location}
-                  </p>
+                  <p className="text-sm text-slate-500">{education.location}</p>
                 )}
               </div>
             </TableCell>
 
             <TableCell>
               <div>
-                <p className="font-medium">
-                  {education.degree}
-                </p>
+                <p className="font-medium">{education.degree}</p>
 
                 <p className="text-sm text-slate-500">
                   {education.fieldOfStudy}
@@ -76,14 +76,12 @@ export default function EducationTable({
               {formatDateRange(
                 education.startDate,
                 education.endDate,
-                education.currentlyStudying
+                education.currentlyStudying,
               )}
             </TableCell>
 
             <TableCell>
-              {education.grade || (
-                <span className="text-slate-400">—</span>
-              )}
+              {education.grade || <span className="text-slate-400">—</span>}
             </TableCell>
 
             <TableCell align="right" className="w-28">

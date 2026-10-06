@@ -6,9 +6,9 @@ import Card from "../../../components/ui/Card";
 import Modal from "../../../components/ui/Modal";
 import PageHeader from "../../../components/ui/PageHeader";
 
-import RagQuestionForm from "../components/RagQuestionForm";
-import RagQuestionTable from "../components/RagQuestionTable";
-import DeleteRagQuestionDialog from "../components/DeleteRagQuestionDialog";
+import RagQuestionForm from "../components/RagQuestionsForm";
+import RagQuestionTable from "../components/RagQuestionsTable";
+import DeleteRagQuestionDialog from "../components/DeleteRagQuestionsDialog";
 
 import { useRagQuestions } from "../hooks/useRagQuestions";
 

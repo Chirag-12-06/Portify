@@ -1,19 +1,19 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 
-import Input from "../../../components/ui/Input";
 import Button from "../../../components/ui/Button";
-import FormActions from "../../../components/ui/Form/FormActions";
 import Checkbox from "../../../components/ui/Form/Checkbox";
+import FormActions from "../../../components/ui/Form/FormActions";
+import Input from "../../../components/ui/Input";
+import Select from "../../../components/ui/Select";
 
-import {
-  educationSchema,
-  defaultValues,
-} from "../schemas/education.schema";
+import { defaultValues, educationSchema } from "../schemas/education.schema";
 
 import { useCreateEducation } from "../hooks/useCreateEducation";
 import { useUpdateEducation } from "../hooks/useUpdateEducation";
+
+import { TYPES } from "../constants/InstitutionType";
 
 export default function EducationForm({ education, onClose }) {
   const createEducation = useCreateEducation();
@@ -61,17 +61,28 @@ export default function EducationForm({ education, onClose }) {
     }
   };
 
-  const isSubmitting =
-    createEducation.isPending || updateEducation.isPending;
+  const isSubmitting = createEducation.isPending || updateEducation.isPending;
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
       <Input
         label="Institution"
         placeholder="Thapar Institute of Engineering & Technology"
-        error={errors.institution?.message}
-        {...register("institution")}
+        error={errors.institutionName?.message}
+        {...register("institutionName")}
       />
+
+      <Select
+        label="Institution Type"
+        error={errors.institutionType?.message}
+        {...register("institutionType")}
+      >
+        {TYPES.map((type) => (
+          <option key={type} value={type}>
+            {type.charAt(0) + type.slice(1).toLowerCase()}
+          </option>
+        ))}
+      </Select>
 
       <div className="grid grid-cols-2 gap-4">
         <Input
@@ -122,10 +133,7 @@ export default function EducationForm({ education, onClose }) {
         />
       </div>
 
-      <Checkbox
-        label="Currently Studying"
-        {...register("currentlyStudying")}
-      />
+      <Checkbox label="Currently Studying" {...register("currentlyStudying")} />
 
       <Input
         label="Institution Image URL"
@@ -150,8 +158,8 @@ export default function EducationForm({ education, onClose }) {
           {isSubmitting
             ? "Saving..."
             : education
-            ? "Update Education"
-            : "Create Education"}
+              ? "Update Education"
+              : "Create Education"}
         </Button>
       </FormActions>
     </form>
