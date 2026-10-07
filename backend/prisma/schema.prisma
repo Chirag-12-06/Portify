@@ -24,6 +24,21 @@ model Tech {
   projects ProjectTech[]
 }
 
+enum TechCategory {
+  FRONTEND
+  BACKEND
+  DATABASE
+  LANGUAGE
+  FRAMEWORK
+  DEVOPS
+  CLOUD
+  TOOLS
+  ML_AI
+  DATA_ANALYSIS
+  DATA_VISUALIZATION
+  DEPLOYMENT
+}
+
 model Skill {
   id           String             @id @default(cuid())
   name         String             @unique
@@ -221,21 +236,6 @@ model ContactMessage {
   replied   Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-}
-
-enum TechCategory {
-  FRONTEND
-  BACKEND
-  DATABASE
-  LANGUAGE
-  FRAMEWORK
-  DEVOPS
-  CLOUD
-  TOOLS
-  ML_AI
-  DATA_ANALYSIS
-  DATA_VISUALIZATION
-  DEPLOYMENT
 }
 
 enum SkillCategory {

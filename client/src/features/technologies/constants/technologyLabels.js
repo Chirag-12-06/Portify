@@ -11,4 +11,5 @@ export const technologyLabels = {
   TOOLS: "Tools",
   CLOUD: "Cloud",
   DEPLOYMENT: "Deployment",
+  DEVOPS: "DevOps",
 };
