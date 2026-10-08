@@ -4,13 +4,14 @@ A full-stack portfolio platform with a public-facing site and a companion admin 
 
 ## Overview
 
-Portify is split into three applications sharing a single PostgreSQL database:
+Portify is split into three applications plus a Python embedding microservice, all working against a shared PostgreSQL database:
 
 | App        | Description                                                             | Stack                          |
 | ---------- | ------------------------------------------------------------------------ | ------------------------------- |
 | `client`   | Public portfolio website visitors see                                    | React 19, Vite, Tailwind CSS     |
 | `admin`    | Authenticated dashboard for managing portfolio content                   | React 19, Vite, Tailwind CSS, React Hook Form + Zod |
-| `backend`  | REST API serving both apps                                               | Node.js, Express 5, Prisma, PostgreSQL |
+| `backend`  | REST API serving both apps and powering the RAG assistant               | Node.js, Express 5, Prisma, PostgreSQL |
+| `embedding-service` | FastAPI service that generates vector embeddings for semantic search | Python, FastAPI, sentence-transformers |
 
 ## Features
 
@@ -21,6 +22,7 @@ Portify is split into three applications sharing a single PostgreSQL database:
 - **Contact form** with message inbox (read/replied status) in the admin dashboard
 - **Relational data model** connecting skills and technologies across projects, certificates, and experience
 - **GitHub API integration** for pulling project/repo data
+- **RAG-powered portfolio assistant** with semantic search over portfolio content, cached Q&A answers, and a Python embedding service
 
 ## Tech Stack
 
@@ -34,29 +36,40 @@ Portify is split into three applications sharing a single PostgreSQL database:
 
 **Backend**
 - Node.js + Express 5
-- Prisma ORM + PostgreSQL
+- Prisma ORM + PostgreSQL + pgvector
 - JWT (`jsonwebtoken`) + `bcrypt` for authentication
 - `multer` + Cloudinary for file/image uploads
 - Zod for request validation
+- RAG pipeline with semantic retrieval and cached Q&A indexing
+
+**AI / RAG Layer**
+- FastAPI + Python
+- `sentence-transformers` (`all-MiniLM-L6-v2`)
+- OpenAI responses for answer generation when needed
 
 ## Project Structure
 
 ```
 Portify/
-├── client/    # Public portfolio site
-├── admin/     # Admin dashboard
-└── backend/   # Express + Prisma REST API
-    ├── src/
-    │   ├── modules/     # Feature modules (project, skill, certificate, experience, ...)
-    │   ├── routes/      # /admin and /public route groups
-    │   ├── middleware/  # Auth & error handling
-    │   ├── config/       # Cookie config, etc.
-    │   └── lib/
-    └── prisma/
-        └── schema.prisma
+├── client/            # Public portfolio site
+├── admin/             # Admin dashboard
+├── backend/           # Express + Prisma REST API
+│   ├── src/
+│   │   ├── modules/    # Feature modules (project, skill, certificate, experience, rag, ...)
+│   │   ├── routes/     # /admin and /public route groups
+│   │   ├── middleware/ # Auth & error handling
+│   │   ├── config/     # Cookie config, etc.
+│   │   └── lib/
+│   └── prisma/
+│       └── schema.prisma
+├── embedding-service/ # FastAPI embedding service used by RAG
+│   ├── main.py
+│   ├── requirements.txt
+│   └── run.bat
+└── README.md
 ```
 
-Each `modules/<feature>` directory exposes an `adminRouter` (auth-protected CRUD) and a `publicRouter` (read-only endpoints) that are mounted under `/api/admin/*` and `/api/public/*` respectively.
+Each `modules/<feature>` directory exposes an `adminRouter` (auth-protected CRUD) and a `publicRouter` (read-only endpoints) that are mounted under `/api/admin/*` and `/api/public/*` respectively. The RAG feature adds a public `/api/public/rag/ask` endpoint plus admin endpoints for managing cached questions and answers.
 
 ## Prerequisites
 
@@ -91,6 +104,8 @@ ADMIN_EMAIL=admin@example.com
 ADMIN_PASSWORD=your-admin-password
 
 GITHUB_TOKEN=your-github-token
+OPENAI_API_KEY=your-openai-key
+EMBEDDING_SERVICE_URL=http://127.0.0.1:8000
 
 # Cloudinary
 CLOUDINARY_CLOUD_NAME=
@@ -104,7 +119,26 @@ Create a `.env` file in `client/` and `admin/`:
 VITE_API_URL=http://localhost:5000/api
 ```
 
-### 3. Set up the database
+### 3. Start the RAG embedding service
+
+The RAG feature depends on a FastAPI Python service that generates embeddings for semantic search and cached Q&A retrieval.
+
+```bash
+cd embedding-service
+python -m venv venv
+venv\Scripts\activate
+pip install -r requirements.txt
+uvicorn main:app --host 0.0.0.0 --port 8000
+```
+
+Or run the bundled Windows helper:
+
+```bash
+cd embedding-service
+run.bat
+```
+
+### 4. Set up the database
 
 ```bash
 cd backend
@@ -112,9 +146,12 @@ npx prisma generate
 npx prisma migrate dev
 ```
 
-### 4. Run the apps
+### 5. Run the apps
 
 ```bash
+# Embedding service (http://localhost:8000)
+cd embedding-service && uvicorn main:app --host 0.0.0.0 --port 8000
+
 # Backend API (http://localhost:5000)
 cd backend && npm run dev
 
@@ -123,6 +160,29 @@ cd client && npm run dev
 
 # Admin dashboard
 cd admin && npm run dev
+```
+
+## RAG / AI Portfolio Assistant
+
+Portify includes a retrieval-augmented generation assistant that answers questions about the portfolio using semantic search over stored project, certificate, experience, and profile content. The flow is:
+
+1. The user submits a question via the public `/api/public/rag/ask` endpoint.
+2. The backend checks for a similar cached Q&A before running a fresh search.
+3. Relevant portfolio chunks are matched using vector similarity against the PostgreSQL `pgvector` store.
+4. The model generates a grounded answer using the retrieved content and optionally falls back to project/GitHub/LeetCode-specific logic.
+5. New answers can be saved and managed from the admin RAG routes under `/api/admin/rag/questions`.
+
+Useful routes:
+
+```http
+POST /api/public/rag/ask
+  body: { "question": "What projects have you built with React?" }
+
+GET /api/admin/rag/questions
+POST /api/admin/rag/questions
+GET /api/admin/rag/questions/:id
+PATCH /api/admin/rag/questions/:id
+DELETE /api/admin/rag/questions/:id
 ```
 
 ## Data Model
