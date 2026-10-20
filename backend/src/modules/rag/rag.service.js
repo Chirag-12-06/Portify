@@ -25,7 +25,8 @@ export async function createQuestion({ question, answer, category = null }) {
   const normalizedQuestion = question.trim();
 
   // Generate embedding from the question
-  const embedding = await generateEmbeddings(normalizedQuestion);
+  const embeddings = await generateEmbeddings([normalizedQuestion]);
+  const embedding = embeddings[0];
 
   if (
     !Array.isArray(embedding) ||
@@ -105,6 +106,7 @@ export async function getQuestionById(id) {
 /**
  * Update an existing Q&A entry.
  */
+
 export async function updateQuestion(id, data) {
   const existingQuestion = await prisma.ragQuestion.findUnique({
     where: { id },
@@ -114,12 +116,17 @@ export async function updateQuestion(id, data) {
     throw new Error("Question not found");
   }
 
-  let embedding;
+  let embedding = null;
 
   if (data.question !== undefined) {
     const normalizedQuestion = data.question.trim();
 
-    embedding = await generateEmbeddings(normalizedQuestion);
+    if (!normalizedQuestion) {
+      throw new Error("Question is required");
+    }
+
+    const embeddings = await generateEmbeddings([normalizedQuestion]);
+    embedding = embeddings[0];
 
     if (
       !Array.isArray(embedding) ||
@@ -130,27 +137,27 @@ export async function updateQuestion(id, data) {
     }
   }
 
-  const updatedQuestion = await prisma.$queryRaw`
+  const updatedQuestions = await prisma.$queryRaw`
     UPDATE "RagQuestion"
     SET
       "question" = COALESCE(
-        ${question !== undefined ? question.trim() : null},
+        ${data.question !== undefined ? data.question.trim() : null},
         "question"
       ),
       "answer" = COALESCE(
-        ${answer !== undefined ? answer.trim() : null},
+        ${data.answer !== undefined ? data.answer.trim() : null},
         "answer"
       ),
       "category" = COALESCE(
-        ${category !== undefined ? category : null},
+        ${data.category !== undefined ? data.category : null},
         "category"
       ),
       "isPublished" = COALESCE(
-        ${isPublished !== undefined ? isPublished : null},
+        ${data.isPublished !== undefined ? data.isPublished : null},
         "isPublished"
       ),
       "embedding" = COALESCE(
-        ${embedding}::vector,
+        ${embedding ? `[${embedding.join(",")}]` : null}::vector,
         "embedding"
       ),
       "updatedAt" = NOW()
@@ -165,11 +172,11 @@ export async function updateQuestion(id, data) {
       "updatedAt"
   `;
 
-  if (!updatedQuestion.length) {
+  if (!updatedQuestions.length) {
     throw new Error("Question not found");
   }
 
-  return updatedQuestion[0];
+  return updatedQuestions[0];
 }
 
 /**

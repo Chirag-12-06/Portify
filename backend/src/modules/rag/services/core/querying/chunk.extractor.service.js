@@ -89,10 +89,10 @@ export async function chunksExtractor(matches, question) {
 
   // Semantic fallback
   if (chunks.length === 0) {
-    const [queryEmbedding] = await generateEmbeddings([question]);
+  const [queryEmbedding] = await generateEmbeddings([question]);
 
-    chunks = await searchSimilarChunks(queryEmbedding, 5);
-  }
+  chunks = await searchSimilarChunks(queryEmbedding, 5);
+}
 
   return chunks;
 }

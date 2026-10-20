@@ -1,7 +1,6 @@
 import prisma from "../../../../../lib/prisma.js";
 import { generateEmbeddings } from "../indexing/embedding.service.js";
 
-
 /**
  * Find the most similar question in the Q&A knowledge base.
  *
@@ -11,14 +10,14 @@ import { generateEmbeddings } from "../indexing/embedding.service.js";
 
 const SIMILARITY_THRESHOLD = 0.85;
 
-
 export async function findSimilarQuestion(question) {
   if (!question?.trim()) {
     throw new Error("Question is required");
   }
 
   // 1. Generate embedding for the incoming question
-  const embedding = await generateEmbeddings(question);
+  const embeddings = await generateEmbeddings([question]);
+  const embedding = embeddings[0];
 
   if (!embedding || embedding.length !== 384) {
     throw new Error("Invalid question embedding");
