@@ -26,15 +26,15 @@ class EmbeddingService:
             print("LOADING MODEL WEIGHTS", flush=True)
 
             self.model = AutoModel.from_pretrained(
-                "sentence-transformers/all-MiniLM-L6-v2"
+                "sentence-transformers/all-MiniLM-L6-v2",
+                low_cpu_mem_usage=True,
             )
 
-            print("MODEL WEIGHTS LOADED", flush=True)
-
             self.model.eval()
+            self.model.requires_grad_(False)
 
             print("MODEL READY", flush=True)
-
+            
     def generate(self, texts):
         self.load_model()
 
