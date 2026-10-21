@@ -16,19 +16,24 @@ class EmbeddingService:
 
     def load_model(self):
         if self.model is None:
-            print("LOADING MODEL", flush=True)
+            print("LOADING TOKENIZER", flush=True)
 
             self.tokenizer = AutoTokenizer.from_pretrained(
                 "sentence-transformers/all-MiniLM-L6-v2"
             )
 
+            print("TOKENIZER LOADED", flush=True)
+            print("LOADING MODEL WEIGHTS", flush=True)
+
             self.model = AutoModel.from_pretrained(
                 "sentence-transformers/all-MiniLM-L6-v2"
             )
 
+            print("MODEL WEIGHTS LOADED", flush=True)
+
             self.model.eval()
 
-            print("MODEL LOADED", flush=True)
+            print("MODEL READY", flush=True)
 
     def generate(self, texts):
         self.load_model()
@@ -37,39 +42,37 @@ class EmbeddingService:
             texts,
             padding=True,
             truncation=True,
+            max_length=256,
             return_tensors="pt",
         )
 
-        with torch.no_grad():
+        with torch.inference_mode():
             outputs = self.model(**encoded)
 
-        # Mean pooling
-        token_embeddings = outputs.last_hidden_state
-        attention_mask = encoded["attention_mask"]
+            token_embeddings = outputs.last_hidden_state
+            attention_mask = encoded["attention_mask"]
 
-        input_mask_expanded = (
-            attention_mask
-            .unsqueeze(-1)
-            .expand(token_embeddings.size())
-            .float()
-        )
+            input_mask_expanded = (
+                attention_mask.unsqueeze(-1)
+                .expand(token_embeddings.size())
+                .float()
+            )
 
-        embeddings = torch.sum(
-            token_embeddings * input_mask_expanded,
-            dim=1,
-        ) / torch.clamp(
-            input_mask_expanded.sum(dim=1),
-            min=1e-9,
-        )
+            embeddings = torch.sum(
+                token_embeddings * input_mask_expanded,
+                dim=1,
+            ) / torch.clamp(
+                input_mask_expanded.sum(dim=1),
+                min=1e-9,
+            )
 
-        # Normalize embeddings
-        embeddings = F.normalize(
-            embeddings,
-            p=2,
-            dim=1,
-        )
+            embeddings = F.normalize(
+                embeddings,
+                p=2,
+                dim=1,
+            )
 
-        return embeddings.numpy()
+        return embeddings.cpu().numpy()
 
 
 embedding_service = EmbeddingService()
