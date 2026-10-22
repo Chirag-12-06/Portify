@@ -1,0 +1,49 @@
+services:
+  admin:
+    build:
+      context: ./admin
+    container_name: portify-admin
+    ports:
+      - "5173:5173"
+    env_file:
+      - ./admin/.env
+    volumes:
+      - ./admin:/app
+      - /app/node_modules
+    restart: unless-stopped
+
+  client:
+    build:
+      context: ./client
+    container_name: portify-client
+    ports:
+      - "5174:5173"
+    env_file:
+      - ./client/.env
+    volumes:
+      - ./client:/app
+      - /app/node_modules
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: ./backend
+    container_name: portify-backend
+    ports:
+      - "5000:5000"
+    env_file:
+      - ./backend/.env
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    restart: unless-stopped
+
+  embedding-service:
+    build:
+      context: ./embedding-service
+    container_name: portify-embedding
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./embedding-service:/app
+    restart: unless-stopped
