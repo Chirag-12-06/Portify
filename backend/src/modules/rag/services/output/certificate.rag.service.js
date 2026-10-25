@@ -1,5 +1,5 @@
 import { generateCertificateDocument } from "../source/certificate.document.js";
-import { indexDocument } from "../core/index.service.js";
+import { indexDocument } from "../core/indexing/index.service.js";
 
 export async function indexCertificate(certificateId) {
   const document = await generateCertificateDocument(certificateId);

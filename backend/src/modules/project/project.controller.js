@@ -66,7 +66,7 @@ export const getFeaturedProjectCardsController = asyncHandler(
       success: true,
       data: projects,
     });
-  }
+  },
 );
 
 export const updateProjectController = asyncHandler(async (req, res) => {
