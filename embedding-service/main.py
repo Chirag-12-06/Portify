@@ -37,10 +37,14 @@ class EmbeddingService:
 
                     print("LOADING MODEL", flush=True)
 
+                    print("ABOUT TO LOAD MODEL WEIGHTS", flush=True)
+
                     model = AutoModel.from_pretrained(
                         MODEL_NAME,
                         low_cpu_mem_usage=True,
                     )
+
+                    print("MODEL WEIGHTS LOADED", flush=True)
 
                     model.eval()
                     model.requires_grad_(False)
