@@ -335,30 +335,175 @@ npm run dev
 
 Vite will display the actual local URL when the development server starts.
 
-## RAG / AI Portfolio Assistant
+## Chatbot / RAG Assistant Architecture
 
-Portify includes a retrieval-augmented generation assistant that answers questions about portfolio content.
+The portfolio chatbot is a retrieval-augmented generation (RAG) system. It answers
+questions about the portfolio and can enrich selected questions with live GitHub
+or LeetCode data. The implementation is primarily in
+[`backend/src/modules/rag/`](./backend/src/modules/rag/), with a public chat
+interface in [`client/src/features/rag/`](./client/src/features/rag/) and a
+separate embedding service in [`embedding-service/`](./embedding-service/).
 
-The request flow is:
+### What is implemented today
 
-1. A visitor submits a question through `POST /api/public/rag/ask`.
-2. The backend checks for a similar cached question and answer.
-3. Relevant content is retrieved using vector similarity against PostgreSQL's pgvector store.
-4. The model generates an answer grounded in the retrieved content.
-5. The answer can be cached and managed through the admin RAG routes.
+- **Public, single-turn chat:** the client sends one question at a time to
+  `POST /api/rag/ask`. Conversation history is kept only in the browser's
+  React state; there is no server-side conversation, user, or message model.
+- **Answer reuse:** the backend embeds the incoming question and searches
+  published `RagQuestion` records. A cosine similarity of `0.85` or higher
+  returns the stored answer without calling the LLM.
+- **Intent/entity routing:** keyword rules classify questions as `GITHUB`,
+  `LEETCODE`, `PROJECT`, `CERTIFICATE`, or `EXPERIENCE`. Database names for
+  skills, technologies, and projects are matched by normalized substring search.
+- **Structured retrieval:** exact project/certificate matches, then skill or
+  technology relationships, are used before semantic retrieval.
+- **Vector fallback:** the question is embedded and the five nearest
+  `RagChunk` records are retrieved from PostgreSQL using pgvector.
+- **Live external sources:** GitHub and LeetCode questions call their existing
+  service integrations and pass the returned data directly to the LLM.
+- **Answer generation:** OpenAI `gpt-4o-mini` receives a base prompt, a
+  source-specific prompt, the question, and retrieved context.
+- **Automatic Q&A persistence:** a newly generated answer is stored as a
+  published `RagQuestion`, making later semantically similar questions cheaper
+  and faster. Admins can curate, edit, publish, or delete these records.
 
-Example public endpoint:
+### Runtime architecture
 
-```http
-POST /api/public/rag/ask
-Content-Type: application/json
+```text
+┌──────────────────────┐
+│ Public React client  │
+│ RagChatBox           │
+└──────────┬───────────┘
+           │ POST /api/rag/ask
+           v
+┌─────────────────────────────────────────────────────────┐
+│ Node/Express backend                                    │
+│ rag.controller -> querying/rag.service                  │
+│                                                         │
+│ 1. Q&A vector lookup (RagQuestion)                      │
+│ 2. Keyword/entity routing                               │
+│ 3. Structured DB retrieval or RagChunk vector lookup    │
+│ 4. GitHub/LeetCode service for live-source questions    │
+│ 5. Prompt assembly and OpenAI response                  │
+│ 6. Persist generated answer as RagQuestion               │
+└───────┬──────────────────┬─────────────────────┬────────┘
+        │                  │                     │
+        v                  v                     v
+┌───────────────┐  ┌─────────────────┐  ┌─────────────────┐
+│ PostgreSQL    │  │ Embedding API   │  │ OpenAI API      │
+│ + pgvector    │  │ FastAPI :8000   │  │ gpt-4o-mini    │
+│ portfolio +   │  │ MiniLM 384 dims │  │ answer         │
+│ RAG records   │  └─────────────────┘  └─────────────────┘
+└───────────────┘
+```
 
+The public route is mounted by [`backend/src/routes/public.js`](./backend/src/routes/public.js)
+under `/api/rag`, and the same RAG router is mounted under the authenticated
+admin route by [`backend/src/routes/admin.js`](./backend/src/routes/admin.js).
+The admin UI manages the Q&A knowledge base; it does not currently expose a
+conversation-management or indexing-job UI.
+
+### End-to-end query flow
+
+1. [`RagChatBox.jsx`](./client/src/features/rag/components/RagChatBox.jsx)
+   validates that the input is non-empty, appends the user message locally,
+   and calls the TanStack Query mutation in `useRag.js`.
+2. `POST /api/rag/ask` validates the question and trims it in
+   [`rag.controller.js`](./backend/src/modules/rag/rag.controller.js).
+3. [`question.search.service.js`](./backend/src/modules/rag/services/core/querying/question.search.service.js)
+   calls the embedding service and searches published `RagQuestion` rows.
+4. If no Q&A answer meets the `0.85` threshold,
+   [`term-match.service.js`](./backend/src/modules/rag/services/core/querying/term-match.service.js)
+   detects the source type and matching portfolio entities.
+5. GitHub and LeetCode routes bypass portfolio chunks and fetch live
+   integration data. Portfolio questions use
+   [`chunk.extractor.service.js`](./backend/src/modules/rag/services/core/querying/chunk.extractor.service.js):
+   exact entity/relationship retrieval is attempted first, followed by
+   `RagChunk` vector search with `topK = 5`.
+6. [`answer.service.js`](./backend/src/modules/rag/services/core/querying/answer.service.js)
+   builds the prompt and calls OpenAI. The answer is returned with its source
+   and whether it was cached.
+7. If it was generated rather than reused, the controller creates a published
+   Q&A row and generates its question embedding.
+
+The response shape is:
+
+```json
 {
-  "question": "What projects have you built with React?"
+  "success": true,
+  "data": {
+    "answer": "Generated or cached answer",
+    "source": "PROJECT",
+    "cached": false
+  }
 }
 ```
 
-Admin endpoints include:
+### Knowledge/indexing flow
+
+RAG documents are projections of portfolio records, not independent source
+content. The document builders in
+[`services/source/`](./backend/src/modules/rag/services/source/) convert
+projects, certificates, and experiences into plain text. The indexing pipeline
+in [`index.service.js`](./backend/src/modules/rag/services/core/indexing/index.service.js)
+then:
+
+1. Upserts one `RagDocument` by `(sourceType, sourceId)`.
+2. Normalizes the text and creates 500-character chunks with 100-character
+   overlap.
+3. Sends all chunks to the embedding service.
+4. Deletes existing chunks for that document.
+5. Inserts new 384-dimensional vectors into `RagChunk`.
+
+The batch re-indexing scripts are:
+
+- [`index-all-projects.js`](./backend/src/modules/rag/services/reindexing/index-all-projects.js)
+- [`index-all-certificates.js`](./backend/src/modules/rag/services/reindexing/index-all-certificates.js)
+- [`index-all-experiences.js`](./backend/src/modules/rag/services/reindexing/index-all-experiences.js)
+
+These are scripts rather than an automatic event-driven indexing pipeline.
+Therefore, a portfolio edit does not automatically make its RAG document
+current unless the relevant indexing service/script is invoked. A production
+architecture should define whether indexing is synchronous, queued, scheduled,
+or triggered by an outbox/event.
+
+### Storage model
+
+The RAG schema is defined in
+[`backend/prisma/schema.prisma`](./backend/prisma/schema.prisma):
+
+| Entity | Responsibility |
+|---|---|
+| `RagDocument` | One indexed projection of a source portfolio entity; stores source type, source ID, title, skills, and technologies. |
+| `RagChunk` | Chunk text plus a `vector(384)` embedding; cascades when its document is removed. |
+| `RagQuestion` | Curated or automatically generated question/answer cache, including a nullable `vector(384)` question embedding and publication flag. |
+
+PostgreSQL's `vector` extension is enabled by the
+[`20260818111451_add_rag_models` migration](./backend/prisma/migrations/20260818111451_add_rag_models/migration.sql).
+The current queries use pgvector distance ordering, but there is no explicit
+HNSW/IVFFlat index in the migration. That is acceptable for a small portfolio
+but should be evaluated as the corpus grows.
+
+### Service boundaries and contracts
+
+| Service | Owns | Contract/dependency |
+|---|---|---|
+| Public client | Chat UX, local message history, loading/error state | Calls backend `/api/rag/ask`; does not call LLM or embeddings directly. |
+| Admin client | Q&A CRUD | Calls authenticated `/api/admin/rag/questions` routes through the shared backend. |
+| Backend RAG module | Validation, routing, retrieval, prompt orchestration, persistence | Requires PostgreSQL, embedding service, OpenAI, and optional GitHub/LeetCode integrations. |
+| Embedding service | Batch text-to-vector conversion | `POST /embed` with `{ "texts": ["..."] }`; returns `{ "embeddings": [[...]] }`; model output must remain 384 dimensions. |
+| PostgreSQL/pgvector | Source data, indexed chunks, Q&A cache | Requires the `vector` extension and the migrations applied. |
+| OpenAI | Final answer generation | Receives prompts and portfolio/live integration context; requires `OPENAI_API_KEY`. |
+
+For local Docker development, `EMBEDDING_SERVICE_URL` must resolve from the
+backend container to the embedding HTTP endpoint, commonly
+`http://host.docker.internal:8000/embed` when the service runs on the host.
+The backend's Axios call posts directly to the configured URL, so the `/embed`
+path must be included unless a proxy supplies it.
+
+### Admin Q&A API
+
+All admin routes require the existing cookie/JWT authentication middleware:
 
 ```http
 GET    /api/admin/rag/questions
@@ -368,7 +513,109 @@ PATCH  /api/admin/rag/questions/:id
 DELETE /api/admin/rag/questions/:id
 ```
 
-The embedding service must be running and reachable whenever the backend needs to generate embeddings. When using Docker locally, the backend reaches a host-running embedding service through `host.docker.internal`.
+Create/update validation is handled by
+[`rag.validation.js`](./backend/src/modules/rag/rag.validation.js). Updating a
+question regenerates its embedding; changing only the answer does not. The
+current create service always inserts `isPublished = true`, so callers should
+not assume the optional `isPublished` input controls initial publication until
+that behavior is intentionally changed.
+
+### Important architecture decisions for a complete system design
+
+Before drawing a final production architecture, decide and document these
+boundaries:
+
+1. **Conversation scope:** keep single-turn chat, or add `Conversation` and
+   `Message` entities, retention, anonymous session IDs, authenticated users,
+   and a maximum context window.
+2. **Retrieval strategy:** keep keyword routing plus vector fallback, or add a
+   classifier/router, hybrid lexical+vector search, reranking, metadata
+   filters, and source-specific top-k values.
+3. **Freshness:** re-index synchronously after admin writes, enqueue jobs,
+   run a scheduled full re-index, or use an outbox with retries and
+   idempotency. Define behavior while an index is stale.
+4. **Answer trust:** return citations/source IDs and similarity scores, enforce
+   a minimum retrieval score, distinguish “not found” from “generation
+   failed,” and prevent the model from inventing facts outside context.
+5. **External integrations:** define timeouts, retries, rate limits, caching,
+   stale-data policy, and fallback behavior for GitHub and LeetCode outages.
+6. **LLM policy:** select models per intent, set token/output limits, redact
+   sensitive input, protect prompts, and decide whether user questions may be
+   sent to a third party.
+7. **API protection:** add request size limits, per-IP/session rate limiting,
+   abuse detection, CORS allow-list management, timeouts, and structured
+   request IDs. The public route is currently unauthenticated.
+8. **Operational state:** expose readiness checks for database, embedding
+   model, and LLM dependencies; record latency and failure metrics for
+   embedding, retrieval, external APIs, and generation.
+9. **Deployment topology:** decide whether the embedding model is colocated
+   with the backend, deployed as a private service, or replaced by a hosted
+   provider. Plan CPU/RAM requirements and model download/caching.
+10. **Consistency and rollback:** version the embedding model, chunking
+    settings, prompts, and source document version. Re-index into a new
+    version before switching traffic so a failed re-index does not destroy
+    the previous index.
+
+### Current limitations and risks
+
+- There are no persisted conversations, streaming responses, feedback signals,
+  citations, or per-answer audit records.
+- Automatically generated answers become published cache entries. Incorrect
+  answers can therefore be reused until an admin removes or edits them.
+- A `0.85` similarity threshold is a starting heuristic, not a measured
+  quality boundary. It should be calibrated against a representative
+  evaluation set.
+- The retrieval path can return chunks from any visibility state unless source
+  document builders/indexing explicitly enforce the public visibility policy.
+- Chunk replacement deletes old chunks before inserting new ones; a failed
+  embedding or insert can leave a document with no chunks. Re-indexing should
+  be transactional or use versioned indexes.
+- Embedding and OpenAI calls have no visible timeout, retry, circuit-breaker,
+  or cost budget in the current RAG module.
+- The embedding service loads the model lazily and has a basic health response,
+  but its health endpoint does not verify that the model is loaded or usable.
+- The browser renders assistant Markdown. If the Markdown renderer or its
+  URL policy is not explicitly constrained, links and rich output should be
+  reviewed as an untrusted-output surface.
+- The client currently keeps message state in memory, so a refresh or route
+  change loses the conversation.
+
+### Recommended target architecture
+
+For a production-ready version, use these logical components even if some
+remain in one deployable backend:
+
+```text
+Client
+  -> API gateway/rate limiter
+  -> Chat API
+       -> Query normalizer + intent router
+       -> Q&A cache
+       -> Hybrid retriever (metadata + keyword + vector)
+       -> Reranker / confidence gate
+       -> Context builder with source citations
+       -> LLM adapter
+       -> Answer validator and safety policy
+       -> Conversation/message store (optional)
+
+Admin write
+  -> Portfolio transaction
+  -> Outbox event
+  -> Index worker
+       -> document builder
+       -> chunker
+       -> embedding provider
+       -> versioned vector index
+
+Observability
+  -> structured logs, traces, metrics, prompt/token cost, retrieval quality,
+     cache hit rate, external API health, and user feedback
+```
+
+The key design principle is to keep source-of-truth portfolio data separate
+from derived RAG data. The database remains authoritative; documents, chunks,
+embeddings, cached answers, and conversation summaries are rebuildable
+artifacts with explicit versioning and freshness metadata.
 
 ## Data Model
 
