@@ -8,9 +8,11 @@ import {
   Modal,
 } from "../../../components/ui";
 
-import EducationForm from "../components/EducationForm";
-import EducationTable from "../components/EducationTable";
-import DeleteEducationDialog from "../components/DeleteEducationDialog";
+import {
+  EducationForm,
+  EducationTable,
+  DeleteEducationDialog,
+} from "../components";
 
 import { useEducation } from "../hooks/useEducation";
 

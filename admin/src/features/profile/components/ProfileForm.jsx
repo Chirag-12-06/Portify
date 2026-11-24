@@ -2,8 +2,7 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import Input from "../../../components/ui/Input";
-import Button from "../../../components/ui/Button";
+import { Input, Button } from "../../../components/ui";
 
 import { profileSchema, defaultValues } from "../schemas/profile.schema";
 

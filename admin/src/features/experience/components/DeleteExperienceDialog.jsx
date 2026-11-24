@@ -1,12 +1,8 @@
-import ConfirmDialog from "../../../components/ui/ConfirmDialog";
+import { ConfirmDialog } from "../../../components/ui";
 
 import { useDeleteExperience } from "../hooks/useDeleteExperience";
 
-export default function DeleteExperienceDialog({
-  open,
-  experience,
-  onClose,
-}) {
+export default function DeleteExperienceDialog({ open, experience, onClose }) {
   const deleteExperience = useDeleteExperience();
 
   const handleDelete = async () => {

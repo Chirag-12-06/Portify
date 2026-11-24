@@ -2,14 +2,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
-import Button from "../../../components/ui/Button";
+import { Button, Input } from "../../../components/ui";
 import FormActions from "../../../components/ui/Form/FormActions";
-import Input from "../../../components/ui/Input";
 
-import {
-  issuerSchema,
-  defaultValues,
-} from "../schemas/issuer.schema";
+import { issuerSchema, defaultValues } from "../schemas/issuer.schema";
 
 import { useCreateIssuer } from "../hooks/useCreateIssuer";
 import { useUpdateIssuer } from "../hooks/useUpdateIssuer";
@@ -58,15 +54,12 @@ export default function IssuerForm({ issuer, onClose }) {
     }
   };
 
-  const isSubmitting =
-    createIssuer.isPending || updateIssuer.isPending;
+  const isSubmitting = createIssuer.isPending || updateIssuer.isPending;
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
       <section className="space-y-5">
-        <h3 className="text-lg font-semibold">
-          Issuer Information
-        </h3>
+        <h3 className="text-lg font-semibold">Issuer Information</h3>
 
         <Input
           label="Issuer Name"
@@ -95,10 +88,7 @@ export default function IssuerForm({ issuer, onClose }) {
           Cancel
         </Button>
 
-        <Button
-          type="submit"
-          disabled={!isDirty || isSubmitting}
-        >
+        <Button type="submit" disabled={!isDirty || isSubmitting}>
           {isSubmitting
             ? "Saving..."
             : issuer

@@ -1,4 +1,4 @@
-import ConfirmDialog from "../../../components/ui/ConfirmDialog";
+import { ConfirmDialog } from "../../../components/ui";
 
 import { useDeleteSocialLink } from "../hooks/useDeleteSocialLink";
 

@@ -8,9 +8,11 @@ import {
   Modal,
 } from "../../../components/ui";
 
-import SocialLinkTable from "../components/SocialLinkTable";
-import SocialLinkForm from "../components/SocialLinkForm";
-import DeleteSocialLinkDialog from "../components/DeleteSocialLinkDialog";
+import {
+  SocialLinkTable,
+  SocialLinkForm,
+  DeleteSocialLinkDialog,
+} from "../components";
 
 import { useSocialLink } from "../hooks/useSocialLink";
 

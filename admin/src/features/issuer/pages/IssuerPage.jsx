@@ -8,9 +8,7 @@ import {
   Modal,
 } from "../../../components/ui";
 
-import IssuerForm from "../components/IssuerFrom";
-import IssuerTable from "../components/IssuerTable";
-import DeleteIssuerDialog from "../components/DeleteIssuerDialog";
+import { IssuerForm, DeleteIssuerDialog, IssuerTable } from "../components";
 
 import { useIssuers } from "../hooks/useIssuer";
 

@@ -1,16 +1,15 @@
 import { useEffect } from "react";
-import {toast} from "sonner";
+import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import Input from "../../../components/ui/Input";
-import Select from "../../../components/ui/Select";
-import Button from "../../../components/ui/Button";
+import { Input, Button, Select } from "../../../components/ui";
 import FormActions from "../../../components/ui/Form/FormActions";
 
 import { SKILL_CATEGORIES } from "../constants/skillCategories";
 
 import { skillSchema, defaultValues } from "../schemas/skill.schema";
+
 import { useCreateSkill } from "../hooks/useCreateSkill";
 import { useUpdateSkill } from "../hooks/useUpdateSkill";
 
@@ -49,8 +48,8 @@ export default function SkillForm({ skill, onClose }) {
       onClose();
     } catch {
       toast.error("Skill already exists", {
-  duration: 1500, // 1 second
-});
+        duration: 1500, // 1 second
+      });
     }
   };
 

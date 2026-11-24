@@ -8,9 +8,11 @@ import {
   Modal,
 } from "../../../components/ui";
 
-import DeleteExperienceDialog from "../components/DeleteExperienceDialog";
-import ExperienceForm from "../components/ExperienceForm";
-import ExperienceTable from "../components/ExperienceTable";
+import {
+  DeleteExperienceDialog,
+  ExperienceForm,
+  ExperienceTable,
+} from "../components";
 
 import { useExperience } from "../hooks/useExperience";
 

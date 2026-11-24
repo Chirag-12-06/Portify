@@ -1,12 +1,8 @@
-import ConfirmDialog from "../../../components/ui/ConfirmDialog";
+import { ConfirmDialog } from "../../../components/ui";
 
 import { useDeleteIssuer } from "../hooks/useDeleteIssuer";
 
-export default function DeleteIssuerDialog({
-  open,
-  issuer,
-  onClose,
-}) {
+export default function DeleteIssuerDialog({ open, issuer, onClose }) {
   const deleteIssuer = useDeleteIssuer();
 
   const handleDelete = async () => {

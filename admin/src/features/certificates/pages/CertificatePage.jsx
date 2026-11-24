@@ -8,9 +8,11 @@ import {
   Modal,
 } from "../../../components/ui";
 
-import CertificateForm from "../components/CertificateForm";
-import CertificateTable from "../components/CertificateTable";
-import DeleteCertificateDialog from "../components/DeleteCertificateDialog";
+import {
+  CertificateForm,
+  CertificateTable,
+  DeleteCertificateDialog,
+} from "../components";
 
 import { useCertificates } from "../hooks/useCertificate";
 

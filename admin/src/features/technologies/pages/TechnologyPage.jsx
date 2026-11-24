@@ -8,9 +8,11 @@ import {
   Modal,
 } from "../../../components/ui";
 
-import DeleteTechnologyDialog from "../components/DeleteTechnologyDialog";
-import TechnologyForm from "../components/TechnologyForm";
-import TechnologyTable from "../components/TechnologyTable";
+import {
+  DeleteTechnologyDialog,
+  TechnologyForm,
+  TechnologyTable,
+} from "../components";
 
 import { useTechnologies } from "../hooks/useTechnology";
 

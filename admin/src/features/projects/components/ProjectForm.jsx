@@ -2,12 +2,8 @@ import { useEffect } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import Input from "../../../components/ui/Input";
-import Textarea from "../../../components/ui/Textarea";
-import Select from "../../../components/ui/Select";
-import Button from "../../../components/ui/Button";
-import FormActions from "../../../components/ui/Form/FormActions";
-import Checkbox from "../../../components/ui/Form/Checkbox";
+import { Input, Button, Select, Textarea } from "../../../components/ui";
+import { FormActions, Checkbox } from "../../../components/ui/Form";
 
 import { STATUS } from "../constants/status";
 

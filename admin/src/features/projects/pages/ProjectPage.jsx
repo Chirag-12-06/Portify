@@ -8,9 +8,7 @@ import {
   Modal,
 } from "../../../components/ui";
 
-import DeleteProjectDialog from "../components/DeleteProjectDialog";
-import ProjectForm from "../components/ProjectForm";
-import ProjectTable from "../components/ProjectTable";
+import { DeleteProjectDialog, ProjectForm, ProjectTable } from "../components";
 
 import { useProjects } from "../hooks/useProject";
 

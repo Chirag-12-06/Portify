@@ -8,9 +8,7 @@ import {
   Modal,
 } from "../../../components/ui";
 
-import DeleteSkillDialog from "../components/DeleteSkillDialog";
-import SkillForm from "../components/SkillForm";
-import SkillTable from "../components/SkillTable";
+import { DeleteSkillDialog, SkillForm, SkillTable } from "../components";
 
 import { useSkills } from "../hooks/useSkill";
 

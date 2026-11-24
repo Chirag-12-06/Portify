@@ -2,9 +2,7 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import Input from "../../../components/ui/Input";
-import Select from "../../../components/ui/Select";
-import Button from "../../../components/ui/Button";
+import { Input, Button, Select } from "../../../components/ui";
 import FormActions from "../../../components/ui/Form/FormActions";
 
 import { PLATFORMS } from "../constants/Platforms";

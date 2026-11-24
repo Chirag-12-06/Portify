@@ -2,15 +2,14 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import Input from "../../../components/ui/Input";
-import Select from "../../../components/ui/Select";
-import Button from "../../../components/ui/Button";
-import FormActions from "../../../components/ui/Form/FormActions";
+import { Input, Button, Select } from "../../../components/ui";
+import { FormActions } from "../../../components/ui/Form";
 
 import { TECHNOLOGY_CATEGORIES } from "../constants/TechnologyCategories";
 import { TECHNOLOGY_COLORS } from "../constants/TechnologyColor";
 
 import { technologySchema, defaultValues } from "../schemas/technology.schema";
+
 import { useCreateTechnology } from "../hooks/useCreateTechnology";
 import { useUpdateTechnology } from "../hooks/useUpdateTechnology";
 
@@ -108,7 +107,11 @@ export default function TechnologyForm({ technology, onClose }) {
         </Button>
 
         <Button type="submit" disabled={!isDirty || isSubmitting}>
-          {isSubmitting ? "Saving..." : technology ? "Update Technology" : "Create Technology"}
+          {isSubmitting
+            ? "Saving..."
+            : technology
+              ? "Update Technology"
+              : "Create Technology"}
         </Button>
       </FormActions>
     </form>

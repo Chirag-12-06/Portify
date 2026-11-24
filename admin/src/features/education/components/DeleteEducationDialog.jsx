@@ -1,4 +1,4 @@
-import {ConfirmDialog} from "../../../components/ui";
+import { ConfirmDialog } from "../../../components/ui";
 
 import { useDeleteEducation } from "../hooks/useDeleteEducation";
 
