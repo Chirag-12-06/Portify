@@ -4,8 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema } from "../schemas/login.schema";
 import { useLogin } from "../hooks/useLogin";
 
-import Button from "../../../components/ui/Button";
-import Input from "../../../components/ui/Input";
+import { Button, Input } from "../../../components/ui";
 
 export default function LoginPage() {
   const loginMutation = useLogin();
@@ -51,10 +50,7 @@ export default function LoginPage() {
           />
         </div>
 
-        <Button
-          type="submit"
-          disabled={loginMutation.isPending}
-        >
+        <Button type="submit" disabled={loginMutation.isPending}>
           {loginMutation.isPending ? "Logging in..." : "Login"}
         </Button>
       </form>

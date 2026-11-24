@@ -2,7 +2,7 @@ import { ArrowUpRight } from "lucide-react";
 import { FaGithub } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
-import Badge from "../../../shared/components/ui/Badge";
+import { Badge } from "../../../shared/components/ui";
 
 export default function ProjectCard({ project }) {
   const navigate = useNavigate();

@@ -1,9 +1,8 @@
-
 import Section from "../../shared/components/ui/Section";
 import { useSkills } from "./hooks/useSkills";
 import { useState, useMemo } from "react";
 import { skillLabels } from "./constants/skillLabels";
-import SectionCategory from "../../shared/components/ui/SectionCategory";
+import { SectionCategory } from "../../shared/components/ui";
 
 export default function Skills() {
   const [activeCategory, setActiveCategory] = useState(null);

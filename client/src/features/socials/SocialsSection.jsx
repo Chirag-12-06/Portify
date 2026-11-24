@@ -1,7 +1,7 @@
 import { SiLeetcode } from "react-icons/si";
 import { FaGithub } from "react-icons/fa";
 
-import Section from "../../shared/components/ui/Section";
+import { Section } from "../../shared/components/ui";
 import LeetCodeCard from "./components/leetcode/LeetCodeCard";
 import GithubCard from "./components/github/GithubCard";
 

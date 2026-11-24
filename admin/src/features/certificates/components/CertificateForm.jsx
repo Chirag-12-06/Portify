@@ -2,10 +2,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
-import Button from "../../../components/ui/Button";
-import Checkbox from "../../../components/ui/Form/Checkbox";
-import FormActions from "../../../components/ui/Form/FormActions";
-import Input from "../../../components/ui/Input";
+import { Button, Input } from "../../../components/ui";
+import { Checkbox, FormActions } from "../../../components/ui/Form";
 
 import {
   certificateSchema,
@@ -91,10 +89,12 @@ export default function CertificateForm({ certificate, onClose }) {
           />
 
           <div className="space-y-2">
-            <label className="text-sm font-medium" htmlFor="issuerId">Issuer</label>
+            <label className="text-sm font-medium" htmlFor="issuerId">
+              Issuer
+            </label>
 
             <select
-            id="issuerId"
+              id="issuerId"
               {...register("issuerId")}
               className="w-full rounded-lg border border-input bg-background px-3 py-2"
             >

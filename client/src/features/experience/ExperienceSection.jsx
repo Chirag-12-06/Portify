@@ -1,4 +1,4 @@
-import Section from "../../shared/components/ui/Section";
+import { Section } from "../../shared/components/ui";
 
 import ExperienceCard from "./components/ExperienceCard";
 import { useExperiences } from "./hooks/useExperiences";

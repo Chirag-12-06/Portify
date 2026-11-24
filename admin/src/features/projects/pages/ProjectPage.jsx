@@ -1,10 +1,12 @@
 import { useState } from "react";
 
-import LoadingScreen from "../../../components/common/LoadingScreen";
-import Button from "../../../components/ui/Button";
-import Card from "../../../components/ui/Card";
-import Modal from "../../../components/ui/Modal";
-import PageHeader from "../../../components/ui/PageHeader";
+import {
+  LoadingScreen,
+  Button,
+  Card,
+  PageHeader,
+  Modal,
+} from "../../../components/ui";
 
 import DeleteProjectDialog from "../components/DeleteProjectDialog";
 import ProjectForm from "../components/ProjectForm";
@@ -75,10 +77,7 @@ export default function ProjectsPage() {
         title={editingProject ? "Edit Project" : "Add Project"}
         onClose={handleClose}
       >
-        <ProjectForm
-          project={editingProject}
-          onClose={handleClose}
-        />
+        <ProjectForm project={editingProject} onClose={handleClose} />
       </Modal>
 
       <DeleteProjectDialog

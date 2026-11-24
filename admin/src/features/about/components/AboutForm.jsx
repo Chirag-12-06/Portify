@@ -2,9 +2,7 @@ import { useEffect } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import Input from "../../../components/ui/Input";
-import Button from "../../../components/ui/Button";
-import Textarea from "../../../components/ui/Textarea";
+import { Input, Button, Textarea } from "../../../components/ui";
 
 import { aboutSchema, defaultValues } from "../schemas/about.schema";
 
@@ -20,14 +18,10 @@ export default function AboutForm({ about, onSubmit, isSubmitting }) {
     defaultValues,
   });
 
-  const {
-  fields,
-  append,
-  remove,
-} = useFieldArray({
-  control,
-  name: "highlights",
-});
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "highlights",
+  });
 
   useEffect(() => {
     if (about) {

@@ -1,10 +1,12 @@
 import { useState } from "react";
 
-import LoadingScreen from "../../../components/common/LoadingScreen";
-import Button from "../../../components/ui/Button";
-import Card from "../../../components/ui/Card";
-import Modal from "../../../components/ui/Modal";
-import PageHeader from "../../../components/ui/PageHeader";
+import {
+  LoadingScreen,
+  Button,
+  Card,
+  PageHeader,
+  Modal,
+} from "../../../components/ui";
 
 import IssuerForm from "../components/IssuerFrom";
 import IssuerTable from "../components/IssuerTable";
@@ -13,11 +15,7 @@ import DeleteIssuerDialog from "../components/DeleteIssuerDialog";
 import { useIssuers } from "../hooks/useIssuer";
 
 export default function IssuersPage() {
-  const {
-    data: issuers = [],
-    isLoading,
-    isError,
-  } = useIssuers();
+  const { data: issuers = [], isLoading, isError } = useIssuers();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingIssuer, setEditingIssuer] = useState(null);
@@ -63,11 +61,7 @@ export default function IssuersPage() {
       <PageHeader
         title="Issuers"
         description="Manage certificate issuers."
-        actions={
-          <Button onClick={handleAdd}>
-            Add Issuer
-          </Button>
-        }
+        actions={<Button onClick={handleAdd}>Add Issuer</Button>}
       />
 
       <Card>
@@ -80,17 +74,10 @@ export default function IssuersPage() {
 
       <Modal
         isOpen={isModalOpen}
-        title={
-          editingIssuer
-            ? "Edit Issuer"
-            : "Add Issuer"
-        }
+        title={editingIssuer ? "Edit Issuer" : "Add Issuer"}
         onClose={handleClose}
       >
-        <IssuerForm
-          issuer={editingIssuer}
-          onClose={handleClose}
-        />
+        <IssuerForm issuer={editingIssuer} onClose={handleClose} />
       </Modal>
 
       <DeleteIssuerDialog

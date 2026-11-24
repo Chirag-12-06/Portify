@@ -3,7 +3,7 @@ import { RiGitRepositoryLine } from "react-icons/ri";
 import { ExternalLink } from "lucide-react";
 import { useGithub } from "../../hooks/useSocials";
 import Heatmap from "../Heatmap";
-import Button from "../../../../shared/components/ui/Button";
+import { Button } from "../../../../shared/components/ui";
 import ContributionActivity from "./ContributionActivity";
 
 export default function GithubCard() {

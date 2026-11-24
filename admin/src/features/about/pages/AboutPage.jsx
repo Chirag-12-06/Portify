@@ -1,6 +1,5 @@
 import Card from "../../../components/ui/Card";
-import PageHeader from "../../../components/ui/PageHeader";
-import LoadingScreen from "../../../components/common/LoadingScreen";
+import { PageHeader, LoadingScreen } from "../../../components/ui";
 
 import AboutForm from "../components/AboutForm";
 
@@ -22,18 +21,13 @@ export default function AboutPage() {
 
   return (
     <>
-      <PageHeader
-        title="About"
-        description="Manage your about information."
-      />
+      <PageHeader title="About" description="Manage your about information." />
 
       <Card>
         <AboutForm
           about={data.data}
           isSubmitting={updateAbout.isPending}
-          onSubmit={(values) =>
-            updateAbout.mutate(values)
-          }
+          onSubmit={(values) => updateAbout.mutate(values)}
         />
       </Card>
     </>

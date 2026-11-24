@@ -1,10 +1,12 @@
 import { useState } from "react";
 
-import LoadingScreen from "../../../components/common/LoadingScreen";
-import Button from "../../../components/ui/Button";
-import Card from "../../../components/ui/Card";
-import Modal from "../../../components/ui/Modal";
-import PageHeader from "../../../components/ui/PageHeader";
+import {
+  LoadingScreen,
+  Button,
+  Card,
+  PageHeader,
+  Modal,
+} from "../../../components/ui";
 
 import DeleteExperienceDialog from "../components/DeleteExperienceDialog";
 import ExperienceForm from "../components/ExperienceForm";
@@ -13,11 +15,7 @@ import ExperienceTable from "../components/ExperienceTable";
 import { useExperience } from "../hooks/useExperience";
 
 export default function ExperiencePage() {
-  const {
-    data: experiences = [],
-    isLoading,
-    isError,
-  } = useExperience();
+  const { data: experiences = [], isLoading, isError } = useExperience();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingExperience, setEditingExperience] = useState(null);
@@ -63,11 +61,7 @@ export default function ExperiencePage() {
       <PageHeader
         title="Experience"
         description="Manage your work experience."
-        actions={
-          <Button onClick={handleAdd}>
-            Add Experience
-          </Button>
-        }
+        actions={<Button onClick={handleAdd}>Add Experience</Button>}
       />
 
       <Card>
@@ -80,17 +74,10 @@ export default function ExperiencePage() {
 
       <Modal
         isOpen={isModalOpen}
-        title={
-          editingExperience
-            ? "Edit Experience"
-            : "Add Experience"
-        }
+        title={editingExperience ? "Edit Experience" : "Add Experience"}
         onClose={handleClose}
       >
-        <ExperienceForm
-          experience={editingExperience}
-          onClose={handleClose}
-        />
+        <ExperienceForm experience={editingExperience} onClose={handleClose} />
       </Modal>
 
       <DeleteExperienceDialog

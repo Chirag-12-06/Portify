@@ -13,10 +13,12 @@ import { useNavigate } from "react-router-dom";
 
 import Footer from "../../footer/FooterSection";
 import ProjectCard from "../components/ProjectCard";
-import Button from "../../../shared/components/ui/Button";
-import Input from "../../../shared/components/ui/Input";
-import Select from "../../../shared/components/ui/Select";
-import LoadingScreen from "../../../shared/components/ui/LoadingScreen";
+import {
+  Button,
+  Input,
+  Select,
+  LoadingScreen,
+} from "../../../shared/components/ui";
 
 import { useProjectCards } from "../hooks/useProjectCards";
 import { useTechnologies } from "../../technologies/hooks/useTechnologies";

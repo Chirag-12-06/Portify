@@ -1,4 +1,4 @@
-import Modal from "../../../shared/components/ui/Modal";
+import { Modal } from "../../../shared/components/ui";
 import { Award, ExternalLink } from "lucide-react";
 
 export default function CertificateSkillsModal({ certificate, open, onClose }) {

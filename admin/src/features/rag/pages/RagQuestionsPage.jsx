@@ -1,10 +1,12 @@
 import { useState } from "react";
 
-import LoadingScreen from "../../../components/common/LoadingScreen";
-import Button from "../../../components/ui/Button";
-import Card from "../../../components/ui/Card";
-import Modal from "../../../components/ui/Modal";
-import PageHeader from "../../../components/ui/PageHeader";
+import {
+  LoadingScreen,
+  Button,
+  Card,
+  PageHeader,
+  Modal,
+} from "../../../components/ui";
 
 import RagQuestionForm from "../components/RagQuestionsForm";
 import RagQuestionTable from "../components/RagQuestionsTable";
@@ -13,11 +15,7 @@ import DeleteRagQuestionDialog from "../components/DeleteRagQuestionsDialog";
 import { useRagQuestions } from "../hooks/useRagQuestions";
 
 export default function RagQuestionPage() {
-  const {
-    data: questions = [],
-    isLoading,
-    isError,
-  } = useRagQuestions();
+  const { data: questions = [], isLoading, isError } = useRagQuestions();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingQuestion, setEditingQuestion] = useState(null);
@@ -38,15 +36,13 @@ export default function RagQuestionPage() {
     return <p>Failed to load RAG questions.</p>;
   }
 
-  const totalPages = Math.ceil(
-    questions.length / QUESTIONS_PER_PAGE
-  );
+  const totalPages = Math.ceil(questions.length / QUESTIONS_PER_PAGE);
 
   const startIndex = (currentPage - 1) * QUESTIONS_PER_PAGE;
 
   const currentQuestions = questions.slice(
     startIndex,
-    startIndex + QUESTIONS_PER_PAGE
+    startIndex + QUESTIONS_PER_PAGE,
   );
 
   const handleAdd = () => {
@@ -79,9 +75,7 @@ export default function RagQuestionPage() {
   };
 
   const handleNext = () => {
-    setCurrentPage((prev) =>
-      Math.min(prev + 1, totalPages)
-    );
+    setCurrentPage((prev) => Math.min(prev + 1, totalPages));
   };
 
   return (
@@ -89,11 +83,7 @@ export default function RagQuestionPage() {
       <PageHeader
         title="RAG Questions"
         description="Manage your RAG question-and-answer knowledge base."
-        actions={
-          <Button onClick={handleAdd}>
-            Add Question
-          </Button>
-        }
+        actions={<Button onClick={handleAdd}>Add Question</Button>}
       />
 
       <Card>
@@ -130,17 +120,10 @@ export default function RagQuestionPage() {
 
       <Modal
         isOpen={isModalOpen}
-        title={
-          editingQuestion
-            ? "Edit RAG Question"
-            : "Add RAG Question"
-        }
+        title={editingQuestion ? "Edit RAG Question" : "Add RAG Question"}
         onClose={handleClose}
       >
-        <RagQuestionForm
-          question={editingQuestion}
-          onClose={handleClose}
-        />
+        <RagQuestionForm question={editingQuestion} onClose={handleClose} />
       </Modal>
 
       <DeleteRagQuestionDialog

@@ -2,11 +2,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
-import Button from "../../../components/ui/Button";
-import Checkbox from "../../../components/ui/Form/Checkbox";
-import FormActions from "../../../components/ui/Form/FormActions";
-import Input from "../../../components/ui/Input";
-import Select from "../../../components/ui/Select";
+import { Button, Input, Select } from "../../../components/ui";
+import { Checkbox, FormActions } from "../../../components/ui/Form";
 
 import { defaultValues, educationSchema } from "../schemas/education.schema";
 

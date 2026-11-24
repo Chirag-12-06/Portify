@@ -1,8 +1,7 @@
 import { ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-import Section from "../../shared/components/ui/Section";
-import Button from "../../shared/components/ui/Button";
+import { Section, Button } from "../../shared/components/ui";
 
 import ProjectCard from "./components/ProjectCard";
 

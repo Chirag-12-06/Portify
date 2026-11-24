@@ -1,10 +1,12 @@
 import { useState } from "react";
 
-import LoadingScreen from "../../../components/common/LoadingScreen";
-import Button from "../../../components/ui/Button";
-import Card from "../../../components/ui/Card";
-import Modal from "../../../components/ui/Modal";
-import PageHeader from "../../../components/ui/PageHeader";
+import {
+  LoadingScreen,
+  Button,
+  Card,
+  PageHeader,
+  Modal,
+} from "../../../components/ui";
 
 import EducationForm from "../components/EducationForm";
 import EducationTable from "../components/EducationTable";
@@ -13,11 +15,7 @@ import DeleteEducationDialog from "../components/DeleteEducationDialog";
 import { useEducation } from "../hooks/useEducation";
 
 export default function EducationPage() {
-  const {
-    data: educations = [],
-    isLoading,
-    isError,
-  } = useEducation();
+  const { data: educations = [], isLoading, isError } = useEducation();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingEducation, setEditingEducation] = useState(null);
@@ -63,11 +61,7 @@ export default function EducationPage() {
       <PageHeader
         title="Education"
         description="Manage your education history."
-        actions={
-          <Button onClick={handleAdd}>
-            Add Education
-          </Button>
-        }
+        actions={<Button onClick={handleAdd}>Add Education</Button>}
       />
 
       <Card>
@@ -80,17 +74,10 @@ export default function EducationPage() {
 
       <Modal
         isOpen={isModalOpen}
-        title={
-          editingEducation
-            ? "Edit Education"
-            : "Add Education"
-        }
+        title={editingEducation ? "Edit Education" : "Add Education"}
         onClose={handleClose}
       >
-        <EducationForm
-          education={editingEducation}
-          onClose={handleClose}
-        />
+        <EducationForm education={editingEducation} onClose={handleClose} />
       </Modal>
 
       <DeleteEducationDialog

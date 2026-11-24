@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import LoadingScreen from "../../../components/common/LoadingScreen";
+import LoadingScreen from "../../../components/ui/LoadingScreen";
 import Card from "../../../components/ui/Card";
 import Modal from "../../../components/ui/Modal";
 import PageHeader from "../../../components/ui/PageHeader";
@@ -67,15 +67,8 @@ export default function ContactPage() {
         />
       </Card>
 
-      <Modal
-        isOpen={isModalOpen}
-        title="Message Details"
-        onClose={handleClose}
-      >
-        <ContactDetailsModal
-          message={selectedMessage}
-          onClose={handleClose}
-        />
+      <Modal isOpen={isModalOpen} title="Message Details" onClose={handleClose}>
+        <ContactDetailsModal message={selectedMessage} onClose={handleClose} />
       </Modal>
 
       <DeleteContactDialog

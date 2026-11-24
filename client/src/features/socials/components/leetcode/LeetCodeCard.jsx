@@ -3,7 +3,7 @@ import { ExternalLink } from "lucide-react";
 import { useLeetCode } from "../../hooks/useSocials";
 import Heatmap from "../Heatmap";
 import QuestionDistribution from "./QuestionDistribution";
-import Button from "../../../../shared/components/ui/Button";
+import { Button } from "../../../../shared/components/ui";
 import SkillsBubbleChart from "./SkillsBubbleChart";
 
 export default function LeetCodeCard() {
@@ -83,7 +83,9 @@ export default function LeetCodeCard() {
 
                 <div>
                   <p className="text-slate-400">Max Streak</p>
-                  <p className="font-semibold text-white">{leetcode?.activity.streak}</p>
+                  <p className="font-semibold text-white">
+                    {leetcode?.activity.streak}
+                  </p>
                 </div>
               </div>
             </div>

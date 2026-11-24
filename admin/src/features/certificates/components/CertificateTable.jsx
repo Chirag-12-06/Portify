@@ -1,4 +1,4 @@
-import Badge from "../../../components/ui/Badge";
+import { Badge } from "../../../components/ui";
 
 import {
   Table,
@@ -57,7 +57,6 @@ export default function CertificateTable({ certificates, onEdit, onDelete }) {
             <TableCell>
               <div>
                 <p className="font-medium">{certificate.title}</p>
-
               </div>
             </TableCell>
 

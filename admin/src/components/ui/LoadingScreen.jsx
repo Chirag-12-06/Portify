@@ -1,4 +1,4 @@
-import Spinner from "../ui/Spinner";
+import Spinner from "./Spinner";
 
 export default function LoadingScreen() {
   return (

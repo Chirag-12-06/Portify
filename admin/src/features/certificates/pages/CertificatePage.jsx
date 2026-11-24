@@ -1,10 +1,12 @@
 import { useState } from "react";
 
-import LoadingScreen from "../../../components/common/LoadingScreen";
-import Button from "../../../components/ui/Button";
-import Card from "../../../components/ui/Card";
-import Modal from "../../../components/ui/Modal";
-import PageHeader from "../../../components/ui/PageHeader";
+import {
+  LoadingScreen,
+  Button,
+  Card,
+  PageHeader,
+  Modal,
+} from "../../../components/ui";
 
 import CertificateForm from "../components/CertificateForm";
 import CertificateTable from "../components/CertificateTable";
@@ -13,11 +15,7 @@ import DeleteCertificateDialog from "../components/DeleteCertificateDialog";
 import { useCertificates } from "../hooks/useCertificate";
 
 export default function CertificatesPage() {
-  const {
-    data: certificates = [],
-    isLoading,
-    isError,
-  } = useCertificates();
+  const { data: certificates = [], isLoading, isError } = useCertificates();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingCertificate, setEditingCertificate] = useState(null);
@@ -63,11 +61,7 @@ export default function CertificatesPage() {
       <PageHeader
         title="Certificates"
         description="Manage your professional certificates."
-        actions={
-          <Button onClick={handleAdd}>
-            Add Certificate
-          </Button>
-        }
+        actions={<Button onClick={handleAdd}>Add Certificate</Button>}
       />
 
       <Card>
@@ -80,11 +74,7 @@ export default function CertificatesPage() {
 
       <Modal
         isOpen={isModalOpen}
-        title={
-          editingCertificate
-            ? "Edit Certificate"
-            : "Add Certificate"
-        }
+        title={editingCertificate ? "Edit Certificate" : "Add Certificate"}
         onClose={handleClose}
       >
         <CertificateForm

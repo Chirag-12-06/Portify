@@ -1,10 +1,12 @@
 import { useState } from "react";
 
-import LoadingScreen from "../../../components/common/LoadingScreen";
-import Button from "../../../components/ui/Button";
-import Card from "../../../components/ui/Card";
-import Modal from "../../../components/ui/Modal";
-import PageHeader from "../../../components/ui/PageHeader";
+import {
+  LoadingScreen,
+  Button,
+  Card,
+  PageHeader,
+  Modal,
+} from "../../../components/ui";
 
 import SocialLinkTable from "../components/SocialLinkTable";
 import SocialLinkForm from "../components/SocialLinkForm";
@@ -59,11 +61,7 @@ export default function SocialLinksPage() {
       <PageHeader
         title="Social Links"
         description="Manage your social links."
-        actions={
-          <Button onClick={handleAdd}>
-            Add Social Link
-          </Button>
-        }
+        actions={<Button onClick={handleAdd}>Add Social Link</Button>}
       />
 
       <Card>
@@ -76,17 +74,10 @@ export default function SocialLinksPage() {
 
       <Modal
         isOpen={isModalOpen}
-        title={
-          editingSocialLink
-            ? "Edit Social Link"
-            : "Add Social Link"
-        }
+        title={editingSocialLink ? "Edit Social Link" : "Add Social Link"}
         onClose={handleClose}
       >
-        <SocialLinkForm
-          socialLink={editingSocialLink}
-          onClose={handleClose}
-        />
+        <SocialLinkForm socialLink={editingSocialLink} onClose={handleClose} />
       </Modal>
 
       <DeleteSocialLinkDialog

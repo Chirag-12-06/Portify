@@ -1,6 +1,4 @@
-import Card from "../../../components/ui/Card";
-import PageHeader from "../../../components/ui/PageHeader";
-import LoadingScreen from "../../../components/common/LoadingScreen";
+import { Card, LoadingScreen, PageHeader } from "../../../components/ui";
 
 import HeroForm from "../components/HeroForm";
 
@@ -22,18 +20,13 @@ export default function HeroPage() {
 
   return (
     <>
-      <PageHeader
-        title="Hero"
-        description="Manage your hero section."
-      />
+      <PageHeader title="Hero" description="Manage your hero section." />
 
       <Card>
         <HeroForm
           hero={data.data}
           isSubmitting={updateHero.isPending}
-          onSubmit={(values) =>
-            updateHero.mutate(values)
-          }
+          onSubmit={(values) => updateHero.mutate(values)}
         />
       </Card>
     </>

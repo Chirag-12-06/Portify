@@ -1,6 +1,4 @@
-import Card from "../../../components/ui/Card";
-import PageHeader from "../../../components/ui/PageHeader";
-import LoadingScreen from "../../../components/common/LoadingScreen";
+import { Card, LoadingScreen, PageHeader } from "../../../components/ui";
 
 import ProfileForm from "../components/ProfileForm";
 
@@ -31,9 +29,7 @@ export default function ProfilePage() {
         <ProfileForm
           profile={data.data}
           isSubmitting={updateProfile.isPending}
-          onSubmit={(values) =>
-            updateProfile.mutate(values)
-          }
+          onSubmit={(values) => updateProfile.mutate(values)}
         />
       </Card>
     </>

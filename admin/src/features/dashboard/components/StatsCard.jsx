@@ -1,20 +1,12 @@
-import Card from "../../../components/ui/Card";
+import { Card } from "../../../components/ui";
 
-export default function StatsCard({
-  title,
-  value,
-  icon: Icon,
-}) {
+export default function StatsCard({ title, value, icon: Icon }) {
   return (
     <Card className="flex items-center justify-between">
       <div>
-        <p className="text-sm text-slate-500">
-          {title}
-        </p>
+        <p className="text-sm text-slate-500">{title}</p>
 
-        <h2 className="mt-2 text-3xl font-bold">
-          {value}
-        </h2>
+        <h2 className="mt-2 text-3xl font-bold">{value}</h2>
       </div>
 
       {Icon && (

@@ -14,9 +14,7 @@ import { FaGithub } from "react-icons/fa";
 import { useNavigate, useParams } from "react-router-dom";
 
 import Footer from "../../footer/FooterSection";
-import Button from "../../../shared/components/ui/Button";
-import Badge from "../../../shared/components/ui/Badge";
-import LoadingScreen from "../../../shared/components/ui/LoadingScreen";
+import { Button, Badge, LoadingScreen } from "../../../shared/components/ui";
 
 import { useProjectBySlug } from "../hooks/useProjectBySlug";
 
@@ -93,16 +91,15 @@ export default function ProjectSlugPage() {
 
   const shouldShowLoader = showLoader && !animationDone;
 
-useEffect(() => {
-  if (project?.title) {
-    document.title = `${project.title}`;
-  }
+  useEffect(() => {
+    if (project?.title) {
+      document.title = `${project.title}`;
+    }
 
-  return () => {
-    document.title = "Projects";
-  };
-}, [project?.title]);
-
+    return () => {
+      document.title = "Projects";
+    };
+  }, [project?.title]);
 
   if (shouldShowLoader || isLoading) {
     return (

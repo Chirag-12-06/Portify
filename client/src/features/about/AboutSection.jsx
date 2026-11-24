@@ -1,4 +1,4 @@
-import Section from "../../shared/components/ui/Section";
+import { Section } from "../../shared/components/ui";
 
 import { useAbout } from "./hooks/useAbout";
 
@@ -54,7 +54,9 @@ export default function About() {
                 onMouseMove={handleTiltMove}
                 onMouseLeave={handleTiltLeave}
                 className={`group rounded-2xl border border-white/15 bg-slate-800/80 p-10 text-center shadow-xl shadow-black/40 backdrop-blur-sm transition-[border-color,box-shadow] duration-300 will-change-transform hover:border-cyan-400/30 hover:shadow-[0_0_30px_-10px_rgba(34,211,238,0.45)] ${
-                  isLastOdd ? "col-span-2 mx-auto w-full max-w-[calc(50%-1rem)]" : ""
+                  isLastOdd
+                    ? "col-span-2 mx-auto w-full max-w-[calc(50%-1rem)]"
+                    : ""
                 }`}
               >
                 <h3 className="bg-linear-to-br from-cyan-300 to-cyan-500 bg-clip-text text-5xl font-extrabold text-transparent transition-transform duration-300 group-hover:scale-110">
