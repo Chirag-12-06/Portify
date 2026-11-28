@@ -25,11 +25,13 @@ export async function answerQuestion(question) {
     };
   }
 
-  // 2. No suitable Q&A found, continue with existing RAG logic
+  // 2. Match intent and entities
   const matches = await matchTerms(question);
 
-  // GITHUB
-  if (matches.sourceType === "GITHUB") {
+  const { intent } = matches;
+
+  // 3. Handle GitHub-specific questions
+  if (intent.github) {
     return {
       answer: await generateGithubAnswer(question),
       source: "GITHUB",
@@ -37,8 +39,8 @@ export async function answerQuestion(question) {
     };
   }
 
-  // LEETCODE
-  if (matches.sourceType === "LEETCODE") {
+  // 4. Handle LeetCode-specific questions
+  if (intent.leetcode) {
     return {
       answer: await generateLeetCodeAnswer(question),
       source: "LEETCODE",
@@ -46,30 +48,35 @@ export async function answerQuestion(question) {
     };
   }
 
-  // PORTFOLIO
+  // 5. Retrieve relevant portfolio information
   const chunks = await chunksExtractor(matches, question);
 
+  // 6. Handle empty retrieval results
   if (!chunks.length) {
-    const fallbackMessages = {
-      PROJECT: "I don't have any projects matching that requirement.",
-      CERTIFICATE: "I couldn't find any matching certificates.",
-      EXPERIENCE: "I couldn't find any matching experience details.",
-    };
+    let answer =
+      "I couldn't find enough relevant information to answer that question.";
+
+    if (intent.project && !intent.certificate && !intent.experience) {
+      answer = "I don't have any projects matching that requirement.";
+    } else if (intent.certificate && !intent.project && !intent.experience) {
+      answer = "I couldn't find any matching certificates.";
+    } else if (intent.experience && !intent.project && !intent.certificate) {
+      answer = "I couldn't find any matching experience details.";
+    }
 
     return {
-      answer:
-        fallbackMessages[matches.sourceType] ??
-        "I couldn't find enough relevant information to answer that question.",
-      source: matches.sourceType,
+      answer,
+      source: "PORTFOLIO",
       cached: false,
     };
   }
 
+  // 7. Generate answer using retrieved context
   const answer = await generateAnswer(question, chunks);
 
   return {
     answer,
-    source: matches.sourceType,
+    source: "PORTFOLIO",
     cached: false,
   };
 }

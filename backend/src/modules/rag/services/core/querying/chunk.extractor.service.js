@@ -9,90 +9,107 @@ import {
 
 import { generateEmbeddings } from "../indexing/embedding.service.js";
 
-
 export async function chunksExtractor(matches, question) {
+  const { intent, skills, technologies, projects, certificates = [] } =
+    matches;
+
   let chunks = [];
 
-  let structuredProjectQuery = false;
-  let structuredCertificateQuery = false;
+  const projectIds = projects.map((project) => project.id);
+  const skillIds = skills.map((skill) => skill.id);
+  const technologyIds = technologies.map((tech) => tech.id);
+  const certificateIds = certificates.map(
+    (certificate) => certificate.id,
+  );
 
-  // Project title match
-  if (matches.projects.length > 0) {
-    structuredProjectQuery = true;
+  // Helper to merge results without duplicate chunks
+  function mergeChunks(newChunks) {
+    const existingIds = new Set(chunks.map((chunk) => chunk.id));
 
-    const projectIds = matches.projects.map((project) => project.id);
-
-    chunks = await searchChunksByProjectIds(projectIds);
+    for (const chunk of newChunks) {
+      if (!existingIds.has(chunk.id)) {
+        chunks.push(chunk);
+        existingIds.add(chunk.id);
+      }
+    }
   }
 
-  // Project + skill
-  if (
-    chunks.length === 0 &&
-    matches.sourceType === "PROJECT" &&
-    matches.skills.length > 0
-  ) {
-    structuredProjectQuery = true;
+  // 1. Explicit project intent
+  if (intent.project) {
+    let projectChunks = [];
 
-    const skillIds = matches.skills.map((skill) => skill.id);
+    if (projectIds.length > 0) {
+      projectChunks = await searchChunksByProjectIds(projectIds);
+    } else if (skillIds.length > 0) {
+      projectChunks = await searchChunksBySkillIds(skillIds);
+    } else if (technologyIds.length > 0) {
+      projectChunks = await searchChunksByTechnologyIds(technologyIds);
+    }
 
-    chunks = await searchChunksBySkillIds(skillIds);
+    mergeChunks(projectChunks);
   }
 
-  // Project + technology
-  if (
-    chunks.length === 0 &&
-    matches.sourceType === "PROJECT" &&
-    matches.technologies.length > 0
-  ) {
-    structuredProjectQuery = true;
+  // 2. Explicit certificate intent
+  if (intent.certificate) {
+    let certificateChunks = [];
 
-    const technologyIds = matches.technologies.map(
-      (technology) => technology.id,
-    );
+    if (certificateIds.length > 0) {
+      certificateChunks =
+        await searchChunksByCertificateIds(certificateIds);
+    } else if (skillIds.length > 0) {
+      certificateChunks =
+        await searchChunksByCertificateSkillIds(skillIds);
+    } else {
+      // Add a function to retrieve all certificate chunks
+      certificateChunks = await searchAllCertificateChunks();
+    }
 
-    chunks = await searchChunksByTechnologyIds(technologyIds);
+    mergeChunks(certificateChunks);
   }
 
-  // No matching project
-  if (structuredProjectQuery && chunks.length === 0) {
-    return [];
+  // 3. Explicit experience intent
+  if (intent.experience) {
+    let experienceChunks = [];
+
+    // Add experience-specific retrieval functions here.
+    // Example:
+    // experienceChunks = await searchChunksByExperienceSkillIds(skillIds);
+
+    mergeChunks(experienceChunks);
   }
 
-  // Certificate title match
-  if (matches.certificates && matches.certificates.length > 0) {
-    structuredCertificateQuery = true;
+  // 4. General intent with matched entities
+  if (intent.general) {
+    if (skillIds.length > 0 || technologyIds.length > 0) {
+      const [projectChunks, certificateChunks] = await Promise.all([
+        skillIds.length > 0
+          ? searchChunksBySkillIds(skillIds)
+          : Promise.resolve([]),
 
-    const certificateIds = matches.certificates.map(
-      (certificate) => certificate.id,
-    );
+        skillIds.length > 0
+          ? searchChunksByCertificateSkillIds(skillIds)
+          : Promise.resolve([]),
+      ]);
 
-    chunks = await searchChunksByCertificateIds(certificateIds);
+      mergeChunks(projectChunks);
+      mergeChunks(certificateChunks);
+
+      if (technologyIds.length > 0) {
+        const technologyChunks =
+          await searchChunksByTechnologyIds(technologyIds);
+
+        mergeChunks(technologyChunks);
+      }
+    }
   }
 
-  // Certificate + skill
-  if (
-    chunks.length === 0 &&
-    matches.sourceType === "CERTIFICATE" &&
-    matches.skills.length > 0
-  ) {
-    structuredCertificateQuery = true;
-
-    const skillIds = matches.skills.map((skill) => skill.id);
-
-    chunks = await searchChunksByCertificateSkillIds(skillIds);
-  }
-
-  // No matching certificate
-  if (structuredCertificateQuery && chunks.length === 0) {
-    return [];
-  }
-
-  // Semantic fallback
+  // 5. Semantic fallback
   if (chunks.length === 0) {
-  const [queryEmbedding] = await generateEmbeddings([question]);
+    const [queryEmbedding] = await generateEmbeddings([question]);
 
-  chunks = await searchSimilarChunks(queryEmbedding, 5);
-}
+    chunks = await searchSimilarChunks(queryEmbedding, 5);
+  }
 
   return chunks;
 }
+

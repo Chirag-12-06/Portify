@@ -1,4 +1,0 @@
-take photo from screen shot app takes this much to load
-fix that time if possible or increase middle screen time
-
-go to top button not working for certifcates and project pages
